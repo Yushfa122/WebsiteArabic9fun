@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamus Pintar | Arabic9 Fun</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Nunito:wght@400;600;700;800&family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        /* --- STYLE DASAR (MENGADOPSI DARI INDEX) --- */
+        :root {
+            --primary: #2EC4B6;
+            --primary-dark: #239c91;
+            --accent: #FF9F1C;
+            --secondary: #E71D36;
+            --text-main: #011627;
+            --bg-body: #FDFFFC;
+            --radius: 25px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Nunito', sans-serif; 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            background-image: radial-gradient(#2ec4b6 0.8px, transparent 0.8px), radial-gradient(#2ec4b6 0.8px, var(--bg-body) 0.8px);
+            background-size: 30px 30px;
+        }
+        .ar { font-family: 'Amiri', serif; direction: rtl; }
+
+        /* HEADER */
+        .header-kamus {
+            background: linear-gradient(135deg, var(--secondary), #ff5b70);
+            padding: 30px 5% 60px; 
+            color: white;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(231, 29, 54, 0.2);
+        }
+
+        .back-btn {
+            color: white; font-size: 1.1rem; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px; font-weight: 700;
+            background: rgba(255,255,255,0.2); padding: 8px 20px; border-radius: 50px; transition: 0.3s;
+        }
+        .back-btn:hover { background: white; color: var(--secondary); }
+
+        .header-content { text-align: center; margin-top: 10px; }
+        .header-content h1 { font-family: 'Tajawal', sans-serif; font-size: 2.5rem; margin-bottom: 10px; }
+        .header-content p { font-size: 1.1rem; opacity: 0.9; }
+
+        /* SEARCH BOX */
+        .search-container {
+            max-width: 700px;
+            margin: -40px auto 40px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-box {
+            background: white;
+            padding: 10px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 3px solid #eee;
+            transition: 0.3s;
+        }
+
+        .search-box:focus-within { border-color: var(--accent); transform: scale(1.02); }
+
+        .search-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            font-family: 'Nunito', sans-serif;
+            border-radius: 50px;
+        }
+
+        .search-box button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .search-box button:hover { background: #ff8c00; transform: rotate(90deg); }
+
+        /* LIST KOSAKATA */
+        .dictionary-area {
+            max-width: 1000px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
+        }
+
+        .word-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .word-card {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            border: 2px solid #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .word-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 20px rgba(46, 196, 182, 0.15);
+        }
+
+        .word-arab {
+            font-size: 1.8rem;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .word-indo {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            font-weight: 700;
+            border-top: 2px dashed #eee;
+            padding-top: 10px;
+        }
+
+        .category-tag {
+            position: absolute;
+            top: 10px; left: 10px;
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .cat-verb { background: #e0f2f1; color: #00695c; }
+        .cat-noun { background: #fff3e0; color: #e65100; }
+
+        /* NOT FOUND STATE */
+        .no-result {
+            text-align: center;
+            width: 100%;
+            grid-column: 1 / -1;
+            padding: 40px;
+            display: none;
+        }
+        .no-result i { font-size: 3rem; color: #ccc; margin-bottom: 15px; }
+        .no-result p { color: #888; font-size: 1.2rem; }
+
+    </style>
+</head>
+<body>
+
+    <header class="header-kamus">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Kembali</a>
+            <div class="header-content" data-aos="fade-down">
+                <h1><i class="fas fa-book-open"></i> Kamus Pintar</h1>
+                <p>Cari kata sulitmu di sini! Ketik Bahasa Arab atau Indonesianya.</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="search-container" data-aos="fade-up">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Cari kata... (Contoh: Sekolah / مدرسة)">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+
+    <div class="dictionary-area">
+        <div class="word-grid" id="dictionaryList">
+            </div>
+
+        <div class="no-result" id="noResult">
+            <i class="far fa-sad-tear"></i>
+            <p>Yah, kata yang kamu cari belum ada di kamus ini...</p>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        // DATABASE KOSAKATA (DATA DARI GAMBAR)
+        const vocabulary = [
+            // --- BAGIAN KATA KERJA (VERB) ---
+            { indo: "Tukar menukar", arab: "تَبَادَلَ - يَتَبَادَلُ", type: "verb" },
+            { indo: "Berbicara", arab: "تَحَدَّثَ - يَتَحَدَّثُ", type: "verb" },
+            { indo: "Memikirkan / Merenung", arab: "تَدَبَّرَ - يَتَدَبَّرُ", type: "verb" },
+            { indo: "Beribadah", arab: "تَعَبَّدَ - يَتَعَبَّدُ", type: "verb" },
+            { indo: "Menikmati", arab: "تَمَتَّعَ - يَتَمَتَّعُ", type: "verb" },
+            { indo: "Mengalir / Lari", arab: "جَرَى - يَجْرِي", type: "verb" },
+            { indo: "Menjadikan", arab: "جَعَلَ - يَجْعَلُ", type: "verb" },
+            { indo: "Duduk", arab: "جَلَسَ - يَجْلِسُ", type: "verb" },
+            { indo: "Menjaga", arab: "حَافَظَ - يُحَافِظُ (عَلَى)", type: "verb" },
+            { indo: "Mencoba / Berusaha", arab: "حَاوَلَ - يُحَاوِلُ", type: "verb" },
+            { indo: "Terjadi", arab: "حَدَثَ - يَحْدُثُ", type: "verb" },
+            { indo: "Melindungi", arab: "حَمَى - يَحْمِي", type: "verb" },
+            { indo: "Menciptakan", arab: "خَلَقَ - يَخْلُقُ", type: "verb" },
+            { indo: "Menyembelih", arab: "ذَبَحَ - يَذْبَحُ", type: "verb" },
+            { indo: "Pulang / Kembali", arab: "رَجَعَ - يَرْجِعُ", type: "verb" },
+            { indo: "Berkumpul / Rapat", arab: "اِجْتَمَعَ - يَجْتَمِعُ", type: "verb" },
+            { indo: "Mengalirkan", arab: "أَجْرَى - يُجْرِي", type: "verb" },
+            { indo: "Merayakan", arab: "اِحْتَفَلَ - يَحْتَفِلُ", type: "verb" },
+            { indo: "Membakar", arab: "أَحْرَقَ - يُحْرِقُ", type: "verb" },
+            { indo: "Menyebabkan", arab: "أَدَّى - يُؤَدِّي (إِلَى)", type: "verb" },
+            { indo: "Menyakiti", arab: "آذَى - يُؤْذِي", type: "verb" },
+            { indo: "Mampu / Bisa", arab: "اِسْتَطَاعَ - يَسْتَطِيعُ", type: "verb" },
+            { indo: "Menyambut", arab: "اِسْتَقْبَلَ - يَسْتَقْبِلُ", type: "verb" },
+            { indo: "Mendengarkan", arab: "اِسْتَمَعَ - يَسْتَمِعُ", type: "verb" },
+            { indo: "Menjalankan (malam)", arab: "أَسْرَى - يُسْرِي", type: "verb" },
+            { indo: "Terbit", arab: "أَشْرَقَ - يُشْرِقُ", type: "verb" },
+            { indo: "Memberi", arab: "أَعْطَى - يُعْطِي", type: "verb" },
+            { indo: "Merusak", arab: "أَفْسَدَ - يُفْسِدُ", type: "verb" },
+            { indo: "Makan", arab: "أَكَلَ - يَأْكُلُ", type: "verb" },
+            { indo: "Menumbuhkan", arab: "أَنْبَتَ - يُنْبِتُ", type: "verb" },
+            { indo: "Memerintahkan", arab: "أَمَرَ - يَأْمُرُ", type: "verb" },
+            { indo: "Mengirim / Mengutus", arab: "بَعَثَ - يَبْعَثُ", type: "verb" },
+            { indo: "Membangun", arab: "بَنَى - يَبْنِي", type: "verb" },
+            { indo: "Melewati", arab: "مَرَّ - يَمُرُّ", type: "verb" },
+            { indo: "Mencegah", arab: "مَنَعَ - يَمْنَعُ", type: "verb" },
+            { indo: "Menyelamatkan", arab: "نَجَّى - يُنَجِّي", type: "verb" },
+            { indo: "Turun", arab: "نَزَلَ - يَنْزِلُ", type: "verb" },
+            { indo: "Menata / Mengatur", arab: "نَظَّمَ - يُنَظِّمُ", type: "verb" },
+            { indo: "Berpindah / Hijrah", arab: "هَاجَرَ - يُهَاجِرُ", type: "verb" },
+            { indo: "Mengucapkan selamat", arab: "هَنَّأَ - يُهَنِّئُ", type: "verb" },
+            { indo: "Menemukan", arab: "وَجَدَ - يَجِدُ", type: "verb" },
+            { indo: "Membagikan", arab: "وَزَّعَ - يُوَزِّعُ", type: "verb" },
+            { indo: "Sampai", arab: "وَصَلَ - يَصِلُ", type: "verb" },
+            { indo: "Meletakkan", arab: "وَضَعَ - يَضَعُ", type: "verb" },
+            { indo: "Wukuf / Berhenti", arab: "وَقَفَ - يَقِفُ", type: "verb" },
+            { indo: "Melahirkan", arab: "وَلَدَ - يَلِدُ", type: "verb" },
+            { indo: "Melemparkan", arab: "رَمَى - يَرْمِي", type: "verb" },
+            { indo: "Menghias", arab: "زَيَّنَ - يُزَيِّنُ", type: "verb" },
+            { indo: "Meminta / Bertanya", arab: "سَأَلَ - يَسْأَلُ", type: "verb" },
+            { indo: "Bertempat tinggal", arab: "سَكَنَ - يَسْكُنُ", type: "verb" },
+            { indo: "Menyaksikan", arab: "شَاهَدَ - يُشَاهِدُ", type: "verb" },
+            { indo: "Berpuasa", arab: "صَامَ - يَصُومُ", type: "verb" },
+            { indo: "Membenarkan", arab: "صَدَّقَ - يُصَدِّقُ", type: "verb" },
+            { indo: "Sholat", arab: "صَلَّى - يُصَلِّي", type: "verb" },
+            { indo: "Tampak / Muncul", arab: "ظَهَرَ - يَظْهَرُ", type: "verb" },
+            { indo: "Hidup", arab: "عَاشَ - يَعِيْشُ", type: "verb" },
+            { indo: "Terbenam", arab: "غَرَبَ - يَغْرُبُ", type: "verb" },
+            { indo: "Berkata", arab: "قَالَ - يَقُوْلُ", type: "verb" },
+            { indo: "Membunuh", arab: "قَتَلَ - يَقْتُلُ", type: "verb" },
+            { indo: "Bertakbir", arab: "كَبَّرَ - يُكَبِّرُ", type: "verb" },
+
+            // --- BAGIAN KATA BENDA / SIFAT (NOUN) ---
+            { indo: "Hijau", arab: "أَخْضَر", type: "noun" },
+            { indo: "Minggu", arab: "أُسْبُوْع", type: "noun" },
+            { indo: "Keluarga", arab: "أُسْرَة", type: "noun" },
+            { indo: "Pemborosan", arab: "إِسْرَاف", type: "noun" },
+            { indo: "Hewan kurban", arab: "أُضْحِيَة", type: "noun" },
+            { indo: "Bus", arab: "حَافِلَة", type: "noun" },
+            { indo: "Ladang", arab: "حَقْل ج حُقُوْل", type: "noun" },
+            { indo: "Jama'ah haji", arab: "حَاجّ ج حُجَّاج", type: "noun" },
+            { indo: "Arak / Minuman Keras", arab: "خَمْر", type: "noun" },
+            { indo: "Pencipta", arab: "خَالِق", type: "noun" },
+            { indo: "Subur", arab: "خَصْبَة", type: "noun" },
+            { indo: "Domba", arab: "خَرُوْف", type: "noun" },
+            { indo: "Da'i / Pendakwah", arab: "دَاعٍ", type: "noun" },
+            { indo: "Asap", arab: "دُخَان", type: "noun" },
+            { indo: "Undang-undang", arab: "دُسْتُوْر", type: "noun" },
+            { indo: "Sekaligus", arab: "دُفْعَة وَاحِدَة", type: "noun" },
+            { indo: "Peran", arab: "دَوْر", type: "noun" },
+            { indo: "Peringatan", arab: "ذِكْرَى", type: "noun" },
+            { indo: "Yang mengagumkan", arab: "رَائِعَة", type: "noun" },
+            { indo: "Pendapat", arab: "رَأْي", type: "noun" },
+            { indo: "Ketua panitia", arab: "رَئِيْسُ اللَّجْنَة", type: "noun" },
+            { indo: "Padi / Nasi", arab: "رُزّ", type: "noun" },
+            { indo: "Surat", arab: "رِسَالَة", type: "noun" },
+            { indo: "Rekreasi", arab: "رِحْلَة", type: "noun" },
+            { indo: "Merusak lingkungan", arab: "إِفْسَادُ الْبِيْئَة", type: "noun" },
+            { indo: "Kemarin", arab: "أَمْسِ", type: "noun" },
+            { indo: "Buta huruf", arab: "أُمِّيّ", type: "noun" },
+            { indo: "Bendahara", arab: "أَمِيْنَةُ الصُّنْدُوْق", type: "noun" },
+            { indo: "Perhatian", arab: "اِهْتِمَام", type: "noun" },
+            { indo: "Hari-hari", arab: "أَيَّام", type: "noun" },
+            { indo: "Uap", arab: "بُخَار ج أَبْخِرَة", type: "noun" },
+            { indo: "Daratan", arab: "بَرّ", type: "noun" },
+            { indo: "Acara", arab: "بَرْنَامِج", type: "noun" },
+            { indo: "Kartu", arab: "بِطَاقَة", type: "noun" },
+            { indo: "Lingkungan", arab: "بِيْئَة", type: "noun" },
+            { indo: "Rumah", arab: "بَيْت", type: "noun" },
+            { indo: "Tanggal / Sejarah", arab: "تَارِيْخ", type: "noun" },
+            { indo: "Kalender", arab: "تَقْوِيْم", type: "noun" },
+            { indo: "Kelalaian", arab: "تَقْصِيْر", type: "noun" },
+            { indo: "Polusi", arab: "تَلَوُّث", type: "noun" },
+            { indo: "Penghijauan", arab: "تَشْجِيْر", type: "noun" },
+            { indo: "Gunung", arab: "جَبَل", type: "noun" },
+            { indo: "Tetangga", arab: "جِيْرَان", type: "noun" },
+            { indo: "Peristiwa", arab: "حَادِثَة", type: "noun" },
+            { indo: "Besok", arab: "غَدًا", type: "noun" },
+            { indo: "Terbenamnya matahari", arab: "غُرُوْبُ الشَّمْس", type: "noun" },
+            { indo: "Paragraf", arab: "فِقْرَة", type: "noun" },
+            { indo: "Fakir", arab: "فَقِيْر", type: "noun" },
+            { indo: "Aula", arab: "قَاعَة", type: "noun" },
+            { indo: "Desa", arab: "قَرْيَة", type: "noun" },
+            { indo: "Bulan", arab: "قَمَر", type: "noun" },
+            { indo: "Puncak", arab: "قِمَّة", type: "noun" },
+            { indo: "Lebat", arab: "كَثِيْفَة", type: "noun" },
+            { indo: "Kata", arab: "كَلِمَة", type: "noun" },
+            { indo: "Planet", arab: "كَوْكَب", type: "noun" },
+            { indo: "Panitia", arab: "لَجْنَة", type: "noun" },
+            { indo: "Daging", arab: "لَحْم ج لُحُوْم", type: "noun" },
+            { indo: "Oleh karena itu", arab: "لِذَا", type: "noun" },
+            { indo: "Warna", arab: "لَوْن", type: "noun" },
+            { indo: "Malam", arab: "لَيْل", type: "noun" },
+            { indo: "Air bening", arab: "مَاء نَقِي", type: "noun" },
+            { indo: "Harta", arab: "مَال ج أَمْوَال", type: "noun" },
+            { indo: "Yang lalu", arab: "الْمَاضِي", type: "noun" },
+            { indo: "Selamat", arab: "سَالِم", type: "noun" },
+            { indo: "Sekretaris panitia", arab: "سِكْرِتِيْر اللَّجْنَة", type: "noun" },
+            { indo: "Kebahagiaan", arab: "سَعَادَة", type: "noun" },
+            { indo: "Tahun", arab: "سَنَة", type: "noun" },
+            { indo: "Ikan", arab: "سَمَك", type: "noun" },
+            { indo: "Riwayat hidup", arab: "سِيْرَة حَيَاة", type: "noun" },
+            { indo: "Pantai", arab: "شَاطِئُ الْبَحْر", type: "noun" },
+            { indo: "Pohon", arab: "شَجَرَة", type: "noun" },
+            { indo: "Matahari", arab: "شَمْس", type: "noun" },
+            { indo: "Alam", arab: "طَبِيْعَة", type: "noun" },
+            { indo: "Segar", arab: "طَرِيّ", type: "noun" },
+            { indo: "Alam / Dunia", arab: "عَالَم", type: "noun" },
+            { indo: "Tahun", arab: "عَام", type: "noun" },
+            { indo: "Anggota", arab: "عُضْو ج أَعْضَاء", type: "noun" },
+            { indo: "Libur", arab: "عُطْلَة", type: "noun" },
+            { indo: "Hari raya", arab: "عِيْد ج أَعْيَاد", type: "noun" },
+            { indo: "Hutan", arab: "غَابَة", type: "noun" },
+            { indo: "Gua", arab: "غَار", type: "noun" },
+            { indo: "Bahan kimia", arab: "مَوَادّ كِيْمِيَاوِيَّة", type: "noun" },
+            { indo: "Sumber daya alam", arab: "مَوَارِد طَبِيْعِيَّة", type: "noun" },
+            { indo: "Air limbah", arab: "مِيَاه الصَّرْف", type: "noun" },
+            { indo: "Lapangan", arab: "مَيْدَان ج مَيَادِيْن", type: "noun" },
+            { indo: "Kenabian", arab: "نُبُوَّة", type: "noun" },
+            { indo: "Bintang", arab: "نَجْم", type: "noun" },
+            { indo: "Kebersihan", arab: "نَظَافَة", type: "noun" },
+            { indo: "Sampah", arab: "نِفَايَة ج نِفَايَات", type: "noun" },
+            { indo: "Siang", arab: "نَهَار", type: "noun" },
+            { indo: "Sungai", arab: "نَهْر ج أَنْهَار", type: "noun" },
+            { indo: "Udara", arab: "هَوَاء", type: "noun" },
+            { indo: "Perantara / Sarana", arab: "وَسِيْلَة ج وَسَائِل", type: "noun" },
+            { indo: "Negara / Tanah Air", arab: "وَطَن", type: "noun" },
+            { indo: "Jabatan / Tugas", arab: "وَظِيْفَة", type: "noun" },
+            { indo: "Berjejer", arab: "مُتَجَاوِرَة", type: "noun" },
+            { indo: "Bermacam-macam", arab: "مُتَنَوِّعَة", type: "noun" },
+            { indo: "Masyarakat", arab: "مُجْتَمَع", type: "noun" },
+            { indo: "Ceramah", arab: "مُحَاضَرَة", type: "noun" },
+            { indo: "Mesin mobil", arab: "مُحَرِّكَات السَّيَّارَات", type: "noun" },
+            { indo: "Undangan (Orang)", arab: "مَدْعُوُّوْن", type: "noun" },
+            { indo: "Kota", arab: "مَدِيْنَة", type: "noun" },
+            { indo: "Sawah", arab: "مَزْرَعَة", type: "noun" },
+            { indo: "Miskin", arab: "مِسْكِيْن ج مَسَاكِيْن", type: "noun" },
+            { indo: "Pabrik", arab: "مَصْنَع ج مَصَانِع", type: "noun" },
+            { indo: "Hujan", arab: "مَطَر", type: "noun" },
+            { indo: "Malam (Gelap)", arab: "مُظْلِم", type: "noun" },
+            { indo: "Tempat", arab: "مَكَان", type: "noun" },
+            { indo: "Dilarang", arab: "مَمْنُوْع", type: "noun" },
+            { indo: "Berangsur-angsur", arab: "مُنَجَّمًا", type: "noun" },
+            { indo: "Sejak", arab: "مُنْذُ", type: "noun" },
+            { indo: "Kaum Muhajirin", arab: "الْمُهَاجِرُوْن", type: "noun" }
+        ];
+
+        // FUNGSI RENDER LIST
+        function renderDictionary(data) {
+            const listContainer = document.getElementById('dictionaryList');
+            const noResult = document.getElementById('noResult');
+            
+            listContainer.innerHTML = '';
+
+            if (data.length === 0) {
+                noResult.style.display = 'block';
+            } else {
+                noResult.style.display = 'none';
+                data.forEach(word => {
+                    const tagClass = word.type === 'verb' ? 'cat-verb' : 'cat-noun';
+                    const tagName = word.type === 'verb' ? 'Kata Kerja (فِعْل)' : 'Kata Benda/Sifat (اِسْم)';
+
+                    const card = `
+                        <div class="word-card">
+                            <span class="category-tag ${tagClass}">${tagName}</span>
+                            <div class="word-arab ar">${word.arab}</div>
+                            <div class="word-indo">${word.indo}</div>
+                        </div>
+                    `;
+                    listContainer.innerHTML += card;
+                });
+            }
+        }
+
+        // FUNGSI SEARCH
+        document.getElementById('searchInput').addEventListener('keyup', function(e) {
+            const keyword = e.target.value.toLowerCase();
+            const filteredData = vocabulary.filter(item => {
+                return item.indo.toLowerCase().includes(keyword) || item.arab.includes(keyword);
+            });
+            renderDictionary(filteredData);
+        });
+
+        // RENDER AWAL
+        renderDictionary(vocabulary);
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Animasi | Arabic9 Fun</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Nunito:wght@400;600;700;800&family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- STYLE SAMA DENGAN INDEX --- */
+        :root {
+            --primary: #2EC4B6;
+            --primary-dark: #239c91;
+            --accent: #FF9F1C;
+            --text-main: #011627;
+            --bg-body: #FDFFFC;
+            --radius: 25px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Nunito', sans-serif; background-color: var(--bg-body); color: var(--text-main); }
+        .ar { font-family: 'Amiri', serif; direction: rtl; }
+
+        /* Header Inner Page */
+        .header-lesson {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            padding: 30px 5% 80px; 
+            color: white;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            position: relative;
+        }
+
+        .back-btn {
+            color: white; font-size: 1.2rem; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px; font-weight: 700;
+        }
+        .back-btn:hover { color: var(--accent); }
+
+        .lesson-title h1 { font-family: 'Tajawal', sans-serif; font-size: 2.2rem; margin-bottom: 5px; }
+
+        /* Video Container */
+        .content-area { max-width: 900px; margin: -50px auto 50px; padding: 0 20px; position: relative; z-index: 10; }
+        
+        .video-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(46, 196, 182, 0.15);
+            border: 2px solid #eee;
+            margin-bottom: 40px; /* Jarak antar video */
+            transition: transform 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        /* Responsive Iframe Wrapper */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 15px;
+            background: #000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .video-desc { margin-top: 25px; }
+        .video-desc h2 { color: var(--primary-dark); margin-bottom: 10px; display: flex; align-items: center; gap: 10px;}
+        .video-desc p { color: #5f7385; line-height: 1.6; }
+
+        .tag {
+            display: inline-block; background: #e0fbfc; color: var(--primary-dark);
+            padding: 5px 15px; border-radius: 50px; font-size: 0.9rem; font-weight: bold;
+            margin-bottom: 15px; margin-right: 5px;
+        }
+        
+        .illustration-icon {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-lesson">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Kembali ke Menu</a>
+            <div class="lesson-title">
+                <h1><i class="fas fa-film"></i> Koleksi Video Animasi</h1>
+                <p>Belajar Bahasa Arab lebih seru dengan video animasi penuh warna dan cerita!</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="content-area">
+
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe 
+                    src="https://www.youtube.com/embed/AXgrJRRfYTQ" 
+                    title="Haflu Bimaulidi Rosul" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-desc">
+                <span class="tag"><i class="fas fa-calendar-alt"></i> Sejarah Islam</span>
+                <span class="tag"><i class="fas fa-mosque"></i> Hari Besar</span>
+                
+                <h2 class="ar"><i class="fas fa-star illustration-icon"></i> الحَفْلُ بِمَوْلِدِ الرَّسُولِ</h2>
+                <h3>Perayaan Maulid Nabi SAW</h3>
+                <p>
+                    Simak kisah kemuliaan kelahiran Nabi Muhammad SAW. Video ini menjelaskan tentang sejarah dan makna peringatan Maulid Nabi dalam bahasa Arab yang mudah dipahami.
+                </p>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe 
+                    src="https://www.youtube.com/embed/4wNAzpkNf_Y" 
+                    title="Nuzulul Quran" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-desc">
+                <span class="tag"><i class="fas fa-book-open"></i> Al-Qur'an</span>
+                <span class="tag"><i class="fas fa-moon"></i> Ramadhan</span>
+                
+                <h2 class="ar"><i class="fas fa-quran illustration-icon"></i> نُزُولُ الْقُرْآنِ</h2>
+                <h3>Peristiwa Turunnya Al-Qur'an</h3>
+                <p>
+                    Pelajari peristiwa agung Nuzulul Qur'an, saat wahyu pertama diturunkan kepada Rasulullah SAW di Gua Hira. Dilengkapi kosakata penting seputar Al-Qur'an.
+                </p>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe 
+                    src="https://www.youtube.com/embed/iTVtXZBHGFM" 
+                    title="Jamalu At Thobiah" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-desc">
+                <span class="tag"><i class="fas fa-mountain"></i> Alam Semesta</span>
+                <span class="tag"><i class="fas fa-tree"></i> Tadabbur</span>
+                
+                <h2 class="ar"><i class="fas fa-leaf illustration-icon"></i> جَمَالُ الطَّبِيعَةِ</h2>
+                <h3>Keindahan Alam</h3>
+                <p>
+                    Menikmati keindahan ciptaan Allah melalui video animasi pemandangan alam. Mari belajar nama-nama bentang alam seperti gunung, sungai, dan hutan dalam Bahasa Arab.
+                </p>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe 
+                    src="https://www.youtube.com/embed/_oz-YaEB3dU" 
+                    title="Kholqu Al Aalam" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-desc">
+                <span class="tag"><i class="fas fa-globe-asia"></i> Sains & Aqidah</span>
+                <span class="tag"><i class="fas fa-atom"></i> Penciptaan</span>
+                
+                <h2 class="ar"><i class="fas fa-meteor illustration-icon"></i> خَلْقُ الْعَالَمِ</h2>
+                <h3>Penciptaan Alam Semesta</h3>
+                <p>
+                    Bagaimana alam semesta ini diciptakan? Video ini membahas proses penciptaan langit dan bumi sebagai tanda kekuasaan Allah SWT.
+                </p>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe 
+                    src="https://www.youtube.com/embed/mEsLGSMqlX4" 
+                    title="Al Khifad Ala Al Biiah" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-desc">
+                <span class="tag"><i class="fas fa-hands-helping"></i> Lingkungan Hidup</span>
+                <span class="tag"><i class="fas fa-trash-alt"></i> Kebersihan</span>
+                
+                <h2 class="ar"><i class="fas fa-seedling illustration-icon"></i> الْحِفَاظُ عَلَى الْبِيئَةِ</h2>
+                <h3>Menjaga Kelestarian Lingkungan</h3>
+                <p>
+                    Pentingnya menjaga kebersihan dan melestarikan lingkungan sekitar kita. Belajar ungkapan Bahasa Arab tentang tidak membuang sampah sembarangan dan menanam pohon.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

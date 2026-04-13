@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Interaktif | Arabic9 Fun</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Nunito:wght@400;700&family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- STYLE DASAR (Konsisten dengan index) --- */
+        :root {
+            --primary: #48CAE4; --primary-dark: #0096C7; --accent: #FFB703;
+            --text-dark: #2b2d42; --bg-light: #edf2f4; --white: #ffffff;
+            --correct: #2a9d8f; --wrong: #e76f51;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Nunito', sans-serif; background: var(--bg-light); color: var(--text-dark); }
+        .ar { font-family: 'Amiri', serif; direction: rtl; }
+        
+        /* --- LAYOUT --- */
+        nav {
+            background: var(--white); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { font-weight: 800; color: var(--primary-dark); font-size: 1.5rem; display: flex; gap: 10px; align-items: center; }
+        .back-link { font-weight: 700; color: var(--text-dark); }
+        .back-link:hover { color: var(--primary); }
+
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 250px 1fr; gap: 30px; }
+
+        /* --- SIDEBAR MENU --- */
+        .quiz-sidebar { background: var(--white); padding: 20px; border-radius: 20px; height: fit-content; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .quiz-sidebar h3 { margin-bottom: 15px; color: var(--primary-dark); }
+        .quiz-menu { list-style: none; }
+        .quiz-menu li { margin-bottom: 10px; }
+        .quiz-btn {
+            width: 100%; text-align: left; padding: 10px 15px; background: transparent; border: 2px solid #eee;
+            border-radius: 10px; cursor: pointer; font-weight: 700; color: #666; transition: 0.3s;
+        }
+        .quiz-btn:hover, .quiz-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .semester-label { font-size: 0.8rem; color: #999; margin: 15px 0 5px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- QUIZ AREA --- */
+        .quiz-content { background: var(--white); padding: 40px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); min-height: 500px; }
+        .quiz-header { border-bottom: 2px solid #f0f0f0; padding-bottom: 20px; margin-bottom: 30px; }
+        .quiz-header h1 { font-family: 'Tajawal', sans-serif; color: var(--primary-dark); }
+        .quiz-score-box { display: none; background: #e0fbfc; padding: 15px; border-radius: 10px; margin-top: 10px; color: var(--primary-dark); font-weight: 800; }
+
+        /* --- SOAL STYLES --- */
+        .question-card { margin-bottom: 30px; border-bottom: 1px dashed #eee; padding-bottom: 20px; }
+        .q-text { font-size: 1.1rem; margin-bottom: 15px; font-weight: 700; display: flex; align-items: center; flex-wrap: wrap; gap: 5px; }
+        .q-tag { font-size: 0.7rem; background: #eee; padding: 2px 8px; border-radius: 4px; color: #666; margin-right: 10px; vertical-align: middle; }
+        
+        /* Pilihan Ganda */
+        .options-grid { display: grid; gap: 10px; }
+        .option-label {
+            display: flex; align-items: center; padding: 12px; border: 2px solid #eee; border-radius: 10px; cursor: pointer; transition: 0.2s;
+        }
+        .option-label:hover { border-color: var(--primary); background: #f8fbff; }
+        .option-label input { margin-right: 10px; }
+        
+        /* Feedback Colors */
+        .correct-answer { border-color: var(--correct); background: #e6fffa; }
+        .wrong-answer { border-color: var(--wrong); background: #ffebe6; }
+
+        /* Esai */
+        textarea { width: 100%; padding: 15px; border: 2px solid #eee; border-radius: 10px; font-family: inherit; margin-top: 10px; resize: vertical; }
+        textarea:focus { outline: none; border-color: var(--primary); }
+        
+        .feedback-box { 
+            display: none; margin-top: 10px; padding: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid var(--accent); font-size: 0.9rem; 
+        }
+
+        /* Tombol Aksi */
+        .action-area { margin-top: 40px; display: flex; gap: 15px; }
+        .btn-submit { background: var(--primary-dark); color: white; border: none; padding: 12px 30px; border-radius: 50px; font-weight: 800; cursor: pointer; font-size: 1rem; }
+        .btn-submit:hover { background: var(--primary); }
+        .btn-reset { background: #eee; color: #666; border: none; padding: 12px 30px; border-radius: 50px; font-weight: 800; cursor: pointer; }
+
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+            .quiz-sidebar { margin-bottom: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <i class="fas fa-shapes" style="color: var(--accent);"></i> Arabic9 Fun
+        </div>
+        <a href="index.html" class="back-link"><i class="fas fa-home"></i> Kembali ke Beranda</a>
+    </nav>
+
+    <div class="container">
+        <aside class="quiz-sidebar">
+            <h3><i class="fas fa-list"></i> Pilih Topik</h3>
+            <ul class="quiz-menu">
+                <div class="semester-label">Semester 1</div>
+                <li><button class="quiz-btn active" onClick="loadQuiz('bab1')">Bab 1: Tahun Baru Hijriyah</button></li>
+                <li><button class="quiz-btn" onClick="loadQuiz('bab2')">Bab 2: Maulid Nabi</button></li>
+                <li><button class="quiz-btn" onClick="loadQuiz('bab3')">Bab 3: Nuzulul Quran</button></li>
+                <li><button class="quiz-btn" onClick="loadQuiz('uts1')">⚡ Latihan Tengah Semester</button></li>
+                
+                <div class="semester-label">Semester 2</div>
+                <li><button class="quiz-btn" onClick="loadQuiz('bab4')">Bab 4: Keindahan Alam</button></li>
+                <li><button class="quiz-btn" onClick="loadQuiz('bab5')">Bab 5: Penciptaan Alam</button></li>
+                <li><button class="quiz-btn" onClick="loadQuiz('bab6')">Bab 6: Menjaga Lingkungan</button></li>
+                <li><button class="quiz-btn" onClick="loadQuiz('ujian_akhir')">🏆 UJIAN AKHIR (UAS)</button></li>
+            </ul>
+        </aside>
+
+        <main class="quiz-content">
+            <div class="quiz-header">
+                <h1 id="quiz-title">Loading...</h1>
+                <p id="quiz-desc">Silakan kerjakan soal-soal di bawah ini dengan teliti.</p>
+                <div id="score-display" class="quiz-score-box">
+                    Nilai Anda: <span id="final-score">0</span> / 100
+                </div>
+            </div>
+
+            <form id="quiz-form">
+                <div id="questions-container">
+                    </div>
+
+                <div class="action-area">
+                    <button type="button" class="btn-submit" onClick="submitQuiz()">Kumpulkan Jawaban <i class="fas fa-check-circle"></i></button>
+                    <button type="button" class="btn-reset" onClick="resetQuiz()">Ulangi</button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script>
+        // --- DATABASE SOAL (JSON) ---
+        const quizDatabase = {
+            // ================== BAB 1 ==================
+            "bab1": {
+                title: "Bab 1: Tahun Baru Hijriyah",
+                questions: [
+                    // Gambar Kalender di nomor 1
+                    { type: "mcq", question: "<span class='ar'>مَا هِيَ الْكَلِمَةُ الْعَرَبِيَّةُ لِـ</span> <i class='fas fa-calendar-alt' style='color:var(--accent); font-size:1.5rem; margin:0 5px;'></i> ؟", options: ["<span class='ar'>التَّقْوِيْمُ</span>", "<span class='ar'>التَّارِيْخُ</span>", "<span class='ar'>الْيَوْمُ</span>", "<span class='ar'>الشَّهْرُ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>مَتَى يَحْتَفِلُ الْمُسْلِمُوْنَ بِرَأْسِ السَّنَةِ الْهِجْرِيَّةِ؟</span>", options: ["<span class='ar'>فِي الْأَوَّلِ مِنْ مُحَرَّم</span>", "<span class='ar'>فِي الْعَاشِرِ مِنْ مُحَرَّم</span>", "<span class='ar'>فِي الْأَوَّلِ مِنْ رَمَضَان</span>", "<span class='ar'>فِي الْأَوَّلِ مِنْ شَوَّال</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>مَا هُوَ مُرَادِفُ كَلِمَةِ 'هَاجَرَ'؟</span>", options: ["<span class='ar'>رَجَعَ إِلَى وَطَنِهِ</span>", "<span class='ar'>سَافَرَ وَتَرَكَ وَطَنَهُ</span>", "<span class='ar'>قَاتَلَ فِي السَّبِيْلِ</span>", "<span class='ar'>عَمِلَ بِجِدٍّ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>أَكْمِلِ الْجُمْلَةَ: ... الْمُهَاجِرُوْنَ مِنْ مَكَّةَ إِلَى الْمَدِيْنَةِ</span>", options: ["<span class='ar'>وَصَلَ</span>", "<span class='ar'>هَاجَرَ</span>", "<span class='ar'>جَلَسَ</span>", "<span class='ar'>كَتَبَ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>مَنْ هُمُ الْمُهَاجِرُوْنَ؟</span>", options: ["<span class='ar'>سُكَّانُ الْمَدِيْنَةِ</span>", "<span class='ar'>أَهْلُ مَكَّةَ الَّذِيْنَ هَاجَرُوْا</span>", "<span class='ar'>سُكَّانُ الطَّائِفِ</span>", "<span class='ar'>كُفَّارُ قُرَيْشٍ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>مَا هُوَ الْفِعْلُ الْمَاضِي الْمُنَاسِبُ؟ مُحَمَّدٌ ... الْقُرْآنَ فِي الْمَسْجِدِ</span>", options: ["<span class='ar'>قَرَأَ</span>", "<span class='ar'>يَقْرَأُ</span>", "<span class='ar'>اِقْرَأْ</span>", "<span class='ar'>قِرَاءَةٌ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>مَا هُوَ الشَّهْرُ الْأَوَّلُ فِي التَّقْوِيْمِ الْهِجْرِيِّ؟</span>", options: ["<span class='ar'>صَفَر</span>", "<span class='ar'>مُحَرَّم</span>", "<span class='ar'>رَجَب</span>", "<span class='ar'>رَمَضَان</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>مَا نَوْعُ كَلِمَةِ 'صَلَّى' فِي جُمْلَةِ 'صَلَّى الْمُسْلِمُوْنَ فِي الْمَسْجِدِ'؟</span>", options: ["<span class='ar'>فِعْلٌ مُضَارِعٌ</span>", "<span class='ar'>فِعْلُ أَمْرٍ</span>", "<span class='ar'>فِعْلٌ مَاضٍ</span>", "<span class='ar'>اِسْمٌ</span>"], correct: 2 },
+                    { type: "mcq", question: "<span class='ar'>فِي أَيِّ عَامٍ مِيْلَادِيٍّ حَدَثَتْ هِجْرَةُ النَّبِيِّ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ؟</span>", options: ["<span class='ar'>٦٢٢ م</span>", "<span class='ar'>٥٧١ م</span>", "<span class='ar'>٦٣٢ م</span>", "<span class='ar'>٦١٠ م</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>مَا عَدَدُ الشُّهُوْرِ فِي السَّنَةِ الْهِجْرِيَّةِ؟</span>", options: ["<span class='ar'>عَشَرَةٌ</span>", "<span class='ar'>اِثْنَا عَشَرَ</span>", "<span class='ar'>أَحَدَ عَشَرَ</span>", "<span class='ar'>تِسْعَةٌ</span>"], correct: 1 }
+                ]
+            },
+            
+            // ================== BAB 2 (SEMUA OPSI A-D ADA GAMBARNYA) ==================
+            "bab2": {
+                title: "Bab 2: Maulid Nabi",
+                questions: [
+                    { type: "mcq", question: "<span class='ar'>وُلِدَ النَّبِيُّ مُحَمَّدٌ ص.م فِي شَهْرِ...</span>", options: ["<i class='fas fa-moon' style='margin-right:10px; color:var(--accent);'></i> <span class='ar'>رَبِيْعِ الْأَوَّلِ</span>", "<i class='fas fa-moon' style='margin-right:10px; color:var(--accent);'></i> <span class='ar'>رَبِيْعِ الثَّانِي</span>", "<i class='fas fa-moon' style='margin-right:10px; color:var(--accent);'></i> <span class='ar'>جُمَادَى الْأُوْلَى</span>", "<i class='fas fa-moon' style='margin-right:10px; color:var(--accent);'></i> <span class='ar'>رَجَب</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>مَا هِيَ الْكَلِمَةُ الْعَرَبِيَّةُ لِـ 'Kelahiran'؟</span>", options: ["<i class='fas fa-book-dead' style='margin-right:10px; color:#555;'></i> <span class='ar'>الْوَفَاةُ</span>", "<i class='fas fa-baby' style='margin-right:10px; color:var(--correct);'></i> <span class='ar'>الْمَوْلِدُ</span>", "<i class='fas fa-shoe-prints' style='margin-right:10px; color:var(--primary);'></i> <span class='ar'>الْهِجْرَةُ</span>", "<i class='fas fa-rings' style='margin-right:10px; color:gold;'></i> <span class='ar'>الزَّوَاجُ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>أَيْنَ وُلِدَ الرَّسُوْلُ ص.م؟</span>", options: ["<i class='fas fa-city' style='margin-right:10px; color:#666;'></i> <span class='ar'>فِي الْمَدِيْنَةِ</span>", "<i class='fas fa-kaaba' style='margin-right:10px; color:#000;'></i> <span class='ar'>فِي مَكَّةَ</span>", "<i class='fas fa-mountain' style='margin-right:10px; color:#888;'></i> <span class='ar'>فِي الطَّائِفِ</span>", "<i class='fas fa-mosque' style='margin-right:10px; color:gold;'></i> <span class='ar'>فِي الْقُدْسِ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>أَكْمِلْ بِخَبَرِ كَانَ الْمُنَاسِبِ: كَانَ عُمَرُ ... رَئِيْسَ اللَّجْنَةِ.</span>", options: ["<i class='fas fa-check' style='margin-right:10px; color:var(--correct);'></i> <span class='ar'>مَاهِرٌ</span>", "<i class='fas fa-check' style='margin-right:10px; color:var(--correct);'></i> <span class='ar'>مَاهِرًا</span>", "<i class='fas fa-check' style='margin-right:10px; color:var(--correct);'></i> <span class='ar'>مَاهِرٍ</span>", "<i class='fas fa-check' style='margin-right:10px; color:var(--correct);'></i> <span class='ar'>مَاهِرُنْ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>مَا مَعْنَى كَلِمَةِ 'الإِحْتِفَالُ'؟</span>", options: ["<i class='fas fa-glass-cheers' style='margin-right:10px; color:var(--accent);'></i> <span class='ar'>الذِّكْرَى / الْمِهْرَجَانُ</span>", "<i class='fas fa-plane' style='margin-right:10px; color:var(--primary);'></i> <span class='ar'>السَّفَرُ</span>", "<i class='fas fa-handshake' style='margin-right:10px; color:var(--correct);'></i> <span class='ar'>الْعَهْدُ</span>", "<i class='fas fa-store' style='margin-right:10px; color:#888;'></i> <span class='ar'>التِّجَارَةُ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>مَنْ أَلْقَى الْمُحَاضَرَةَ الدِّيْنِيَّةَ؟</span>", options: ["<i class='fas fa-user-graduate' style='margin-right:10px; color:#555;'></i> <span class='ar'>التِّلْمِيْذُ</span>", "<i class='fas fa-chalkboard-teacher' style='margin-right:10px; color:var(--primary);'></i> <span class='ar'>الْمُدَرِّسُ</span>", "<i class='fas fa-bullhorn' style='margin-right:10px; color:var(--accent);'></i> <span class='ar'>الدَّاعِي / الْمُبَلِّغُ</span>", "<i class='fas fa-broom' style='margin-right:10px; color:#888;'></i> <span class='ar'>الْخَادِمُ</span>"], correct: 2 },
+                    { type: "mcq", question: "<span class='ar'>مَا هُوَ التَّرْتِيْبُ الصَّحِيْحُ: وُلِدَ - عَامِ - فِي - النَّبِيُّ - الْفِيْلِ</span>", options: ["<i class='fas fa-align-right' style='margin-right:10px; color:#666;'></i> <span class='ar'>النَّبِيُّ وُلِدَ فِي عَامِ الْفِيْلِ</span>", "<i class='fas fa-align-right' style='margin-right:10px; color:#666;'></i> <span class='ar'>فِي عَامِ الْفِيْلِ وُلِدَ النَّبِيُّ</span>", "<i class='fas fa-align-right' style='margin-right:10px; color:#666;'></i> <span class='ar'>وُلِدَ النَّبِيُّ فِي عَامِ الْفِيْلِ</span>", "<i class='fas fa-check-double' style='margin-right:10px; color:var(--correct);'></i> <span class='ar'>كُلُّ الإِجَابَاتِ صَحِيْحَةٌ</span>"], correct: 3 },
+                    { type: "mcq", question: "<span class='ar'>مَا هُوَ الْفِعْلُ الْمَاضِي مِنْ 'يَحْتَفِلُ'؟</span>", options: ["<i class='fas fa-history' style='margin-right:10px; color:var(--primary);'></i> <span class='ar'>اِحْتَفَلَ</span>", "<i class='fas fa-history' style='margin-right:10px; color:var(--primary);'></i> <span class='ar'>حَفَلَ</span>", "<i class='fas fa-history' style='margin-right:10px; color:var(--primary);'></i> <span class='ar'>اِحْتِفَالٌ</span>", "<i class='fas fa-history' style='margin-right:10px; color:var(--primary);'></i> <span class='ar'>مُحْتَفِلٌ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>مَا الْغَرَضُ مِنَ الاِحْتِفَالِ بِمَوْلِدِ النَّبِيِّ؟</span>", options: ["<i class='fas fa-gamepad' style='margin-right:10px; color:#888;'></i> <span class='ar'>اللَّهْوُ وَاللَّعِبُ</span>", "<i class='fas fa-heart' style='margin-right:10px; color:var(--correct);'></i> <span class='ar'>الِاقْتِدَاءُ بِأَخْلَاقِهِ</span>", "<i class='fas fa-school' style='margin-right:10px; color:var(--primary);'></i> <span class='ar'>عُطْلَةُ الْمَدْرَسَةِ</span>", "<i class='fas fa-utensils' style='margin-right:10px; color:var(--accent);'></i> <span class='ar'>الْأَكْلُ وَالشُّرْبُ فَقَطْ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>أَكْمِلْ بِخَبَرِ كَانَ الْمُنَاسِبِ: كَانَ الْمُسْلِمُوْنَ ... فِي الْمَسْجِدِ</span>", options: ["<i class='fas fa-users' style='margin-right:10px; color:var(--primary);'></i> <span class='ar'>مُجْتَمِعُوْنَ</span>", "<i class='fas fa-users' style='margin-right:10px; color:var(--primary);'></i> <span class='ar'>مُجْتَمِعِيْنَ</span>", "<i class='fas fa-users' style='margin-right:10px; color:var(--primary);'></i> <span class='ar'>مُجْتَمِعَانِ</span>", "<i class='fas fa-user' style='margin-right:10px; color:var(--primary);'></i> <span class='ar'>مُجْتَمِعٍ</span>"], correct: 1 }
+                ]
+            },
+
+            // ================== BAB 3 ==================
+            "bab3": {
+                title: "Bab 3: Nuzulul Quran",
+                questions: [
+                    { type: "mcq", question: "<span class='ar'>مَا مَعْنَى 'نُزُوْلُ الْقُرْآنِ'؟</span>", options: ["<span class='ar'>صُعُوْدُ الْقُرْآنِ</span>", "<span class='ar'>هُبُوْطُ الْقُرْآنِ / إِنْزَالُهُ</span>", "<span class='ar'>كِتَابَةُ الْقُرْآنِ</span>", "<span class='ar'>قِرَاءَةُ الْقُرْآنِ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>أَوَّلُ آيَةٍ نَزَلَتْ مِنَ الْقُرْآنِ هِيَ...</span>", options: ["<span class='ar'>سُوْرَةُ الْفَاتِحَةِ</span>", "<span class='ar'>سُوْرَةُ الْعَلَقِ ١-٥</span>", "<span class='ar'>سُوْرَةُ الْبَقَرَةِ</span>", "<span class='ar'>سُوْرَةُ النَّاسِ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>مَنِ الْمَلَكُ الَّذِي نَزَلَ بِالْوَحْيِ؟</span>", options: ["<span class='ar'>مِيْكَائِيْل</span>", "<span class='ar'>إِسْرَافِيْل</span>", "<span class='ar'>جِبْرِيْل</span>", "<span class='ar'>عِزْرَائِيْل</span>"], correct: 2 },
+                    { type: "mcq", question: "<span class='ar'>أَكْمِلْ بِأَدَاةِ نَفْيٍ لِلْمَاضِي: ... يَدْرُسِ الطَّالِبُ الدَّرْسَ.</span>", options: ["<span class='ar'>لَنْ</span>", "<span class='ar'>لاَ</span>", "<span class='ar'>لَمْ</span>", "<span class='ar'>مَا</span>"], correct: 2 },
+                    { type: "mcq", question: "<span class='ar'>أَيْنَ نَزَلَ الْوَحْيُ لِأَوَّلِ مَرَّةٍ؟</span>", options: ["<span class='ar'>فِي غَارِ حِرَاء</span>", "<span class='ar'>فِي غَارِ ثَوْر</span>", "<span class='ar'>فِي الْمَسْجِدِ الْحَرَام</span>", "<span class='ar'>فِي بَيْتِهِ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>إِذَا دَخَلَتْ 'لَمْ' عَلَى فِعْلِ 'يَنْزِلُ'، يُصْبِحُ...</span>", options: ["<span class='ar'>لَمْ يَنْزِلُ</span>", "<span class='ar'>لَمْ يَنْزِلَ</span>", "<span class='ar'>لَمْ يَنْزِلْ</span>", "<span class='ar'>لَمْ يَنْزِلِ</span>"], correct: 2 },
+                    { type: "mcq", question: "<span class='ar'>كَمْ مُدَّةَ نُزُوْلِ الْقُرْآنِ الْكَرِيْمِ مُفَرَّقًا؟</span>", options: ["<span class='ar'>٢٢ سَنَةً وَشَهْرَانِ وَ٢٢ يَوْمًا</span>", "<span class='ar'>٢٣ سَنَةً</span>", "<span class='ar'>٢٠ سَنَةً</span>", "<span class='ar'>٢٥ سَنَةً</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>مَا مَعْنَى كَلِمَةِ 'الْوَحْيُ'؟</span>", options: ["<span class='ar'>الْهِدَايَةُ وَالرِّسَالَةُ</span>", "<span class='ar'>الْكِتَابُ</span>", "<span class='ar'>الْكِتَابَةُ</span>", "<span class='ar'>الصَّوْتُ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>مَا حُكْمُ قِرَاءَةِ الْقُرْآنِ لِلْمُسْلِمِيْنَ؟</span>", options: ["<span class='ar'>حَرَامٌ</span>", "<span class='ar'>مَكْرُوْهٌ</span>", "<span class='ar'>عِبَادَةٌ / سُنَّةٌ</span>", "<span class='ar'>مُبَاحٌ</span>"], correct: 2 },
+                    { type: "mcq", question: "<span class='ar'>أَنَا لَمْ ... إِلَى الْمَدْرَسَةِ أَمْسِ</span>", options: ["<span class='ar'>أَذْهَبْ</span>", "<span class='ar'>يَذْهَبْ</span>", "<span class='ar'>تَذْهَبْ</span>", "<span class='ar'>نَذْهَبْ</span>"], correct: 0 }
+                ]
+            },
+
+            // ================== UTS ==================
+            "uts1": {
+                title: "Latihan Tengah Semester (Bab 1-3)",
+                questions: [
+                    { type: "mcq", question: "<span class='ar'>مُحَرَّمٌ هُوَ الشَّهْرُ ... فِي السَّنَةِ الْهِجْرِيَّةِ</span>", options: ["<span class='ar'>الْأَوَّلُ</span>", "<span class='ar'>الْأَخِيْرُ</span>", "<span class='ar'>الثَّانِي</span>", "<span class='ar'>السَّابِعُ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>مَنِ الصَّحَابِيُّ الَّذِي رَافَقَ النَّبِيَّ فِي الْهِجْرَةِ؟</span>", options: ["<span class='ar'>عُمَرُ بْنُ الْخَطَّابِ</span>", "<span class='ar'>عَلِيُّ بْنُ أَبِي طَالِبٍ</span>", "<span class='ar'>أَبُو بَكْرٍ الصِّدِّيْقُ</span>", "<span class='ar'>عُثْمَانُ بْنُ عَفَّانَ</span>"], correct: 2 },
+                    { type: "mcq", question: "<span class='ar'>مَا مَعْنَى كَلِمَةِ 'وُلِدَ'؟</span>", options: ["<span class='ar'>تُوُفِّيَ</span>", "<span class='ar'>ظَهَرَ إِلَى الْحَيَاةِ</span>", "<span class='ar'>مَرِضَ</span>", "<span class='ar'>عَاشَ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>أَكْمِلْ بِخَبَرِ كَانَ: كَانَ الْحَفْلُ ...</span>", options: ["<span class='ar'>رَائِعٌ</span>", "<span class='ar'>رَائِعًا</span>", "<span class='ar'>رَائِعٍ</span>", "<span class='ar'>رَائِعَةً</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>نَزَلَ الْقُرْآنُ فِي شَهْرِ ...</span>", options: ["<span class='ar'>رَجَب</span>", "<span class='ar'>شَعْبَان</span>", "<span class='ar'>رَمَضَان</span>", "<span class='ar'>شَوَّال</span>"], correct: 2 },
+                    { type: "mcq", question: "<span class='ar'>فِي أَيِّ تَارِيْخٍ يُحْتَفَلُ بِنُزُوْلِ الْقُرْآنِ؟</span>", options: ["<span class='ar'>١ مُحَرَّم</span>", "<span class='ar'>١٢ رَبِيْعِ الْأَوَّل</span>", "<span class='ar'>١٧ رَمَضَان</span>", "<span class='ar'>٢٧ رَجَب</span>"], correct: 2 },
+                    { type: "mcq", question: "<span class='ar'>لَمْ ... التِّلْمِيْذُ الْوَاجِبَ.</span>", options: ["<span class='ar'>يَكْتُبْ</span>", "<span class='ar'>يَكْتُبُ</span>", "<span class='ar'>يَكْتُبَ</span>", "<span class='ar'>تَكْتُبْ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>مَا مَعْنَى 'يَحْتَفِلُ'؟</span>", options: ["<span class='ar'>يَبْكِي</span>", "<span class='ar'>يُقِيْمُ حَفْلًا</span>", "<span class='ar'>يَعْمَلُ</span>", "<span class='ar'>يَتَعَلَّمُ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>مَا هُوَ الْمَكَانُ الَّذِي هَاجَرَ إِلَيْهِ النَّبِيُّ ص.م؟</span>", options: ["<span class='ar'>مَكَّةُ</span>", "<span class='ar'>يَثْرِبُ (الْمَدِيْنَةُ)</span>", "<span class='ar'>الشَّامُ</span>", "<span class='ar'>مِصْرُ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>كَلِمَةُ 'إِقْرَأْ' هِيَ مِثَالٌ لِـ...</span>", options: ["<span class='ar'>فِعْلِ مَاضٍ</span>", "<span class='ar'>فِعْلِ مُضَارِعٍ</span>", "<span class='ar'>فِعْلِ أَمْرٍ</span>", "<span class='ar'>اِسْمِ مَصْدَرٍ</span>"], correct: 2 },
+                    { type: "mcq", question: "<span class='ar'>مَا هُوَ مُضَادُّ كَلِمَةِ 'بَدَأَ'؟</span>", options: ["<span class='ar'>اِنْتَهَى</span>", "<span class='ar'>فَتَحَ</span>", "<span class='ar'>دَخَلَ</span>", "<span class='ar'>خَرَجَ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>مَا مَوْضُوْعُ خُطْبَةِ الْمَوْلِدِ النَّبَوِيِّ؟</span>", options: ["<span class='ar'>تَارِيْخُ الِاسْتِقْلَالِ</span>", "<span class='ar'>تَارِيْخُ النَّبِيِّ مُحَمَّدٍ</span>", "<span class='ar'>دَرْسُ الرِّيَاضِيَّاتِ</span>", "<span class='ar'>فَضْلُ الصِّيَامِ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>مَا هُوَ جَمْعُ كَلِمَةِ 'يَوْمٌ'؟</span>", options: ["<span class='ar'>أَيَّامٌ</span>", "<span class='ar'>يَوْمَانِ</span>", "<span class='ar'>يَوْمِيّ</span>", "<span class='ar'>أُمَمٌ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>كَمْ كَانَ عُمْرُ النَّبِيِّ عِنْدَمَا نَزَلَ الْوَحْيُ لِأَوَّلِ مَرَّةٍ؟</span>", options: ["<span class='ar'>٢٥ سَنَةً</span>", "<span class='ar'>٣٠ سَنَةً</span>", "<span class='ar'>٤٠ سَنَةً</span>", "<span class='ar'>٦٣ سَنَةً</span>"], correct: 2 },
+                    { type: "mcq", question: "<span class='ar'>أَكْمِلْ بِفِعْلٍ مَاضٍ: ... التَّلَامِيْذُ إِلَى الْقَاعَةِ</span>", options: ["<span class='ar'>يَذْهَبُ</span>", "<span class='ar'>ذَهَبَ</span>", "<span class='ar'>ذَهَبُوْا</span>", "<span class='ar'>اِذْهَبْ</span>"], correct: 1 }
+                ]
+            },
+
+            // ================== BAB 4 ==================
+            "bab4": {
+                title: "Bab 4: Keindahan Alam",
+                questions: [
+                    { type: "mcq", question: "<span class='ar'>مَا مَعْنَى 'جَمَالُ الطَّبِيْعَةِ'؟</span>", options: ["<span class='ar'>فَسَادُ الطَّبِيْعَةِ</span>", "<span class='ar'>رَوْعَةُ الطَّبِيْعَةِ</span>", "<span class='ar'>خَلْقُ الطَّبِيْعَةِ</span>", "<span class='ar'>كَوَارِثُ الطَّبِيْعَةِ</span>"], correct: 1 },
+                    // Gambar Gunung di nomor 2
+                    { type: "mcq", question: "<span class='ar'>اُنْظُرْ إِلَى تِلْكَ ... </span> <i class='fas fa-mountain' style='color:var(--text-muted); font-size:1.5rem; margin:0 5px;'></i>", options: ["<span class='ar'>الْبَحْرِ</span>", "<span class='ar'>الْجَبَلِ</span>", "<span class='ar'>النَّهْرِ</span>", "<span class='ar'>الْمَزْرَعَةِ</span>"], correct: 1 },
+                    // Gambar Sawah (Tanaman) di nomor 3
+                    { type: "mcq", question: "<span class='ar'>مَا هِيَ الْكَلِمَةُ الْعَرَبِيَّةُ لِـ</span> <i class='fas fa-seedling' style='color:var(--correct); font-size:1.5rem; margin:0 5px;'></i> ؟", options: ["<span class='ar'>مَزْرَعَةٌ</span>", "<span class='ar'>حَدِيْقَةٌ</span>", "<span class='ar'>غَابَةٌ</span>", "<span class='ar'>بُسْتَانٌ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>أَكْمِلْ بِفِعْلِ أَمْرٍ: يَا فَاطِمَةُ، ... إِلَى الْمَنْظَرِ الْجَمِيْلِ!</span>", options: ["<span class='ar'>اُنْظُرْ</span>", "<span class='ar'>اُنْظُرِيْ</span>", "<span class='ar'>اُنْظُرَا</span>", "<span class='ar'>اُنْظُرُوْا</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>مَا هُوَ مُضَادُّ كَلِمَةِ 'وَاسِعٌ'؟</span>", options: ["<span class='ar'>كَبِيْرٌ</span>", "<span class='ar'>ضَيِّقٌ</span>", "<span class='ar'>طَوِيْلٌ</span>", "<span class='ar'>قَصِيْرٌ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>أَكْمِلْ: اَلْبَحْرُ ... </span>", options: ["<span class='ar'>ضَيِّقٌ</span>", "<span class='ar'>وَاسِعٌ</span>", "<span class='ar'>جَمِيْلَةٌ</span>", "<span class='ar'>صَغِيْرٌ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>أَكْمِلْ: هَذِهِ حَدِيْقَةٌ ... </span>", options: ["<span class='ar'>جَمِيْلٌ</span>", "<span class='ar'>جَمِيْلَةٌ</span>", "<span class='ar'>كَبِيْرٌ</span>", "<span class='ar'>وَاسِعٌ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>مَا مَعْنَى جُمْلَةِ 'الأَشْجَارُ خَضْرَاءُ'؟</span>", options: ["<span class='ar'>السَّمَاءُ زَرْقَاءُ</span>", "<span class='ar'>الْجَبَلُ عَالٍ</span>", "<span class='ar'>لَوْنُ الشَّجَرِ أَخْضَرُ</span>", "<span class='ar'>الْمَاءُ صَافٍ</span>"], correct: 2 },
+                    { type: "mcq", question: "<span class='ar'>مَا هُوَ فِعْلُ الْأَمْرِ مِنْ 'يَجْلِسُ' (لِلْمُذَكَّرِ)؟</span>", options: ["<span class='ar'>اِجْلِسْ</span>", "<span class='ar'>اِجْلِسِيْ</span>", "<span class='ar'>يَجْلِسُ</span>", "<span class='ar'>جَلَسَ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>أَكْمِلْ: مَاءُ النَّهْرِ ... </span>", options: ["<span class='ar'>مَالِحٌ</span>", "<span class='ar'>عَذْبٌ</span>", "<span class='ar'>حَارٌّ</span>", "<span class='ar'>مُرٌّ</span>"], correct: 1 }
+                ]
+            },
+
+            // ================== BAB 5 ==================
+            "bab5": {
+                title: "Bab 5: Penciptaan Alam Semesta",
+                questions: [
+                    { type: "mcq", question: "<span class='ar'>مَنْ خَلَقَ السَّمَاوَاتِ وَالْأَرْضَ؟</span>", options: ["<span class='ar'>الإِنْسَانُ</span>", "<span class='ar'>اللهُ</span>", "<span class='ar'>الْمَلَائِكَةُ</span>", "<span class='ar'>الْجِنُّ</span>"], correct: 1 },
+                    // Gambar Matahari di nomor 2
+                    { type: "mcq", question: "<span class='ar'>مَا هِيَ الْكَلِمَةُ الْعَرَبِيَّةُ لِـ</span> <i class='fas fa-sun' style='color:var(--accent); font-size:1.5rem; margin:0 5px;'></i> ؟", options: ["<span class='ar'>الْقَمَرُ</span>", "<span class='ar'>الشَّمْسُ</span>", "<span class='ar'>الْكَوْكَبُ</span>", "<span class='ar'>النَّجْمُ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>تَطْلُعُ الشَّمْسُ فِي...</span>", options: ["<span class='ar'>الْمَسَاءِ</span>", "<span class='ar'>الصَّبَاحِ</span>", "<span class='ar'>اللَّيْلِ</span>", "<span class='ar'>الظُّهْرِ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>اخْتَرِ الاِسْمَ الْمَوْصُوْلَ الْمُنَاسِبَ: اللهُ ... خَلَقَ الْكَوْنَ.</span>", options: ["<span class='ar'>الَّتِيْ</span>", "<span class='ar'>الَّذِيْ</span>", "<span class='ar'>الَّذِيْنَ</span>", "<span class='ar'>اللَّاتِي</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>أَكْمِلْ: الْأَرْضُ الَّتِيْ ... عَلَيْهَا</span>", options: ["<span class='ar'>نَعِيْشُ</span>", "<span class='ar'>تَعِيْشُ</span>", "<span class='ar'>أَعِيْشُ</span>", "<span class='ar'>يَعِيْشُ</span>"], correct: 0 },
+                    // Gambar Langit (Awan) di nomor 6
+                    { type: "mcq", question: "<span class='ar'>مَا هِيَ الْكَلِمَةُ الْعَرَبِيَّةُ لِـ</span> <i class='fas fa-cloud' style='color:var(--primary); font-size:1.5rem; margin:0 5px;'></i> ؟", options: ["<span class='ar'>الْأَرْضُ</span>", "<span class='ar'>السَّمَاءُ</span>", "<span class='ar'>الْجَبَلُ</span>", "<span class='ar'>الْبَحْرُ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>الْقَمَرُ يُنِيْرُ فِي...</span>", options: ["<span class='ar'>النَّهَارِ</span>", "<span class='ar'>الصُّبْحِ</span>", "<span class='ar'>اللَّيْلِ</span>", "<span class='ar'>الْعَصْرِ</span>"], correct: 2 },
+                    { type: "mcq", question: "<span class='ar'>مَا مَعْنَى كَلِمَةِ 'خَلَقَ'؟</span>", options: ["<span class='ar'>أَوْجَدَ / صَنَعَ</span>", "<span class='ar'>أَبْصَرَ</span>", "<span class='ar'>عَبَدَ</span>", "<span class='ar'>أَفْسَدَ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>مَا هُوَ جَمْعُ كَلِمَةِ 'كَوْكَبٌ'؟</span>", options: ["<span class='ar'>كَوَاكِبُ</span>", "<span class='ar'>كُتُبٌ</span>", "<span class='ar'>مَكَاتِبُ</span>", "<span class='ar'>أَكْوَابٌ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>اخْتَرِ الاِسْمَ الْمَوْصُوْلَ الْمُنَاسِبَ: هَذِهِ هِيَ الْحَدِيْقَةُ ... زُرْتُهَا</span>", options: ["<span class='ar'>الَّذِيْ</span>", "<span class='ar'>الَّتِيْ</span>", "<span class='ar'>الَّذِيْنَ</span>", "<span class='ar'>مَا</span>"], correct: 1 }
+                ]
+            },
+
+            // ================== BAB 6 ==================
+            "bab6": {
+                title: "Bab 6: Menjaga Lingkungan",
+                questions: [
+                    { type: "mcq", question: "<span class='ar'>مَا مَعْنَى 'الْحِفَاظُ عَلَى الْبِيْئَةِ'؟</span>", options: ["<span class='ar'>تَلْوِيْثُ الْبِيْئَةِ</span>", "<span class='ar'>حِمَايَةُ الْبِيْئَةِ</span>", "<span class='ar'>بِنَاءُ الْمَنَازِلِ</span>", "<span class='ar'>زِرَاعَةُ الْأَشْجَارِ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>أَكْمِلْ: لَا ... النِّفَايَاتِ فِي النَّهْرِ!</span>", options: ["<span class='ar'>تَرْمِ</span>", "<span class='ar'>اِرْمِ</span>", "<span class='ar'>يَرْمِيْ</span>", "<span class='ar'>رَمَى</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>مَا هِيَ تَرْجَمَةُ 'Polusi/Pencemaran' بِالْعَرَبِيَّةِ؟</span>", options: ["<span class='ar'>التَّلَوُّثُ</span>", "<span class='ar'>النَّظَافَةُ</span>", "<span class='ar'>الصِّحَّةُ</span>", "<span class='ar'>الْمَرَضُ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>أَكْمِلْ: يَا أَحْمَدُ، لَا ... عَلَى الْجِدَارِ!</span>", options: ["<span class='ar'>تَكْتُبْ</span>", "<span class='ar'>تَكْتُبِيْ</span>", "<span class='ar'>تَكْتُبُوْا</span>", "<span class='ar'>تَكْتُبَا</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>النَّظَافَةُ مِنَ ...</span>", options: ["<span class='ar'>الشَّيْطَانِ</span>", "<span class='ar'>الْإِيْمَانِ</span>", "<span class='ar'>الْكَسَلِ</span>", "<span class='ar'>الْوَسَخِ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>مَا مَعْنَى 'لَا تَقْطَعِ الْأَشْجَارَ'؟</span>", options: ["<span class='ar'>لَا تَزْرَعِ الشَّجَرَةَ</span>", "<span class='ar'>لَا تَقْطَعْ جُذُوْعَهَا</span>", "<span class='ar'>لَا تَسْقِ الشَّجَرَةَ</span>", "<span class='ar'>لَا تَنْظُرْ إِلَيْهَا</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>أَكْمِلْ بِاسْمِ تَفْضِيْلٍ: الْمَسْجِدُ ... مِنَ السُّوْقِ.</span>", options: ["<span class='ar'>نَظِيْفٌ</span>", "<span class='ar'>أَنْظَفُ</span>", "<span class='ar'>أَكْبَرُ</span>", "<span class='ar'>أَصْغَرُ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>أَكْمِلْ بِاسْمِ تَفْضِيْلٍ: أَيُّ الْأَمَاكِنِ ... فِي الْمَدِيْنَةِ؟</span>", options: ["<span class='ar'>جَمِيْلٌ</span>", "<span class='ar'>أَجْمَلُ</span>", "<span class='ar'>أَقْبَحُ</span>", "<span class='ar'>كَبِيْرٌ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>مَا اسْمُ الْأَدَاةِ الَّتِي نُكْنَسُ بِهَا الْأَرْضَ؟</span>", options: ["<span class='ar'>مِكْنَسَةٌ</span>", "<span class='ar'>قَلَمٌ</span>", "<span class='ar'>مِرْآةٌ</span>", "<span class='ar'>سَيَّارَةٌ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>أَكْمِلْ: يَا فَاطِمَةُ، لَا ... الْبَابَ</span>", options: ["<span class='ar'>تَفْتَحْ</span>", "<span class='ar'>تَفْتَحِيْ</span>", "<span class='ar'>تَفْتَحُ</span>", "<span class='ar'>اِفْتَحِيْ</span>"], correct: 1 }
+                ]
+            },
+
+            // ================== UAS ==================
+            "ujian_akhir": {
+                title: "Ujian Akhir Semester (Bab 1-6)",
+                questions: [
+                    { type: "mcq", question: "<span class='ar'>١. الشَّهْرُ الْهِجْرِيُّ بَعْدَ رَمَضَانَ هُوَ...</span>", options: ["<span class='ar'>شَعْبَان</span>", "<span class='ar'>شَوَّال</span>", "<span class='ar'>ذُو الْقَعْدَةِ</span>", "<span class='ar'>ذُو الْحِجَّةِ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>٢. مَعْنَى كَلِمَةِ 'يُهَاجِرُ' هُوَ...</span>", options: ["<span class='ar'>يَنْتَقِلُ الْآنَ</span>", "<span class='ar'>اِنْتَقَلَ فِي الْمَاضِي</span>", "<span class='ar'>اِنْتَقِلْ!</span>", "<span class='ar'>الشَّخْصُ الْمُهَاجِرُ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>٣. تُوُفِّيَ النَّبِيُّ مُحَمَّدٌ ص.م فِي مَدِيْنَةِ...</span>", options: ["<span class='ar'>مَكَّةَ</span>", "<span class='ar'>الْمَدِيْنَةِ الْمُنَوَّرَةِ</span>", "<span class='ar'>فِلَسْطِيْنَ</span>", "<span class='ar'>مِصْرَ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>٤. أَكْمِلْ بِخَبَرِ كَانَ: كَانَ الْحَاضِرُوْنَ ... </span>", options: ["<span class='ar'>مَسْرُوْرُوْنَ</span>", "<span class='ar'>مَسْرُوْرِيْنَ</span>", "<span class='ar'>مَسْرُوْرٍ</span>", "<span class='ar'>مَسْرُوْرَاتٍ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>٥. الْقُرْآنُ هُدًى لِـ...</span>", options: ["<span class='ar'>الْعَرَبِ فَقَطْ</span>", "<span class='ar'>الْأَنْبِيَاءِ فَقَطْ</span>", "<span class='ar'>النَّاسِ كَافَّةً</span>", "<span class='ar'>الْمَلَائِكَةِ</span>"], correct: 2 },
+                    { type: "mcq", question: "<span class='ar'>٦. أَكْمِلْ: لَمْ ... زَيْدٌ الْقُرْآنَ الْيَوْمَ.</span>", options: ["<span class='ar'>يَقْرَأْ</span>", "<span class='ar'>تَقْرَأْ</span>", "<span class='ar'>أَقْرَأْ</span>", "<span class='ar'>نَقْرَأْ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>٧. مَا مَعْنَى كَلِمَةِ 'الْبُسْتَانِ'؟</span>", options: ["<span class='ar'>الْغَابَةُ</span>", "<span class='ar'>الْحَدِيْقَةُ / الْمَزْرَعَةُ</span>", "<span class='ar'>الْحَقْلُ</span>", "<span class='ar'>الْبَحْرُ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>٨. أَكْمِلْ: يَا تَلَامِيْذُ، ... السَّبُّوْرَةَ!</span>", options: ["<span class='ar'>اِمْسَحْ</span>", "<span class='ar'>اِمْسَحِيْ</span>", "<span class='ar'>اِمْسَحُوْا</span>", "<span class='ar'>اِمْسَحْنَ</span>"], correct: 2 },
+                    { type: "mcq", question: "<span class='ar'>٩. اَلْجَبَلُ ... </span>", options: ["<span class='ar'>مُرْتَفِعٌ</span>", "<span class='ar'>مُنْخَفِضٌ</span>", "<span class='ar'>وَاسِعٌ</span>", "<span class='ar'>ضَيِّقٌ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>١٠. الشَّمْسُ وَالْقَمَرُ مِنْ ... اللهِ.</span>", options: ["<span class='ar'>مَخْلُوْقَاتِ</span>", "<span class='ar'>بُيُوْتِ</span>", "<span class='ar'>كُتُبِ</span>", "<span class='ar'>أَقْلَامِ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>١١. اخْتَرِ الاِسْمَ الْمَوْصُوْلَ: هَذَا هُوَ التِّلْمِيْذُ ... نَجَحَ فِي الْإِمْتِحَانِ.</span>", options: ["<span class='ar'>الَّتِيْ</span>", "<span class='ar'>الَّذِيْ</span>", "<span class='ar'>الَّذِيْنَ</span>", "<span class='ar'>مَا</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>١٢. يَجِبُ عَلَيْنَا أَنْ ... لِلَّهِ الْخَالِقِ.</span>", options: ["<span class='ar'>نَعْبُدَهُ</span>", "<span class='ar'>نَعْصِيَهُ</span>", "<span class='ar'>نَهْرُبَ</span>", "<span class='ar'>نَتَكَبَّرَ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>١٣. أَكْمِلْ: لَا ... فِي الْفَصْلِ!</span>", options: ["<span class='ar'>تَنَمْ</span>", "<span class='ar'>تَنَامُ</span>", "<span class='ar'>نَمْ</span>", "<span class='ar'>نَائِمٌ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>١٤. أَكْمِلْ بَاسْمِ تَفْضِيْلٍ: مُحَمَّدٌ ... التَّلَامِيْذِ.</span>", options: ["<span class='ar'>نَشِيْطٌ</span>", "<span class='ar'>أَنْشَطُ</span>", "<span class='ar'>كَسْلَانُ</span>", "<span class='ar'>أَكْسَلُ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>١٥. أَكْمِلْ بَاسْمِ تَفْضِيْلٍ: السَّيَّارَةُ ... مِنَ الدَّرَّاجَةِ</span>", options: ["<span class='ar'>أَسْرَعُ</span>", "<span class='ar'>أَبْطَأُ</span>", "<span class='ar'>أَكْبَرُ</span>", "<span class='ar'>أَصْغَرُ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>١٦. مُضَادُّ كَلِمَةِ 'نَهَارٌ' هُوَ...</span>", options: ["<span class='ar'>لَيْلٌ</span>", "<span class='ar'>صَبَاحٌ</span>", "<span class='ar'>مَسَاءٌ</span>", "<span class='ar'>شَمْسٌ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>١٧. أَكْمِلْ: يَا عَائِشَةُ، ... الْقُرْآنَ!</span>", options: ["<span class='ar'>اِقْرَأْ</span>", "<span class='ar'>اِقْرَئِيْ</span>", "<span class='ar'>اِقْرَؤُوْا</span>", "<span class='ar'>يَقْرَأُ</span>"], correct: 1 },
+                    { type: "mcq", question: "<span class='ar'>١٨. مَا هِيَ تَرْجَمَةُ 'Pemandangan' بِالْعَرَبِيَّةِ؟</span>", options: ["<span class='ar'>مَنْظَرٌ</span>", "<span class='ar'>نَظَرٌ</span>", "<span class='ar'>نَاظِرٌ</span>", "<span class='ar'>مِنْظَارٌ</span>"], correct: 0 },
+                    { type: "mcq", question: "<span class='ar'>١٩. النِّيْلُ هُوَ ... فِي مِصْرَ.</span>", options: ["<span class='ar'>جَبَلٌ</span>", "<span class='ar'>بَحْرٌ</span>", "<span class='ar'>نَهْرٌ</span>", "<span class='ar'>شَارِعٌ</span>"], correct: 2 },
+                    { type: "mcq", question: "<span class='ar'>٢٠. أَجِبْ: مَنْ رَبُّكَ؟</span>", options: ["<span class='ar'>رَبِّيَ اللهُ</span>", "<span class='ar'>دِيْنِيَ الْإِسْلَامُ</span>", "<span class='ar'>نَبِيِّيْ مُحَمَّدٌ</span>", "<span class='ar'>كِتَابِيَ الْقُرْآنُ</span>"], correct: 0 }
+                ]
+            }
+        };
+
+        // --- LOGIKA UTAMA ---
+        let currentQuizId = 'bab1';
+
+        function loadQuiz(quizId) {
+            currentQuizId = quizId;
+            const data = quizDatabase[quizId] || { title: "Segera Hadir", questions: [] };
+            
+            // Update Title
+            document.getElementById('quiz-title').innerText = data.title;
+            document.getElementById('score-display').style.display = 'none';
+            
+            // Update Active Menu (Solusi Anti-Error)
+            document.querySelectorAll('.quiz-btn').forEach(btn => btn.classList.remove('active'));
+            let activeBtn = document.querySelector(`button[onClick="loadQuiz('${quizId}')"]`);
+            if(activeBtn) activeBtn.classList.add('active');
+
+            // Render Soal
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            if (data.questions.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#999;">Belum ada soal untuk topik ini.</p>';
+                return;
+            }
+
+            data.questions.forEach((q, index) => {
+                let html = `<div class="question-card" id="card-${index}">`;
+                
+                // Label Tipe Soal
+                let tag = q.type === 'mcq' ? 'Pilihan Ganda' : (q.type === 'essay-short' ? 'Isian Singkat' : 'Uraian');
+                
+                html += `<div class="q-text"><span class="q-tag">${index+1}. ${tag}</span> ${q.question}</div>`;
+
+                // Render Input berdasarkan Tipe (Saat ini semua MCQ sesuai request UTS/UAS)
+                if (q.type === 'mcq') {
+                    html += `<div class="options-grid">`;
+                    q.options.forEach((opt, i) => {
+                        html += `
+                            <label class="option-label" id="opt-${index}-${i}">
+                                <input type="radio" name="q${index}" value="${i}">
+                                ${opt}
+                            </label>
+                        `;
+                    });
+                    html += `</div>`;
+                } else {
+                    html += `<textarea name="q${index}" rows="3" placeholder="Tulis jawaban Anda di sini..."></textarea>`;
+                }
+
+                // Tempat Feedback
+                html += `<div class="feedback-box" id="feedback-${index}"></div>`;
+                html += `</div>`;
+
+                container.innerHTML += html;
+            });
+        }
+
+        function submitQuiz() {
+            const data = quizDatabase[currentQuizId];
+            if (!data || data.questions.length === 0) return;
+
+            let score = 0;
+            let totalWeight = 0; // Bobot nilai
+
+            data.questions.forEach((q, index) => {
+                const feedbackEl = document.getElementById(`feedback-${index}`);
+                feedbackEl.style.display = 'block';
+                
+                if (q.type === 'mcq') {
+                    totalWeight += 1;
+                    const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                    
+                    // Reset Styles
+                    for (let i=0; i<4; i++) {
+                        const el = document.getElementById(`opt-${index}-${i}`);
+                        if(el) el.classList.remove('correct-answer', 'wrong-answer');
+                    }
+
+                    if (selected) {
+                        const val = parseInt(selected.value);
+                        if (val === q.correct) {
+                            score += 1;
+                            document.getElementById(`opt-${index}-${val}`).classList.add('correct-answer');
+                            feedbackEl.innerHTML = `<span style="color:var(--correct); font-weight:bold;">Jawaban Benar!</span>`;
+                        } else {
+                            document.getElementById(`opt-${index}-${val}`).classList.add('wrong-answer');
+                            // Highlight yang benar
+                            document.getElementById(`opt-${index}-${q.correct}`).classList.add('correct-answer');
+                            feedbackEl.innerHTML = `<span style="color:var(--wrong); font-weight:bold;">Jawaban Salah.</span> Yang benar adalah opsi ke-${q.correct+1}.`;
+                        }
+                    } else {
+                        feedbackEl.innerHTML = `<span style="color:var(--wrong);">Tidak dijawab.</span>`;
+                    }
+                }
+            });
+
+            // Hitung Nilai Akhir
+            let finalScore = 0;
+            if (totalWeight > 0) {
+                finalScore = Math.round((score / totalWeight) * 100);
+            }
+
+            // Tampilkan Skor
+            const scoreBox = document.getElementById('score-display');
+            document.getElementById('final-score').innerText = finalScore;
+            scoreBox.style.display = 'block';
+            window.scrollTo(0, 0); // Scroll ke atas
+        }
+
+        function resetQuiz() {
+            document.getElementById('quiz-form').reset();
+            document.querySelectorAll('.feedback-box').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.option-label').forEach(el => el.classList.remove('correct-answer', 'wrong-answer'));
+            document.getElementById('score-display').style.display = 'none';
+        }
+
+        // Load Bab 1 saat pertama buka
+        currentQuizId = 'bab1';
+        const dataStart = quizDatabase['bab1'];
+        document.getElementById('quiz-title').innerText = dataStart.title;
+        loadQuiz('bab1');
+    </script>
+</body>
+</html>

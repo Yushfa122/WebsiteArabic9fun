@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arabic9 Fun | Belajar Bahasa Arab Kelas 9</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Nunito:wght@400;600;700;800&family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        /* --- 1. PSIKOLOGI WARNA & CONFIG --- */
+        :root {
+            /* Palette: Gamified Learning */
+            --primary: #2EC4B6;      /* Teal/Tosca */
+            --primary-dark: #239c91;
+            --accent: #FF9F1C;       /* Oranye */
+            --secondary: #E71D36;    /* Merah */
+            --yellow: #FFBF00;       /* Kuning */
+            
+            --text-main: #011627;
+            --text-muted: #5f7385;
+            
+            --bg-body: #FDFFFC;
+            --bg-card: #FFFFFF;
+            
+            --radius: 25px;
+            --shadow-soft: 0 10px 40px rgba(46, 196, 182, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            overflow-x: hidden;
+            background-image: radial-gradient(#2ec4b6 0.8px, transparent 0.8px), radial-gradient(#2ec4b6 0.8px, var(--bg-body) 0.8px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            background-color: #f4fcfb;
+        }
+
+        /* Teks Arab */
+        .ar { font-family: 'Amiri', serif; direction: rtl; }
+        .ar-title { font-family: 'Tajawal', sans-serif; font-weight: 700; }
+
+        a { text-decoration: none; transition: 0.3s ease; }
+        ul { list-style: none; }
+
+        /* --- 2. NAVBAR --- */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #fff;
+            padding: 8px 15px;
+            border-radius: 50px;
+            border: 2px solid var(--text-main);
+            box-shadow: 4px 4px 0px var(--accent);
+        }
+        
+        .logo i { color: var(--accent); }
+
+        .nav-menu { display: flex; gap: 25px; align-items: center; }
+
+        .nav-menu a {
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+
+        .nav-menu a:hover { color: var(--primary); transform: translateY(-2px); }
+
+        .btn-login {
+            background: var(--text-main);
+            color: var(--yellow) !important;
+            padding: 10px 25px !important;
+            border-radius: 50px;
+            border: 2px solid var(--text-main);
+            transition: 0.2s;
+        }
+        .btn-login:hover { 
+            background: var(--primary); 
+            color: white !important;
+            box-shadow: 4px 4px 0px var(--text-main);
+            transform: translate(-2px, -2px);
+        }
+
+        /* --- LOGO PARTNER (DI ATAS HERO) --- */
+        .partner-logos-bar {
+            background-color: #f9fbfb;
+            padding: 15px 5%;
+            border-bottom: 1px solid #eef3f3;
+            text-align: center;
+        }
+        .logos-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .partner-logo-img {
+            height: 55px; /* Ukuran logo seragam */
+            width: auto;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        /* Animasi Sederhana untuk 3 Slot Foto Logo */
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        .simple-anim {
+            animation: gentleFloat 3s ease-in-out infinite;
+        }
+
+        /* Responsive Logo Bar */
+        @media (max-width: 600px) {
+            .logos-container { gap: 20px; }
+            .partner-logo-img { height: 40px; }
+        }
+
+        /* --- 3. HERO SECTION --- */
+        .hero {
+            min-height: 85vh;
+            padding: 80px 5% 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .hero-text { max-width: 50%; z-index: 2; position: relative; } 
+
+        .hero h1 {
+            font-size: 3.5rem; font-weight: 900; line-height: 1.2; margin-bottom: 20px;
+            color: var(--text-main);
+        }
+        
+        .highlight { position: relative; z-index: 1; }
+        .highlight::after {
+            content: ''; position: absolute; bottom: 5px; left: 0; width: 100%; height: 15px;
+            background: var(--yellow); z-index: -1; transform: rotate(-2deg); opacity: 0.6;
+        }
+
+        .hero p {
+            font-size: 1.2rem; color: var(--text-muted); margin-bottom: 35px;
+            background: rgba(255,255,255,0.8);
+            padding: 15px; border-radius: 15px; border-left: 5px solid var(--primary);
+        }
+
+        .hero-btn {
+            background: var(--accent); color: white; padding: 15px 40px; border-radius: 50px;
+            font-weight: 800; font-size: 1.1rem; 
+            box-shadow: 0 10px 25px rgba(255, 159, 28, 0.4);
+            display: inline-flex; align-items: center; gap: 10px;
+            transition: 0.3s;
+            border: 2px solid white;
+        }
+        .hero-btn:hover { 
+            background: #ff8c00; 
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 159, 28, 0.5);
+        }
+
+        .hero-img {
+            max-width: 45%; z-index: 2;
+            animation: bounce 4s ease-in-out infinite;
+        }
+        .hero-img img { width: 100%; filter: drop-shadow(10px 10px 0px rgba(0,0,0,0.1)); }
+
+        .shape { position: absolute; opacity: 0.6; z-index: 1; animation: float 6s infinite; }
+        .s1 { top: 20%; left: 10%; font-size: 2rem; color: var(--primary); animation-delay: 0s; }
+        .s2 { bottom: 20%; right: 10%; font-size: 3rem; color: var(--accent); animation-delay: 2s; }
+        .s3 { top: 15%; right: 40%; font-size: 1.5rem; color: var(--secondary); animation-delay: 4s; }
+
+        /* --- 4. MATERI CARDS (DENGAN GAMBAR) --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 5; }
+        
+        .section-title { text-align: center; margin: 60px 0 50px; }
+        .section-title h2 { font-size: 2.5rem; color: var(--text-main); font-weight: 800; }
+        .section-title span { 
+            background: var(--primary); color: white; padding: 5px 15px; border-radius: 50px;
+            font-size: 1.2rem; display: inline-block; margin-bottom: 10px; transform: rotate(-2deg);
+        }
+
+        .grid-cards {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 35px; margin-bottom: 80px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 2px solid #eee;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+        }
+
+        .card:hover { 
+            transform: translateY(-10px); 
+            border-color: var(--primary);
+            box-shadow: var(--shadow-soft);
+        }
+
+        /* Style Header Gambar */
+        .card-header {
+            height: 180px; /* Tinggi area gambar */
+            background: #e0fbfc;
+            overflow: hidden; /* Agar gambar tidak keluar kotak */
+            position: relative;
+        }
+        
+        /* Pengaturan Gambar di dalam Card */
+        .card-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Gambar memenuhi kotak tanpa gepeng */
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover .card-header img { transform: scale(1.1); /* Efek Zoom saat hover */ }
+
+        .card-badge {
+            position: absolute; top: 15px; right: 15px;
+            background: var(--text-main); padding: 5px 12px; border-radius: 10px;
+            font-weight: 700; color: white; font-size: 0.75rem; text-transform: uppercase;
+            box-shadow: 3px 3px 0px var(--accent);
+            z-index: 2;
+        }
+
+        .card-body { padding: 25px; text-align: center; }
+        .card h3 { 
+            font-size: 1.1rem; color: var(--text-muted); font-weight: 800; 
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; 
+        }
+        .card h4 { font-size: 1.6rem; color: var(--text-main); margin-bottom: 15px; }
+        .card p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 25px; line-height: 1.6; }
+
+        .btn-card {
+            display: block; width: 100%; padding: 12px;
+            background: white; border: 2px solid var(--primary);
+            color: var(--primary); border-radius: 15px; font-weight: 800;
+            transition: 0.2s;
+        }
+        .btn-card:hover { 
+            background: var(--primary); color: white; 
+            box-shadow: 0 5px 15px rgba(46, 196, 182, 0.3);
+        }
+
+        /* --- 5. FEATURES --- */
+        .features { 
+            background: white; padding: 80px 0; border-radius: 50px; margin-bottom: 60px;
+            border: 3px dashed #eee;
+        }
+
+        .feature-item { 
+            padding: 20px; 
+            background: var(--bg-body); 
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+        .feature-item:hover { background: #fff; box-shadow: var(--shadow-soft); transform: translateY(-5px); }
+
+        .icon-box {
+            width: 80px; height: 80px; margin: 0 auto 20px;
+            background: white; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.2rem; color: var(--primary);
+            border: 2px solid #eee;
+            transform: rotate(-5deg);
+            transition: 0.3s;
+        }
+        
+        .f-1 .icon-box { color: #FF9F1C; border-color: #ffe0b2; }
+        .f-2 .icon-box { color: #2EC4B6; border-color: #b2dfdb; }
+        .f-3 .icon-box { color: #E71D36; border-color: #ffcdd2; }
+        .f-4 .icon-box { color: #7209B7; border-color: #e1bee7; }
+
+        .feature-item:hover .icon-box { transform: rotate(5deg) scale(1.1); }
+
+        /* --- 6. FOOTER --- */
+        footer {
+            background: var(--text-main); color: #fff; padding: 80px 5% 30px;
+            margin-top: 50px; border-top-left-radius: 60px; border-top-right-radius: 60px;
+            position: relative;
+        }
+        footer::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 8px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+            border-top-left-radius: 60px; border-top-right-radius: 60px;
+        }
+
+        .footer-content { border-bottom: 1px solid #1c2541; padding-bottom: 40px; margin-bottom: 20px; }
+        .footer-section h3 { color: var(--accent); font-size: 1.4rem; margin-bottom: 20px; font-weight: 800; }
+        .footer-section a { color: #aebecd; transition: 0.3s; }
+        .footer-section a:hover { color: var(--primary); padding-left: 5px; }
+
+        /* Style Sumber Materi */
+        .source-credit {
+            text-align: center;
+            background: #022036;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 1px dashed #1c355e;
+            color: #8da9c4;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        .source-credit strong { color: var(--primary); display: block; margin-bottom: 5px; font-size: 1rem; }
+
+        /* --- ANIMATIONS --- */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(-5deg); }
+            50% { transform: translate(5px, -15px) rotate(5deg); }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hero { flex-direction: column-reverse; text-align: center; padding-top: 50px; }
+            .hero-text { max-width: 100%; margin-top: 30px; }
+            .hero h1 { font-size: 2.2rem; }
+            .nav-menu { display: none; }
+            .grid-cards { gap: 20px; }
+            .hero-slot { display: none; } 
+        }
+        .hero-img1 { max-width: 45%; z-index: 2; animation: bounce 4s ease-in-out infinite; }
+        .hero-img2 { max-width: 45%; z-index: 2; animation: bounce 4s ease-in-out infinite; }
+        .hero-img3 { max-width: 45%; z-index: 2; animation: bounce 4s ease-in-out infinite; }
+        .hero-img21 { max-width: 45%; z-index: 2; animation: bounce 4s ease-in-out infinite; }
+        .hero-img4 { max-width: 45%; z-index: 2; animation: bounce 4s ease-in-out infinite; }
+        .hero-img211 { max-width: 45%; z-index: 2; animation: bounce 4s ease-in-out infinite; }
+        .hero-img31 { max-width: 45%; z-index: 2; animation: bounce 4s ease-in-out infinite; }
+    .hero-btn1 {            background: var(--accent); color: white; padding: 15px 40px; border-radius: 50px;
+            font-weight: 800; font-size: 1.1rem; 
+            box-shadow: 0 10px 25px rgba(255, 159, 28, 0.4);
+            display: inline-flex; align-items: center; gap: 10px;
+            transition: 0.3s;
+            border: 2px solid white;
+}
+    .hero-btn11 {background: var(--accent); color: white; padding: 15px 40px; border-radius: 50px;
+            font-weight: 800; font-size: 1.1rem; 
+            box-shadow: 0 10px 25px rgba(255, 159, 28, 0.4);
+            display: inline-flex; align-items: center; gap: 10px;
+            transition: 0.3s;
+            border: 2px solid white;
+}
+    .hero-btn111 {background: var(--accent); color: white; padding: 15px 40px; border-radius: 50px;
+            font-weight: 800; font-size: 1.1rem; 
+            box-shadow: 0 10px 25px rgba(255, 159, 28, 0.4);
+            display: inline-flex; align-items: center; gap: 10px;
+            transition: 0.3s;
+            border: 2px solid white;
+}
+    .hero-btn1111 {background: var(--accent); color: white; padding: 15px 40px; border-radius: 50px;
+            font-weight: 800; font-size: 1.1rem; 
+            box-shadow: 0 10px 25px rgba(255, 159, 28, 0.4);
+            display: inline-flex; align-items: center; gap: 10px;
+            transition: 0.3s;
+            border: 2px solid white;
+}
+    .hero-btn11111 {background: var(--accent); color: white; padding: 15px 40px; border-radius: 50px;
+            font-weight: 800; font-size: 1.1rem; 
+            box-shadow: 0 10px 25px rgba(255, 159, 28, 0.4);
+            display: inline-flex; align-items: center; gap: 10px;
+            transition: 0.3s;
+            border: 2px solid white;
+}
+    .hero-btn111111 {background: var(--accent); color: white; padding: 15px 40px; border-radius: 50px;
+            font-weight: 800; font-size: 1.1rem; 
+            box-shadow: 0 10px 25px rgba(255, 159, 28, 0.4);
+            display: inline-flex; align-items: center; gap: 10px;
+            transition: 0.3s;
+            border: 2px solid white;
+}
+    .hero-btn1111111 {background: var(--accent); color: white; padding: 15px 40px; border-radius: 50px;
+            font-weight: 800; font-size: 1.1rem; 
+            box-shadow: 0 10px 25px rgba(255, 159, 28, 0.4);
+            display: inline-flex; align-items: center; gap: 10px;
+            transition: 0.3s;
+            border: 2px solid white;
+}
+    .hero-btn11111111 {background: var(--accent); color: white; padding: 15px 40px; border-radius: 50px;
+            font-weight: 800; font-size: 1.1rem; 
+            box-shadow: 0 10px 25px rgba(255, 159, 28, 0.4);
+            display: inline-flex; align-items: center; gap: 10px;
+            transition: 0.3s;
+            border: 2px solid white;
+}
+    .hero-btn111111111 {background: var(--accent); color: white; padding: 15px 40px; border-radius: 50px;
+            font-weight: 800; font-size: 1.1rem; 
+            box-shadow: 0 10px 25px rgba(255, 159, 28, 0.4);
+            display: inline-flex; align-items: center; gap: 10px;
+            transition: 0.3s;
+            border: 2px solid white;
+}
+    .hero-btn1111111111 {background: var(--accent); color: white; padding: 15px 40px; border-radius: 50px;
+            font-weight: 800; font-size: 1.1rem; 
+            box-shadow: 0 10px 25px rgba(255, 159, 28, 0.4);
+            display: inline-flex; align-items: center; gap: 10px;
+            transition: 0.3s;
+            border: 2px solid white;
+}
+    .hero-btn11111111111 {background: var(--accent); color: white; padding: 15px 40px; border-radius: 50px;
+            font-weight: 800; font-size: 1.1rem; 
+            box-shadow: 0 10px 25px rgba(255, 159, 28, 0.4);
+            display: inline-flex; align-items: center; gap: 10px;
+            transition: 0.3s;
+            border: 2px solid white;
+}
+    </style>
+</head>
+<body>
+
+    <nav data-aos="fade-down" data-aos-duration="1000">
+        <div class="logo">
+            <i class="fas fa-shapes"></i>
+            <span>Arabic9 Fun</span>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="#">Beranda</a></li>
+            <li><a href="#materi">Materi <span class="ar"></span></a></li>
+            <li><a href="kuis.html">Latihan</a></li>
+            <li><a href="kamus.html">Kamus</a></li>
+            <li><a href="login.html" class="btn-login">Masuk Kelas</a></li>
+        </ul>
+        <i class="fas fa-bars" style="font-size: 1.5rem; display: none; color: var(--text-main); cursor: pointer;"></i>
+    </nav>
+
+    <div class="partner-logos-bar" data-aos="fade-down" data-aos-duration="1000">
+      <div class="logos-container">
+            <img src="logo-um.png" width="170" height="90"> 
+            
+            <img src="logo-merdeka.png" width="177" height="93"> 
+            
+            <img src="logo-kemdikbud.png" width="95" height="95">
+            
+            </div>
+    </div>
+
+    <section class="hero">
+        <i class="fas fa-star shape s1"></i>
+        <i class="fas fa-circle shape s2"></i>
+        <i class="fas fa-square shape s3"></i>
+        <div class="hero-text" data-aos="fade-right" data-aos-duration="1000">
+          <h1>Belajar Bahasa Arab<br>
+              <span class="highlight">Jadi Petualangan!</span></h1>
+          <p>Platform belajar interaktif khusus Siswa SMP Kelas 9. Materi berwarna, kuis seru, dan cara belajar yang tidak membosankan.</p>
+          <a href="#materi" class="hero-btn11111111111"> Mulai Belajar <i class="fas fa-play"></i> </a> </div>
+        <div class="hero-img" data-aos="fade-left" data-aos-duration="1000"><span class="hero-img4"><span class="hero-img31"><span class="hero-img211"><img src="WhatsApp Image 2026-04-08 at 11.44.36.jpeg" width="73%" height="250"></span></span></span></div>
+</section>
+
+    <div class="container" id="materi">
+        <div class="section-title" data-aos="fade-up">
+            <span class="ar ar-title">مَوَادُ الدِّرَاسَةِ</span>
+            <h2>Pilih Misi Belajarmu</h2>
+            <p>Selesaikan misi semester 1 & 2 untuk jadi juara kelas!</p>
+        </div>
+
+        <div class="grid-cards">
+            <div class="card sem-1" data-aos="fade-up" data-aos-delay="100">
+                <span class="card-badge" style="background: #00695c;">Semester 1</span>
+                <img src="bab1gbr.jpg" width="366" height="185">
+                <div class="card-body">
+                    <h3>Bab 1</h3>
+                    <h4 class="ar ar-title">رَأْسُ السَّنَةِ الْهِجْرِيَّةِ</h4>
+                    <p>Mempelajari sejarah hijrah dan ungkapan Tahun Baru Islam.</p>
+                    <a href="bab1.html" class="btn-card">Buka Materi <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <div class="card sem-1" data-aos="fade-up" data-aos-delay="200">
+                <span class="card-badge" style="background: #00695c;">Semester 1</span>
+                <img src="bab2gbr.jpg" width="378" height="183">
+                <div class="card-body">
+                    <h3>Bab 2</h3>
+                    <h4 class="ar ar-title">الْحَفْلُ بِمَوْلِدِ الرَّسُوْلِ</h4>
+                    <p>Kisah kelahiran Nabi SAW dan kosakata perayaan Maulid.</p>
+                    <a href="bab2.html" class="btn-card">Buka Materi <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <div class="card sem-1" data-aos="fade-up" data-aos-delay="300">
+                <span class="card-badge" style="background: #00695c;">Semester 1</span>
+                <div class="card-header">
+                    <img src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?q=80&w=600&auto=format&fit=crop" alt="Al Quran">
+                </div>
+                <div class="card-body">
+                    <h3>Bab 3</h3>
+                    <h4 class="ar ar-title">نُزُوْلُ الْقُرْآنِ</h4>
+                    <p>Memahami teks Nuzulul Quran dan Lailatul Qadar.</p>
+                    <a href="bab3.html" class="btn-card">Buka Materi <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <div class="card sem-2" data-aos="fade-up" data-aos-delay="100">
+                <span class="card-badge" style="background: #e65100;">Semester 2</span>
+                <div class="card-header">
+                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=600&auto=format&fit=crop" alt="Alam">
+                </div>
+                <div class="card-body">
+                    <h3>Bab 4</h3>
+                    <h4 class="ar ar-title">جَمَالُ الطَّبِيْعَةِ</h4>
+                    <p>Kosakata pemandangan alam, gunung, pantai, dan sawah.</p>
+                    <a href="bab4.html" class="btn-card" style="border-color: #e65100; color: #e65100;">Buka Materi <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <div class="card sem-2" data-aos="fade-up" data-aos-delay="200">
+                <span class="card-badge" style="background: #e65100;">Semester 2</span>
+                <div class="card-header">
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600&auto=format&fit=crop" alt="Penciptaan">
+                </div>
+                <div class="card-body">
+                    <h3>Bab 5</h3>
+                    <h4 class="ar ar-title">خَلْقُ الْعَالَمِ</h4>
+                    <p>Merenungi penciptaan langit dan bumi dalam bahasa Arab.</p>
+                    <a href="bab5.html" class="btn-card" style="border-color: #e65100; color: #e65100;">Buka Materi <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <div class="card sem-2" data-aos="fade-up" data-aos-delay="300">
+                <span class="card-badge" style="background: #e65100;">Semester 2</span>
+                <div class="card-header">
+                    <img src="https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?q=80&w=600&auto=format&fit=crop" alt="Lingkungan">
+                </div>
+                <div class="card-body">
+                    <h3>Bab 6</h3>
+                    <h4 class="ar ar-title">الْحِفَاظُ عَلَى الْبِيْئَةِ</h4>
+                    <p>Belajar menjaga lingkungan dalam perspektif bahasa.</p>
+                    <a href="bab6.html" class="btn-card" style="border-color: #e65100; color: #e65100;">Buka Materi <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container features">
+        <div class="section-title" data-aos="fade-up">
+            <h2>Cara Belajar Seru</h2>
+        </div>
+        <div class="grid-cards" style="box-shadow: none; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 0;">
+            
+            <a href="game.html" style="text-decoration: none; color: inherit;">
+                <div class="feature-item f-1" data-aos="bounce" data-aos-delay="100" style="cursor: pointer;">
+                    <div class="icon-box">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3>Kuis Interaktif</h3>
+                    <p>Uji kemampuanmu dengan game seru.</p>
+                </div>
+            </a>
+            
+            <a href="kamus.html" style="text-decoration: none; color: inherit;">
+                <div class="feature-item f-2" data-aos="bounce" data-aos-delay="200" style="cursor: pointer;">
+                    <div class="icon-box">
+                        <i class="fas fa-spell-check"></i>
+                    </div>
+                    <h3>Kamus Pintar</h3>
+                    <p>Cari kata sulit dalam sekejap.</p>
+                </div>
+            </a>
+            
+            <a href="video.html" style="text-decoration: none; color: inherit;">
+                <div class="feature-item f-3" data-aos="bounce" data-aos-delay="300" style="cursor: pointer;">
+                    <div class="icon-box">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <h3>Video Animasi</h3>
+                    <p>Tonton penjelasan materi visual.</p>
+                </div>
+            </a>
+
+            <a href="istima.html" style="text-decoration: none; color: inherit;">
+                <div class="feature-item f-4" data-aos="bounce" data-aos-delay="400" style="cursor: pointer;">
+                    <div class="icon-box">
+                        <i class="fas fa-headphones-alt"></i>
+                    </div>
+                    <h3>Audio Istima'</h3>
+                    <p>Latihan mendengar penutur asli.</p>
+                </div>
+            </a>
+
+        </div>
+    </div>
+
+    <div class="container" data-aos="fade-up" data-aos-duration="1000" style="text-align: center; padding: 50px 20px; margin-bottom: 60px; background: #fff; border-radius: 40px; border: 3px dashed var(--primary); box-shadow: var(--shadow-soft);">
+        <div class="section-title" style="margin: 0 0 30px 0;">
+            <h2>Uji Kemampuanmu!</h2>
+            <p style="font-size: 1.1rem; color: var(--text-muted);">Ukur sejauh mana pemahamanmu sebelum dan sesudah belajar.</p>
+        </div>
+        <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeo-IIHPaFkNKaBpsebOq_ZKk7xPba4cYIsJS5c_7hED8oJzA/viewform?usp=publish-editor" target="_blank" style="background: var(--accent); color: white; padding: 15px 40px; border-radius: 50px; font-weight: 800; font-size: 1.2rem; box-shadow: 0 10px 25px rgba(255, 159, 28, 0.4); display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; border: 2px solid white; text-decoration: none;" onmouseover="this.style.transform='scale(1.05) translateY(-3px)'; this.style.boxShadow='0 15px 30px rgba(255, 159, 28, 0.5)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 10px 25px rgba(255, 159, 28, 0.4)';">
+                <i class="fas fa-file-signature"></i> Mulai Pre Test
+            </a>
+            
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeqBj6fPFLbcEb96El-ryagOvnv-NmXjUaijrZaJOeSmcIEJA/viewform?usp=publish-editor" target="_blank" style="background: var(--secondary); color: white; padding: 15px 40px; border-radius: 50px; font-weight: 800; font-size: 1.2rem; box-shadow: 0 10px 25px rgba(231, 29, 54, 0.4); display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; border: 2px solid white; text-decoration: none;" onmouseover="this.style.transform='scale(1.05) translateY(-3px)'; this.style.boxShadow='0 15px 30px rgba(231, 29, 54, 0.5)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 10px 25px rgba(231, 29, 54, 0.4)';">
+                <i class="fas fa-clipboard-check"></i> Mulai Post Test
+            </a>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section" style="max-width: 350px;">
+                    <h3>Arabic9 Fun</h3>
+                    <p>Media pembelajaran Bahasa Arab berbasis web untuk siswa SMP Kelas 9. Belajar tidak lagi membosankan, tapi penuh warna!</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Menu Siswa</h3>
+                    <ul>
+                        <li><a href="#materi">Materi Pelajaran</a></li>
+                        <li><a href="kuis.html">Latihan Soal</a></li>
+                        <li><a href="kamus.html">Daftar Mufrodat</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Bantuan</h3>
+                    <ul>
+                        <li><a href="tanya-guru.html">Tanya Guru</a></li>
+                        <li><a href="petunjuk.html">Petunjuk</a></li>
+                        <li><a href="tentang-kami.html">Tentang Kami</a></li> 
+                    </ul>
+                </div>
+            </div>
+
+            <div class="source-credit">
+                <strong>SUMBER MATERI PEMBELAJARAN</strong>
+                BAHASA ARAB MTs KELAS IX | Penulis: Yushi M. Mahmudah | Editor: Muh. Wahib Dariyadi<br>
+                Cetakan ke-1, Tahun 2020 | Hak Cipta © 2020 pada Kementerian Agama RI | Dilindungi Undang-Undang
+            </div>
+
+            <div style="text-align: center; color: #aebecd; font-size: 0.9rem;">
+                <p>&copy; 2024 Arabic9 Fun - SMP NURUL HUDA MERGOSONO MALANG</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true, 
+            offset: 80, 
+            duration: 800,
+        });
+    </script>
+    <script>
+        // Script untuk menangkap pesan sukses dari halaman login
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('status') === 'sukses') {
+            alert('Selamat! Anda telah berhasil login.');
+            
+            // Membersihkan URL agar pesan tidak muncul terus menerus saat di-refresh
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    </script>
+</body>
+</html>

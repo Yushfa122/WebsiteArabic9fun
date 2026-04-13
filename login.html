@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Arabic9 Fun</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2EC4B6;
+            --accent: #FF9F1C;
+            --text-main: #011627;
+            --bg-body: #FDFFFC;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: radial-gradient(#2ec4b6 0.8px, transparent 0.8px), radial-gradient(#2ec4b6 0.8px, var(--bg-body) 0.8px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            background-color: #f4fcfb;
+        }
+        .login-card {
+            background: white;
+            width: 100%;
+            max-width: 400px;
+            padding: 40px 30px;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(46, 196, 182, 0.15);
+            border: 2px solid #eee;
+            text-align: center;
+            position: relative;
+        }
+        .login-card:hover { border-color: var(--primary); }
+        .logo {
+            font-size: 1.8rem; font-weight: 900; color: var(--text-main);
+            display: inline-flex; align-items: center; gap: 10px;
+            margin-bottom: 10px;
+        }
+        .logo i { color: var(--accent); }
+        .login-card p { color: #5f7385; margin-bottom: 30px; font-size: 0.95rem; }
+        
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label {
+            display: block; font-weight: 700; margin-bottom: 8px; font-size: 0.9rem;
+        }
+        .input-group input {
+            width: 100%; padding: 12px 15px; border-radius: 12px;
+            border: 2px solid #eef3f3; outline: none; font-family: 'Nunito', sans-serif;
+            transition: 0.3s;
+        }
+        .input-group input:focus { border-color: var(--primary); }
+        
+        .btn-submit {
+            width: 100%; padding: 12px; background: var(--primary);
+            color: white; border: none; border-radius: 12px;
+            font-weight: 800; font-size: 1.1rem; cursor: pointer;
+            transition: 0.3s; margin-top: 10px;
+        }
+        .btn-submit:hover {
+            background: #239c91; transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 196, 182, 0.3);
+        }
+        
+        .error-msg {
+            background: #ffebee; color: #c62828; padding: 10px;
+            border-radius: 10px; margin-bottom: 20px; font-size: 0.85rem;
+            font-weight: 600; border: 1px dashed #ef9a9a;
+            display: none; /* Disembunyikan secara default */
+        }
+        .back-link {
+            display: inline-block; margin-top: 25px; color: #5f7385;
+            text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: 0.3s;
+        }
+        .back-link:hover { color: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <div class="logo">
+            <i class="fas fa-shapes"></i> Arabic9 Fun
+        </div>
+        <p>Masuk menggunakan NIS kamu</p>
+
+        <div id="pesan-error" class="error-msg"></div>
+
+        <form id="formLogin">
+            <div class="input-group">
+                <label>Username / NIS</label>
+                <input type="text" id="username" placeholder="Masukkan NIS..." required autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Masukkan Password..." required>
+            </div>
+            <button type="submit" class="btn-submit">Masuk Sekarang</button>
+        </form>
+
+        <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
+    </div>
+
+    <script>
+        // Logika JavaScript untuk mengecek login
+        document.getElementById('formLogin').addEventListener('submit', function(event) {
+            event.preventDefault(); // Mencegah halaman refresh otomatis
+            
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const pesanError = document.getElementById('pesan-error');
+
+            // Cek kecocokan data
+            if(user === 'siswa' && pass === '12345') {
+                // Jika benar, alihkan ke index.html dan bawa status sukses
+                window.location.href = 'index.html?status=sukses';
+            } else {
+                // Jika salah, tampilkan pesan error
+                pesanError.style.display = 'block';
+                pesanError.innerHTML = '<i class="fas fa-exclamation-circle"></i> NIS atau Password salah! Silakan coba lagi.';
+            }
+        });
+    </script>
+
+</body>
+</html>

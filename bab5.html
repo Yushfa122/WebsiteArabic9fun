@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bab 5: Penciptaan Alam | Arabic9 Fun</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Nunito:wght@400;600;700;800&family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- COPY STYLE DARI BAB SEBELUMNYA --- */
+        :root {
+            --primary: #48CAE4;
+            --primary-dark: #0096C7;
+            --accent: #FFB703;
+            --accent-hover: #FB8500;
+            --text-dark: #2b2d42;
+            --bg-light: #edf2f4;
+            --white: #ffffff;
+            --radius: 20px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Nunito', sans-serif; background-color: var(--bg-light); color: var(--text-dark); }
+        
+        /* Typography Khusus Arab */
+        .ar { font-family: 'Amiri', serif; direction: rtl; }
+        .ar-xl { font-size: 1.8rem; line-height: 2; }
+        .ar-lg { font-size: 1.4rem; line-height: 1.8; }
+        
+        /* --- LAYOUT UTAMA --- */
+        .header-lesson {
+            background: linear-gradient(135deg, #023e8a, #0077b6); /* Nuansa Biru Langit Malam */
+            padding: 30px 5% 80px; 
+            color: white;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            position: relative;
+        }
+
+        .back-btn {
+            color: white; font-size: 1.2rem; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px; font-weight: 700;
+        }
+        .back-btn:hover { color: var(--accent); }
+
+        .lesson-title h1 { font-family: 'Tajawal', sans-serif; font-size: 2.2rem; margin-bottom: 5px; }
+        .lesson-subtitle { font-size: 1.1rem; opacity: 0.9; }
+
+        /* --- NAVIGATION TABS (STICKY) --- */
+        .lesson-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: -40px; 
+            padding: 0 20px;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .nav-item {
+            background: var(--white);
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 700;
+            color: var(--text-dark);
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: 0.3s;
+            border: 2px solid transparent;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: var(--accent);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        /* --- CONTENT CONTAINERS --- */
+        .content-area { max-width: 900px; margin: 40px auto; padding: 0 20px; min-height: 60vh; }
+        
+        .section-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            scroll-margin-top: 100px; 
+            display: none; /* Disembunyikan secara default untuk sistem Tab */
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section-card.active-section {
+            display: block; /* Hanya tampilkan yang aktif */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--bg-light);
+            padding-bottom: 15px;
+        }
+
+        .section-icon {
+            width: 50px; height: 50px; background: #e0fbfc; color: var(--primary-dark);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+        }
+
+        .section-title h2 { font-size: 1.5rem; color: var(--primary-dark); }
+        .section-title span { font-size: 0.9rem; color: #888; display: block; }
+
+        /* --- 1. MUFRODAT (Grid Style) --- */
+        .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
+        
+        .vocab-card {
+            background: #f8f9fa; border: 1px solid #eee; border-radius: 15px; padding: 20px;
+            text-align: center; transition: 0.3s; cursor: pointer;
+        }
+        .vocab-card:hover { border-color: var(--primary); transform: translateY(-5px); background: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .vocab-ar { color: var(--primary-dark); font-weight: 700; margin-bottom: 5px; }
+        .vocab-id { color: #666; font-size: 0.9rem; }
+        .vocab-img { font-size: 2.5rem; margin-bottom: 10px; display: block; }
+
+        /* Tombol Audio Kecil */
+        .btn-audio {
+            background: var(--accent); color: white; border: none; 
+            width: 30px; height: 30px; border-radius: 50%; 
+            font-size: 0.8rem; cursor: pointer; transition: 0.2s;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .btn-audio:hover { background: var(--accent-hover); transform: scale(1.1); }
+        
+        /* Tombol Audio di Chat */
+        .chat-audio {
+            background: rgba(0,0,0,0.1); color: #555; border: none;
+            width: 25px; height: 25px; border-radius: 50%;
+            font-size: 0.7rem; cursor: pointer; margin-right: 5px;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .chat-audio:hover { background: var(--primary); color: white; }
+
+        /* --- 2. KALAM DAN ISTIMA' (Chat Style) --- */
+        .chat-box { background: #e5e5e5; padding: 20px; border-radius: 15px; max-height: 500px; overflow-y: auto; background-image: url('https://i.pinimg.com/originals/97/c0/07/97c00726d1d93130c25d804f323e5959.png'); }
+        
+        .message { display: flex; margin-bottom: 15px; align-items: flex-end; }
+        .message.student-a { flex-direction: row-reverse; } 
+        
+        .bubble {
+            max-width: 80%; padding: 12px 18px; border-radius: 15px; position: relative; font-size: 1.1rem;
+        }
+        
+        .student-a .bubble { background: #dcf8c6; color: #000; border-bottom-right-radius: 0; text-align: right; }
+        .student-b .bubble { background: #fff; color: #000; border-bottom-left-radius: 0; text-align: right; }
+
+        .speaker-name { font-size: 0.75rem; color: #555; margin-bottom: 3px; display: block; font-weight: bold; }
+
+        /* --- 3. QIRA'AH (Text) --- */
+        .reading-text {
+            text-align: justify;
+            background: #f0f4ff; /* Biru sangat muda */
+            padding: 25px;
+            border-radius: 15px;
+            border-right: 5px solid #0077b6;
+        }
+        .toggle-trans {
+            margin-top: 15px; background: transparent; border: 2px solid var(--accent); color: var(--accent);
+            padding: 8px 20px; border-radius: 50px; font-weight: 700; cursor: pointer; width: 100%;
+        }
+        .toggle-trans:hover { background: var(--accent); color: white; }
+        .translation-box { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc; color: #555; }
+
+        /* --- 4. TARKIB (Grammar Table) --- */
+        .grammar-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .grammar-table th { background: var(--primary); color: white; padding: 12px; text-align: center; }
+        .grammar-table td { border: 1px solid #ddd; padding: 10px; text-align: center; font-size: 1.2rem; }
+        .grammar-note { background: #e0fbfc; padding: 15px; border-radius: 10px; margin-top: 20px; font-size: 0.9rem; }
+
+        /* --- ESSAY & QUIZ STYLES --- */
+        .essay-container { margin-top: 30px; background: #fff9db; padding: 25px; border-radius: 15px; border: 2px solid #ffe066; }
+        .essay-item { margin-bottom: 20px; }
+        .essay-q { font-weight: bold; color: var(--text-dark); display: block; margin-bottom: 8px; }
+        .essay-a { 
+            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; 
+            font-family: 'Nunito', sans-serif; transition: 0.3s;
+        }
+        .essay-a:focus { border-color: var(--primary); outline: none; background: #fff; }
+
+        .quiz-container { margin-top: 30px; border-top: 2px dashed #eee; padding-top: 20px; }
+        .quiz-item { margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 15px; border: 1px solid #eee; }
+        .quiz-question { font-weight: bold; margin-bottom: 10px; display: block; color: var(--text-dark); }
+        .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+        .quiz-option { 
+            background: #f8f9fa; border: 1px solid #ddd; padding: 10px 15px; border-radius: 10px; cursor: pointer; transition: 0.2s;
+            font-family: 'Amiri', serif; font-size: 1.1rem; /* Font Arab untuk Opsi */
+        }
+        .quiz-option:hover { background: #e0fbfc; border-color: var(--primary); }
+        .quiz-option.selected { background: #d4edda; border-color: #28a745; color: #155724; }
+        .quiz-option.wrong { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+        .score-box { text-align: center; font-size: 1.2rem; font-weight: bold; color: var(--primary-dark); margin-top: 20px; padding: 15px; background: #e0fbfc; border-radius: 15px; display: none; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .lesson-nav { gap: 10px; white-space: nowrap; overflow-x: auto; justify-content: flex-start; padding-bottom: 10px; }
+            .lesson-title h1 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-lesson">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Kembali ke Menu</a>
+            <div class="lesson-title">
+                <h1 class="ar">خَلْقُ الْعَالَمِ</h1>
+                <p class="lesson-subtitle">Bab 5 - Penciptaan Alam Semesta</p>
+            </div>
+        </div>
+    </header>
+
+    <nav class="lesson-nav">
+        <a onclick="openTab('mufradat', this)" class="nav-item active">1. Mufradat</a>
+        <a onclick="openTab('kalam', this)" class="nav-item">2. Kalam dan Istima'</a>
+        <a onclick="openTab('qiraah', this)" class="nav-item">3. Qira'ah</a>
+        <a onclick="openTab('tarkib', this)" class="nav-item">4. Tarkib dan Kitabah </a>
+    </nav>
+
+    <div class="content-area">
+
+        <section id="mufradat" class="section-card active-section">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-globe-asia"></i></div>
+                <div class="section-title">
+                    <h2>Al-Mufradat</h2>
+                    <span>Kosakata Alam Semesta</span>
+                </div>
+            </div>
+            
+            <div class="vocab-grid">
+                <div class="vocab-card">
+                    <span class="vocab-img">🌍</span>
+                    <div class="ar ar-lg vocab-ar">الْأَرْضُ</div>
+                    <div class="vocab-id">Bumi</div>
+                    <button class="btn-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=الأرض&tl=ar')"><i class="fas fa-volume-up"></i></button>
+                </div>
+                <div class="vocab-card">
+                    <span class="vocab-img">✨</span>
+                    <div class="ar ar-lg vocab-ar">نُجُوْمٌ</div>
+                    <div class="vocab-id">Bintang-bintang</div>
+                    <button class="btn-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=نجوم&tl=ar')"><i class="fas fa-volume-up"></i></button>
+                </div>
+                <div class="vocab-card">
+                    <span class="vocab-img">🪐</span>
+                    <div class="ar ar-lg vocab-ar">كَوَاكِبُ</div>
+                    <div class="vocab-id">Planet-planet</div>
+                    <button class="btn-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=كواكب&tl=ar')"><i class="fas fa-volume-up"></i></button>
+                </div>
+                <div class="vocab-card">
+                    <span class="vocab-img">🌴</span>
+                    <div class="ar ar-lg vocab-ar">النَّبَاتَاتُ</div>
+                    <div class="vocab-id">Tumbuhan</div>
+                    <button class="btn-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=النباتات&tl=ar')"><i class="fas fa-volume-up"></i></button>
+                </div>
+                <div class="vocab-card">
+                    <span class="vocab-img">🌧️</span>
+                    <div class="ar ar-lg vocab-ar">مَطَرٌ</div>
+                    <div class="vocab-id">Hujan</div>
+                    <button class="btn-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=مطر&tl=ar')"><i class="fas fa-volume-up"></i></button>
+                </div>
+                <div class="vocab-card">
+                    <span class="vocab-img">🏞️</span>
+                    <div class="ar ar-lg vocab-ar">نَهْرٌ</div>
+                    <div class="vocab-id">Sungai</div>
+                    <button class="btn-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=نهر&tl=ar')"><i class="fas fa-volume-up"></i></button>
+                </div>
+                <div class="vocab-card">
+                    <span class="vocab-img">🌌</span>
+                    <div class="ar ar-lg vocab-ar">السَّمَاءُ</div>
+                    <div class="vocab-id">Langit</div>
+                    <button class="btn-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=السماء&tl=ar')"><i class="fas fa-volume-up"></i></button>
+                </div>
+                <div class="vocab-card">
+                    <span class="vocab-img">🌙</span>
+                    <div class="ar ar-lg vocab-ar">قَمَرٌ</div>
+                    <div class="vocab-id">Bulan</div>
+                    <button class="btn-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=قمر&tl=ar')"><i class="fas fa-volume-up"></i></button>
+                </div>
+                <div class="vocab-card">
+                    <span class="vocab-img">☀️</span>
+                    <div class="ar ar-lg vocab-ar">شَمْسٌ</div>
+                    <div class="vocab-id">Matahari</div>
+                    <button class="btn-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=شمس&tl=ar')"><i class="fas fa-volume-up"></i></button>
+                </div>
+            </div>
+
+            <div class="essay-container">
+                <h3 style="text-align: center; color: var(--accent-hover); margin-bottom: 20px;">
+                    <i class="fas fa-pencil-alt"></i> Latihan Menghafal Arti
+                </h3>
+                <p style="text-align: center; margin-bottom: 20px;">Terjemahkan kata-kata berikut ke dalam Bahasa Indonesia!</p>
+
+                <div class="essay-item">
+                    <label class="essay-q">1. Apa arti dari <span class="ar">نُجُوْمٌ</span> (Nujuumun)?</label>
+                    <input type="text" class="essay-a" placeholder="Jawab disini...">
+                </div>
+                <div class="essay-item">
+                    <label class="essay-q">2. Apa arti dari <span class="ar">مَطَرٌ</span> (Matharun)?</label>
+                    <input type="text" class="essay-a" placeholder="Jawab disini...">
+                </div>
+                <div class="essay-item">
+                    <label class="essay-q">3. Apa arti dari <span class="ar">نَهْرٌ</span> (Nahrun)?</label>
+                    <input type="text" class="essay-a" placeholder="Jawab disini...">
+                </div>
+                <div class="essay-item">
+                    <label class="essay-q">4. Apa arti dari <span class="ar">كَوَاكِبُ</span> (Kawakibu)?</label>
+                    <input type="text" class="essay-a" placeholder="Jawab disini...">
+                </div>
+                <div class="essay-item">
+                    <label class="essay-q">5. Apa arti dari <span class="ar">النَّبَاتَاتُ</span> (An-Nabatatu)?</label>
+                    <input type="text" class="essay-a" placeholder="Jawab disini...">
+                </div>
+
+                <button class="toggle-trans" onClick="toggleTranslation('essay-key')" style="margin-top: 10px; background: transparent; color: #555; border: 1px solid #aaa;">Lihat Kunci Jawaban</button>
+                <div id="essay-key" class="translation-box" style="background: #fff; padding: 15px; border-radius: 10px;">
+                    <strong>Kunci Jawaban:</strong>
+                    <ol style="margin-left: 20px; margin-top: 10px;">
+                        <li>Bintang-bintang</li>
+                        <li>Hujan</li>
+                        <li>Sungai</li>
+                        <li>Planet-planet</li>
+                        <li>Tumbuhan / Tanaman</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <section id="kalam" class="section-card">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-comments"></i></div>
+                <div class="section-title">
+                    <h2>Al-Kalam wal Istima'</h2>
+                    <span>Berbicara & Mendengar: Kafil & Kamil</span>
+                </div>
+            </div>
+
+            <div class="chat-box">
+                <div class="message student-a">
+                    <div class="bubble">
+                        <span class="speaker-name">Kafil (كافِل)</span>
+                        <p class="ar">
+                            <button class="chat-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=يا%20كامل،%20انظر%20إلى%20السماء،%20ستغرب%20الشمس&tl=ar')"><i class="fas fa-play"></i></button>
+                            يَا كَامِلُ، اُنْظُرْ إِلَى السَّمَاءِ، سَتَغْرُبُ الشَّمْسُ
+                        </p>
+                    </div>
+                </div>
+
+                <div class="message student-b">
+                    <div class="bubble">
+                        <span class="speaker-name">Kamil (كامِل)</span>
+                        <p class="ar">
+                            <button class="chat-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=ما%20شاء%20الله...%20ما%20أجمل%20هذا%20المنظر&tl=ar')"><i class="fas fa-play"></i></button>
+                            مَا شَاءَ الله... مَا أَجْمَلَ هَذَا الْمَنْظَرَ!
+                        </p>
+                    </div>
+                </div>
+
+                <div class="message student-a">
+                    <div class="bubble">
+                        <span class="speaker-name">Kafil (كافِل)</span>
+                        <p class="ar">
+                            <button class="chat-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=السماء%20التي%20ننظر%20إليها%20خلقها%20الله&tl=ar')"><i class="fas fa-play"></i></button>
+                            السَّمَاءُ الَّتِي نَنْظُرُ إِلَيْهَا خَلَقَهَا اللهُ
+                        </p>
+                    </div>
+                </div>
+
+                <div class="message student-b">
+                    <div class="bubble">
+                        <span class="speaker-name">Kamil (كامِل)</span>
+                        <p class="ar">
+                            <button class="chat-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=ويأتي%20الليل%20بعد%20غروب%20الشمس&tl=ar')"><i class="fas fa-play"></i></button>
+                            وَيَأْتِي اللَّيْلُ بَعْدَ غُرُوْبِ الشَّمْسِ
+                        </p>
+                    </div>
+                </div>
+
+                <div class="message student-a">
+                    <div class="bubble">
+                        <span class="speaker-name">Kafil (كافِل)</span>
+                        <p class="ar">
+                            <button class="chat-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=ثم%20تظهر%20النجوم%20والقمر%20في%20السماء%20نورها%20ينير%20الليل%20المظلم&tl=ar')"><i class="fas fa-play"></i></button>
+                            ثُمَّ تَظْهَرُ النُّجُوْمُ وَالْقَمَرُ فِي السَّمَاءِ، نُوْرُهَا يُنِيْرُ اللَّيْلَ الْمُظْلِمَ
+                        </p>
+                    </div>
+                </div>
+
+                <div class="message student-b">
+                    <div class="bubble">
+                        <span class="speaker-name">Kamil (كامِل)</span>
+                        <p class="ar">
+                            <button class="chat-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=سبحان%20الله%20الذي%20خلق%20السموات%20والأرض&tl=ar')"><i class="fas fa-play"></i></button>
+                            سُبْحَانَ اللهِ الَّذِي خَلَقَ السَّمَوَاتِ وَالْأَرْضَ
+                        </p>
+                    </div>
+                </div>
+
+                <div class="message student-a">
+                    <div class="bubble">
+                        <span class="speaker-name">Kafil (كافِل)</span>
+                        <p class="ar">
+                            <button class="chat-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=يجب%20علينا%20أن%20نتدبر%20ونتفكر%20في%20خلق%20الله&tl=ar')"><i class="fas fa-play"></i></button>
+                            يَجِبُ عَلَيْنَا أَنْ نَتَدَبَّرَ وَنَتَفَكَّرَ فِي خَلْقِ اللهِ
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px; text-align: center;">
+                <button class="toggle-trans" onClick="toggleTranslation('hiwar-trans')">Terjemahkan Percakapan</button>
+                <div id="hiwar-trans" class="translation-box">
+                    <strong>Kafil:</strong> Wahai Kamil, lihatlah ke langit, matahari akan terbenam.<br>
+                    <strong>Kamil:</strong> Masya Allah... alangkah indahnya pemandangan ini!<br>
+                    <strong>Kafil:</strong> Langit yang kita lihat itu, Allah lah yang menciptakannya.<br>
+                    <strong>Kamil:</strong> Dan malam akan datang setelah terbenamnya matahari.<br>
+                    <strong>Kafil:</strong> Kemudian muncul bintang-bintang dan bulan di langit, cahayanya menerangi malam yang gelap.<br>
+                    <strong>Kamil:</strong> Maha Suci Allah yang menciptakan langit dan bumi.<br>
+                    <strong>Kafil:</strong> Kita wajib merenungkan dan memikirkan tentang ciptaan Allah.
+                </div>
+            </div>
+
+            <div class="quiz-container">
+                <h3 style="text-align: center; margin-bottom: 20px; color: var(--primary-dark);">التَّمْرِيْنَاتُ عَلَى الْكَلَامِ وَالْاِسْتِمَاعِ (Latihan Kalam & Istima')</h3>
+                
+                <div class="quiz-item" id="q-kalam-1">
+                    <span class="quiz-question ar ar-lg">١. مَعَ مَنْ يَتَحَدَّثُ كَافِلٌ؟</span>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 1, false)">أ. يُوْسُفَ</div>
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 1, true)">ب. كَامِلٍ</div>
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 1, false)">ج. إِبْرَاهِيْمَ</div>
+                    </div>
+                </div>
+
+                <div class="quiz-item" id="q-kalam-2">
+                    <span class="quiz-question ar ar-lg">٢. مَاذَا سَيَحْدُثُ لِلشَّمْسِ؟</span>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 2, true)">أ. سَتَغْرُبُ</div>
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 2, false)">ب. سَتَطْلُعُ</div>
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 2, false)">ج. سَتَشْتَدُّ</div>
+                    </div>
+                </div>
+
+                <div class="quiz-item" id="q-kalam-3">
+                    <span class="quiz-question ar ar-lg">٣. مَتَى يَأْتِي اللَّيْلُ؟</span>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 3, false)">أ. قَبْلَ شُرُوْقِ الشَّمْسِ</div>
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 3, true)">ب. بَعْدَ غُرُوْبِ الشَّمْسِ</div>
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 3, false)">ج. فِي وَسَطِ النَّهَارِ</div>
+                    </div>
+                </div>
+
+                <div class="quiz-item" id="q-kalam-4">
+                    <span class="quiz-question ar ar-lg">٤. مَاذَا يَظْهَرُ فِي السَّمَاءِ لَيْلًا؟</span>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 4, true)">أ. النُّجُوْمُ وَالْقَمَرُ</div>
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 4, false)">ب. الشَّمْسُ وَالسَّحَابُ</div>
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 4, false)">ج. قَوْسُ قُزَحٍ</div>
+                    </div>
+                </div>
+
+                <div class="quiz-item" id="q-kalam-5">
+                    <span class="quiz-question ar ar-lg">٥. مَاذَا يَجِبُ عَلَيْنَا تُجَاهَ خَلْقِ اللهِ؟</span>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 5, false)">أ. أَنْ نُهْمِلَهُ</div>
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 5, false)">ب. أَنْ نُفْسِدَهُ</div>
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 5, true)">ج. أَنْ نَتَدَبَّرَ وَنَتَفَكَّرَ فِيْهِ</div>
+                    </div>
+                </div>
+
+                <div id="score-kalam" class="score-box"></div>
+            </div>
+        </section>
+
+        <section id="qiraah" class="section-card">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-book-open"></i></div>
+                <div class="section-title">
+                    <h2>Al-Qira'ah</h2>
+                    <span>Teks: Pencipta Alam</span>
+                </div>
+            </div>
+
+            <div class="reading-text">
+                <h3 class="ar" style="text-align: center; margin-bottom: 20px; font-size: 1.8rem; color: #0077b6;">خَالِقُ الْعَالَمِ</h3>
+                
+                <p class="ar ar-xl">
+                    سُبْحَانَ اللهِ الَّذِي خَلَقَ السَّمَوَاتِ وَالْأَرْضَ، هُوَ اللهُ الَّذِي لَا إِلَهَ إِلَّا هُوَ.
+                    هُوَ الْخَالِقُ الَّذِي خَلَقَ الْعَالَمَ كُلَّهُ.
+                </p>
+                <br>
+                <p class="ar ar-xl">
+                    فَالْأَرْضُ الَّتِي نَعِيْشُ فِيْهَا خَلَقَهَا اللهُ.
+                    وَالسَّمَاءُ الَّتِي فَوْقَنَا بَنَاهَا اللهُ.
+                    خَلَقَ اللهُ فِي السَّمَاءِ الْكَوَاكِبَ، مِثْلَ الْقَمَرِ الَّذِي يَظْهَرُ فِي اللَّيْلِ.
+                </p>
+                <br>
+                <p class="ar ar-xl">
+                    وَخَلَقَ الْأَرْضَ الَّتِي فِيْهَا الْجِبَالُ وَالْبِحَارُ وَالْأَنْهَارُ وَالْبُحَيْرَاتُ.
+                    وَخَلَقَ اللهُ النُّجُوْمَ وَالشَّمْسَ.
+                    الشَّمْسُ تُنَوِّرُ الْأَرْضَ فِي النَّهَارِ، وَيَظْهَرُ الْقَمَرُ فِي اللَّيْلِ، وَنُوْرُهُ يُضِيْءُ اللَّيْلَ الْمُظْلِمَ.
+                </p>
+                <br>
+                <p class="ar ar-xl">
+                    أَنْبَتَ اللهُ فِي الْأَرْضِ النَّبَاتَاتِ، وَأَنْزَلَ اللهُ مِنَ السَّمَاءِ الْمَطَرَ الَّذِي أَسْقَى بِهِ النَّبَاتَاتِ وَالْمَزَارِعَ وَالْغَابَاتِ، وَيَجْعَلُ الْأَرْضَ خَصْبَةً.
+                </p>
+                <br>
+                <p class="ar ar-xl">
+                    وَاللهُ الَّذِي أَجْرَى الْأَنْهَارَ، وَخَلَقَ الْبِحَارَ. وَبِالْمَاءِ تَنْتَفِعُ جَمِيْعُ الْمَخْلُوْقَاتِ، فَبِالْمَاءِ يَعِيْشُ النَّاسُ وَغَيْرُهُمْ مِنْ مَخْلُوْقَاتِ اللهِ.
+                </p>
+            </div>
+
+            <button class="toggle-trans" onClick="toggleTranslation('qiraah-trans')">Lihat Terjemahan</button>
+            <div id="qiraah-trans" class="translation-box">
+                <p><strong>Pencipta Alam</strong></p>
+                <p>Maha Suci Allah yang menciptakan langit dan bumi, Dialah Allah yang tiada Tuhan selain Dia. Dialah Sang Pencipta yang menciptakan seluruh alam.</p>
+                <p>Maka bumi yang kita tinggali ini, Allah lah yang menciptakannya. Dan langit yang ada di atas kita, Allah lah yang membangunnya. Allah menciptakan planet-planet di langit, seperti bulan yang muncul di malam hari.</p>
+                <p>Dan Dia menciptakan bumi yang di dalamnya terdapat gunung-gunung, lautan, sungai-sungai, dan danau-danau. Dan Allah menciptakan bintang-bintang dan matahari. Matahari menerangi bumi di siang hari, dan bulan muncul di malam hari, dan cahayanya menerangi malam yang gelap.</p>
+                <p>Allah menumbuhkan tumbuh-tumbuhan di bumi, dan Allah menurunkan hujan dari langit yang dengannya menyirami tumbuh-tumbuhan, ladang-ladang, dan hutan-hutan, serta menjadikan tanah itu subur.</p>
+                <p>Dan Allah lah yang mengalirkan sungai-sungai, dan menciptakan lautan. Dan dengan air, seluruh makhluk hidup mengambil manfaat, maka dengan air manusiadan makhluk ciptaan Allah lainnya dapat hidup.</p>
+            </div>
+
+            <div class="quiz-container">
+                <h3 style="text-align: center; margin-bottom: 20px; color: var(--primary-dark);">التَّمْرِيْنَاتُ عَلَى الْقِرَاءَةِ (Latihan Qira'ah)</h3>
+                
+                <div class="quiz-item" id="q-qiraah-1">
+                    <span class="quiz-question ar ar-lg">١. مَنْ خَلَقَ الْعَالَمَ كُلَّهُ؟</span>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 1, false)">أ. الْإِنْسَانُ</div>
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 1, true)">ب. اللهُ</div>
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 1, false)">ج. الْمَلَائِكَةُ</div>
+                    </div>
+                </div>
+
+                <div class="quiz-item" id="q-qiraah-2">
+                    <span class="quiz-question ar ar-lg">٢. مَاذَا يُنَوِّرُ الْأَرْضَ فِي النَّهَارِ؟</span>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 2, false)">أ. الْقَمَرُ</div>
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 2, true)">ب. الشَّمْسُ</div>
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 2, false)">ج. النُّجُوْمُ</div>
+                    </div>
+                </div>
+
+                <div class="quiz-item" id="q-qiraah-3">
+                    <span class="quiz-question ar ar-lg">٣. مَا فَائِدَةُ الْمَطَرِ كَمَا فِي النَّصِّ؟</span>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 3, true)">أ. يَسْقِي النَّبَاتَاتِ وَيَجْعَلُ الْأَرْضَ خَصْبَةً</div>
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 3, false)">ب. يُسَبِّبُ الْفَيَضَانَاتِ</div>
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 3, false)">ج. يُظْلِمُ الْأَرْضَ</div>
+                    </div>
+                </div>
+
+                <div class="quiz-item" id="q-qiraah-4">
+                    <span class="quiz-question ar ar-lg">٤. أَيْنَ تُوْجَدُ الْجِبَالُ وَالْبِحَارُ؟</span>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 4, false)">أ. فِي السَّمَاءِ</div>
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 4, true)">ب. فِي الْأَرْضِ</div>
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 4, false)">ج. فِي الْفَضَاءِ</div>
+                    </div>
+                </div>
+
+                <div class="quiz-item" id="q-qiraah-5">
+                    <span class="quiz-question ar ar-lg">٥. لِمَاذَا الْمَاءُ مُهِمٌّ؟</span>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 5, false)">أ. لِأَنَّهُ جَمِيْلٌ</div>
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 5, true)">ب. لِأَنَّ النَّاسَ وَالْمَخْلُوْقَاتِ يَعِيْشُوْنَ بِهِ</div>
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 5, false)">ج. لِأَنَّ لَوْنَهُ أَزْرَقُ</div>
+                    </div>
+                </div>
+
+                <div id="score-qiraah" class="score-box"></div>
+            </div>
+        </section>
+
+        <section id="tarkib" class="section-card">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-tools"></i></div>
+                <div class="section-title">
+                    <h2>At-Tarkib</h2>
+                    <span>Isim Maushul (Kata Sambung)</span>
+                </div>
+            </div>
+
+            <div class="grammar-note">
+                <strong>📝 Isim Maushul (اِسْمُ الْمَوْصُوْلِ)</strong><br>
+                Kata sambung yang berarti <strong>"YANG"</strong>. Digunakan untuk menghubungkan kalimat.<br>
+                Pilihan kata tergantung jenis kata sebelumnya (Laki-laki/Perempuan).
+            </div>
+
+            <h3 style="margin-top: 20px; color: var(--primary-dark);">Penggunaan Alladzi & Allati</h3>
+            <div style="overflow-x: auto;">
+                <table class="grammar-table">
+                    <thead>
+                        <tr>
+                            <th style="background: #999;">Jenis</th>
+                            <th style="background: var(--accent);">Kata Sambung</th>
+                            <th style="background: var(--primary);">Contoh Kalimat</th>
+                        </tr>
+                    </thead>
+                    <tbody class="ar ar-lg">
+                        <tr>
+                            <td class="ar-reset" style="font-size: 1rem;">Muzakkar<br>(Laki-laki)</td>
+                            <td><strong>الَّذِي</strong><br>(Alladzi)</td>
+                            <td>اللهُ <strong>الَّذِي</strong> خَلَقَ السَّمَاءَ<br><span style="font-size: 0.8rem; color: #666;">Allah (yang) menciptakan langit.</span></td>
+                        </tr>
+                        <tr>
+                            <td class="ar-reset" style="font-size: 1rem;">Muannats<br>(Perempuan)</td>
+                            <td><strong>الَّتِي</strong><br>(Allati)</td>
+                            <td>الْأَرْضُ <strong>الَّتِي</strong> نَسْكُنُ فِيْهَا<br><span style="font-size: 0.8rem; color: #666;">Bumi (yang) kita tinggal di dalamnya.</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <p><strong>Tips:</strong></p>
+                <ul>
+                    <li>Gunakan <strong>Alladzi</strong> jika kata sebelumnya tidak ada Ta' Marbuthoh (ة).</li>
+                    <li>Gunakan <strong>Allati</strong> jika kata sebelumnya ada Ta' Marbuthoh (ة) atau benda jamak tak berakal (seperti Langit/Bumi).</li>
+                </ul>
+            </div>
+
+            <div class="essay-container" style="margin-top: 30px;">
+                <h3 style="text-align: center; color: var(--primary-dark); margin-bottom: 20px;">
+                    <i class="fas fa-edit"></i> تَمْرِيْنَاتٌ عَلَى التَّرْكِيْبِ (Latihan Tarkib)
+                </h3>
+                <p style="text-align: center; margin-bottom: 20px;">
+                    Isilah titik-titik dengan Isim Maushul yang tepat (الَّذِي / الَّتِي / الَّذِيْنَ)!
+                </p>
+
+                <div class="essay-item">
+                    <label class="essay-q ar ar-lg">١. اللهُ ... خَلَقَ السَّمَوَاتِ</label>
+                    <input type="text" class="essay-a ar" placeholder="اكتب الإجابة هنا..." dir="rtl">
+                </div>
+
+                <div class="essay-item">
+                    <label class="essay-q ar ar-lg">٢. الْمُسْلِمُوْنَ ... يَصُوْمُوْنَ رَمَضَانَ</label>
+                    <input type="text" class="essay-a ar" placeholder="اكتب الإجابة هنا..." dir="rtl">
+                </div>
+
+                <div class="essay-item">
+                    <label class="essay-q ar ar-lg">٣. الْأَرْضُ ... نَعِيْشُ فِيْهَا</label>
+                    <input type="text" class="essay-a ar" placeholder="اكتب الإجابة هنا..." dir="rtl">
+                </div>
+
+                <div class="essay-item">
+                    <label class="essay-q ar ar-lg">٤. أَحْمَدُ هُوَ الطَّالِبُ ... يَقْرَأُ الْقُرْآنَ</label>
+                    <input type="text" class="essay-a ar" placeholder="اكتب الإجابة هنا..." dir="rtl">
+                </div>
+
+                <button class="toggle-trans" onClick="toggleTranslation('tarkib-key')" style="margin-top: 10px; background: transparent; color: #555; border: 1px solid #aaa;">Lihat Kunci Jawaban</button>
+                <div id="tarkib-key" class="translation-box" style="background: #fff; padding: 15px; border-radius: 10px;">
+                    <strong>Kunci Jawaban:</strong>
+                    <ol style="margin-left: 20px; margin-top: 10px;">
+                        <li><strong>الَّذِي</strong> (Karena Allah itu tunggal Muzakkar)</li>
+                        <li><strong>الَّذِيْنَ</strong> (Karena Muslimun itu jamak Muzakkar)</li>
+                        <li><strong>الَّتِي</strong> (Karena Ardhun itu dihukumi Muannats)</li>
+                        <li><strong>الَّذِي</strong> (Karena Ahmad/Thalib itu tunggal Muzakkar)</li>
+                    </ol>
+                </div>
+            </div>
+
+        </section>
+
+        <div style="text-align: center; margin-bottom: 50px;">
+            <p>Siapa yang menciptakan langit?</p>
+            <a href="index.html" class="nav-item" style="background: var(--accent); color: white; display: inline-block; margin-top: 10px;">
+                Ke Menu Utama <i class="fas fa-home"></i>
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        // --- SCRIPT UNTUK TAB SWITCHER (PENGGANTI SCROLL) ---
+        function openTab(tabName, elmnt) {
+            // Sembunyikan semua section
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("section-card");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active-section");
+            }
+            
+            // Hapus warna background dari semua tombol nav
+            tablinks = document.getElementsByClassName("nav-item");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            
+            // Tampilkan section yang dipilih
+            document.getElementById(tabName).classList.add("active-section");
+            
+            // Beri warna pada tombol yang di-klik
+            elmnt.classList.add("active");
+        }
+
+        // Toggle Translation
+        function toggleTranslation(id) {
+            var x = document.getElementById(id);
+            if (x.style.display === "none" || x.style.display === "") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+
+        // Play Audio Function
+        function playAudio(url) {
+            new Audio(url).play();
+        }
+
+        // --- SISTEM QUIZ SEDERHANA ---
+        let kalamScore = 0;
+        let qiraahScore = 0;
+        let kalamCount = 0;
+        let qiraahCount = 0;
+
+        function checkQuiz(section, qIndex, isCorrect) {
+            const parent = document.getElementById('q-' + section + '-' + qIndex);
+            const options = parent.getElementsByClassName('quiz-option');
+            
+            // Disable clicks after answering
+            for (let i = 0; i < options.length; i++) {
+                options[i].style.pointerEvents = 'none';
+            }
+
+            // Mark correct/wrong
+            if (isCorrect) {
+                event.target.classList.add('selected');
+                event.target.innerHTML += ' <i class="fas fa-check"></i>';
+                if(section === 'kalam') kalamScore += 20; // 5 soal x 20 = 100
+                if(section === 'qiraah') qiraahScore += 20;
+            } else {
+                event.target.classList.add('wrong');
+                event.target.innerHTML += ' <i class="fas fa-times"></i>';
+                // Show correct answer
+                for (let i = 0; i < options.length; i++) {
+                    if (options[i].getAttribute('onclick').includes('true')) {
+                        options[i].classList.add('selected');
+                    }
+                }
+            }
+
+            // Update Counter & Show Score if finished
+            if(section === 'kalam') {
+                kalamCount++;
+                if(kalamCount === 5) {
+                    const scoreBox = document.getElementById('score-kalam');
+                    scoreBox.style.display = 'block';
+                    scoreBox.innerHTML = 'Nilai Kamu (النتيجة): ' + kalamScore + ' / 100';
+                }
+            } else {
+                qiraahCount++;
+                if(qiraahCount === 5) {
+                    const scoreBox = document.getElementById('score-qiraah');
+                    scoreBox.style.display = 'block';
+                    scoreBox.innerHTML = 'Nilai Kamu (النتيجة): ' + qiraahScore + ' / 100';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

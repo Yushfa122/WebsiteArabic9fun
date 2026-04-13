@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Petualangan | Arabic9 Fun</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Nunito:wght@400;700;900&family=Tajawal:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        /* --- GAME UI PALETTE --- */
+        :root {
+            --game-bg: #1A1A2E;
+            --game-panel: #16213E;
+            --primary: #0F3460;
+            --accent: #E94560;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --error: #d63031;
+            --text-light: #F9F9F9;
+            --text-ar: #FFD700;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+        body { font-family: 'Nunito', sans-serif; background: var(--game-bg); color: var(--text-light); overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
+        .ar { font-family: 'Amiri', serif; direction: rtl; }
+        .tajawal { font-family: 'Tajawal', sans-serif; }
+
+        /* --- NAVBAR --- */
+        nav { background: rgba(22, 33, 62, 0.9); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--accent); position: sticky; top: 0; z-index: 100; }
+        .logo { font-size: 1.5rem; font-weight: 900; color: var(--text-light); display: flex; align-items: center; gap: 10px; }
+        .logo i { color: var(--accent); }
+        
+        .nav-controls { display: flex; align-items: center; gap: 15px; }
+        .btn-back { background: var(--text-light); color: var(--game-bg); padding: 8px 20px; border-radius: 50px; font-weight: bold; text-decoration: none; transition: 0.3s; }
+        .btn-back:hover { background: var(--accent); color: white; }
+        
+        /* TOMBOL MUSIK */
+        .btn-music { background: var(--warning); color: var(--game-bg); border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; box-shadow: 0 0 10px rgba(253, 203, 110, 0.5); }
+        .btn-music:hover { transform: scale(1.1); }
+        .btn-music.muted { background: var(--error); color: white; box-shadow: none; }
+
+        /* --- GAME HUD (Heads Up Display) --- */
+        .hud { max-width: 900px; margin: 20px auto; padding: 15px 25px; background: var(--game-panel); border-radius: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 2px solid var(--primary); }
+        .hud-item { text-align: center; }
+        .hud-title { font-size: 0.8rem; color: #aebecd; text-transform: uppercase; letter-spacing: 1px; }
+        .hud-value { font-size: 1.8rem; font-weight: 900; color: var(--text-ar); text-shadow: 0 2px 5px rgba(255,215,0,0.3); }
+        
+        .progress-bar-container { width: 100%; max-width: 900px; margin: 0 auto 20px; background: #0F3460; height: 15px; border-radius: 50px; overflow: hidden; border: 2px solid #16213E; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--warning), var(--accent)); width: 0%; transition: width 0.5s ease; }
+
+        /* --- GAME BOARD --- */
+        .game-board { max-width: 800px; margin: 0 auto 50px; background: var(--game-panel); border-radius: 30px; padding: 40px; box-shadow: 0 15px 50px rgba(0,0,0,0.6); position: relative; min-height: 450px; display: flex; flex-direction: column; justify-content: center; border-top: 5px solid var(--accent); }
+
+        .question-header { text-align: center; margin-bottom: 30px; }
+        .bab-badge { display: inline-block; background: var(--primary); padding: 5px 15px; border-radius: 50px; font-size: 0.9rem; font-weight: bold; margin-bottom: 15px; border: 1px solid #2a4d80; }
+        .question-text { font-size: 2.2rem; color: var(--text-light); line-height: 1.6; }
+
+        /* --- ICON QUESTION --- */
+        .big-icon { font-size: 5rem; color: var(--text-ar); text-align: center; margin-bottom: 20px; text-shadow: 0 5px 20px rgba(255,215,0,0.4); animation: float 3s infinite ease-in-out; }
+
+        /* --- AUDIO QUESTION --- */
+        .btn-play-audio { background: var(--accent); color: white; border: none; width: 80px; height: 80px; border-radius: 50%; font-size: 2.5rem; cursor: pointer; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(233, 69, 96, 0.4); transition: 0.3s; }
+        .btn-play-audio:hover { transform: scale(1.1); }
+        .btn-play-audio.playing { animation: pulse 1s infinite; background: var(--warning); }
+
+        /* --- OPTIONS (MCQ) --- */
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .option-btn { background: #0F3460; border: 2px solid #2a4d80; color: white; padding: 20px; border-radius: 15px; font-size: 1.5rem; cursor: pointer; transition: 0.2s; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .option-btn:hover { background: #1a4b8c; border-color: var(--text-ar); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .option-btn:active { transform: scale(0.95); }
+        
+        .option-btn.correct { background: var(--success); border-color: #00e676; animation: pop 0.5s; }
+        .option-btn.wrong { background: var(--error); border-color: #ff7675; animation: shake 0.5s; }
+
+        /* --- MATCHING GAME --- */
+        .match-container { display: flex; justify-content: space-between; gap: 20px; }
+        .match-column { display: flex; flex-direction: column; gap: 15px; width: 48%; }
+        .match-btn { background: #0F3460; border: 2px solid #2a4d80; color: white; padding: 15px; border-radius: 12px; font-size: 1.2rem; cursor: pointer; transition: 0.3s; font-weight: bold; }
+        .match-btn.selected { background: var(--warning); color: #000; border-color: #fff; transform: scale(1.05); }
+        .match-btn.matched { background: var(--success); border-color: #00e676; opacity: 0.7; pointer-events: none; }
+        .match-btn.wrong-match { background: var(--error); animation: shake 0.5s; }
+
+        /* --- START & END SCREEN --- */
+        .screen-center { text-align: center; }
+        .btn-start { background: linear-gradient(45deg, var(--accent), #ff0055); color: white; border: none; padding: 15px 40px; font-size: 1.5rem; font-weight: 900; border-radius: 50px; cursor: pointer; transition: 0.3s; margin-top: 20px; box-shadow: 0 10px 30px rgba(233, 69, 96, 0.5); }
+        .btn-start:hover { transform: scale(1.1); }
+        .final-score-text { font-size: 4rem; color: var(--warning); font-weight: 900; margin: 20px 0; text-shadow: 0 5px 20px rgba(253, 203, 110, 0.5); }
+
+        /* ANIMATIONS */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(253, 203, 110, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(253, 203, 110, 0); } 100% { box-shadow: 0 0 0 0 rgba(253, 203, 110, 0); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 50% { transform: translateX(10px); } 75% { transform: translateX(-10px); } }
+        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+        /* Feedback Overlay */
+        .feedback-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 30px; display: flex; align-items: center; justify-content: center; font-size: 5rem; opacity: 0; pointer-events: none; z-index: 50; transition: 0.3s; }
+        .feedback-overlay.show-correct { background: rgba(0, 184, 148, 0.8); opacity: 1; animation: pop 0.5s; color: white; }
+        .feedback-overlay.show-wrong { background: rgba(214, 48, 49, 0.8); opacity: 1; color: white; }
+
+        @media (max-width: 768px) {
+            .options-grid { grid-template-columns: 1fr; }
+            .match-container { flex-direction: column; gap: 30px; }
+            .match-column { width: 100%; }
+            .hud { flex-wrap: wrap; justify-content: center; gap: 15px; }
+            .question-text { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop autoplay>
+        <source src="https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg">
+        Browser Anda tidak mendukung elemen audio.
+    </audio>
+
+    <nav>
+        <div class="logo"><i class="fas fa-gamepad"></i> Arabic9 Fun</div>
+        <div class="nav-controls">
+            <button class="btn-music" id="musicBtn" onclick="toggleMusic()" title="Matikan/Nyalakan BGM">
+                <i class="fas fa-music"></i>
+            </button>
+            <a href="index.html" class="btn-back"><i class="fas fa-times"></i> Keluar</a>
+        </div>
+    </nav>
+
+    <div class="progress-bar-container" style="display: none;" id="progress-container">
+        <div class="progress-fill" id="progress-bar"></div>
+    </div>
+
+    <div class="hud" style="display: none;" id="game-hud">
+        <div class="hud-item">
+            <div class="hud-title">Level Bab</div>
+            <div class="hud-value tajawal" id="hud-bab">1</div>
+        </div>
+        <div class="hud-item">
+            <div class="hud-title">Soal Ke</div>
+            <div class="hud-value tajawal"><span id="hud-qnum">1</span>/30</div>
+        </div>
+        <div class="hud-item">
+            <div class="hud-title">Skor Total</div>
+            <div class="hud-value tajawal" id="hud-score">0</div>
+        </div>
+    </div>
+
+    <div class="game-board" id="game-board">
+        <div class="screen-center" id="start-screen">
+            <i class="fas fa-trophy big-icon" style="font-size: 7rem; margin-bottom: 30px;"></i>
+            <h1 class="tajawal" style="font-size: 3rem; margin-bottom: 20px;">Tantangan 30 Misi</h1>
+            <p style="font-size: 1.2rem; color: #aebecd; margin-bottom: 30px; max-width: 500px; margin-left: auto; margin-right: auto;">
+                Uji kemampuan bahasa Arabmu dari Bab 1 hingga 6. Ada tebak gambar, dengar audio, dan pasang kata. Siap jadi juara?
+            </p>
+            <button class="btn-start" onclick="startGame()">Mulai Petualangan <i class="fas fa-play-circle"></i></button>
+        </div>
+
+        <div id="question-container" style="display: none;">
+            <div class="question-header">
+                <span class="bab-badge" id="q-bab-badge">Bab 1</span>
+                <div id="q-media"></div>
+                <div class="question-text ar tajawal" id="q-text"></div>
+            </div>
+            <div id="q-options"></div>
+        </div>
+
+        <div class="screen-center" id="end-screen" style="display: none;">
+            <i class="fas fa-crown big-icon" style="font-size: 6rem;"></i>
+            <h1 class="tajawal" style="font-size: 3rem;">Misi Selesai!</h1>
+            <div class="final-score-text tajawal" id="final-score">0</div>
+            <p style="font-size: 1.2rem; color: #aebecd; margin-bottom: 30px;">Luar biasa! Kamu telah menyelesaikan seluruh tantangan.</p>
+            <button class="btn-start" onclick="location.reload()"><i class="fas fa-redo"></i> Main Lagi</button>
+        </div>
+
+        <div class="feedback-overlay" id="feedback-overlay"></div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        // --- MUSIC CONTROLS ---
+        const bgMusic = document.getElementById("bgMusic");
+        const musicBtn = document.getElementById("musicBtn");
+        
+        // Karena browser masa kini memblokir audio autoplay sebelum diklik, kita jalankan saat klik pertama di body.
+        document.body.addEventListener('click', () => {
+            if(bgMusic.paused && !musicBtn.classList.contains('muted')){
+                bgMusic.play();
+                bgMusic.volume = 0.5; // Supaya tidak terlalu keras dan menutupi suara TTS soal
+            }
+        }, { once: true });
+
+        function toggleMusic() {
+            if(bgMusic.paused) {
+                bgMusic.play();
+                musicBtn.classList.remove('muted');
+                musicBtn.innerHTML = '<i class="fas fa-music"></i>';
+            } else {
+                bgMusic.pause();
+                musicBtn.classList.add('muted');
+                musicBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+            }
+        }
+
+        // --- DATABASE 30 SOAL ---
+        const gameData = [
+            // BAB 1 (Tahun Baru Hijriyah)
+            { bab: 1, type: "img", icon: "fa-calendar-alt", q: "مَا هَذَا؟", options: ["التَّقْوِيْمُ", "الْمَسْجِدُ", "الْكِتَابُ", "الْقَمَرُ"], ans: 0 },
+            { bab: 1, type: "audio", audioText: "هَاجَرَ", q: "مَا مَعْنَى الْكَلِمَةِ الَّتِي تَسْمَعُهَا؟", options: ["Menjaga", "Berhijrah", "Tiba", "Mencegah"], ans: 1 },
+            { bab: 1, type: "img", icon: "fa-walking", q: "الصُّوْرَةُ تَدُلُّ عَلَى كَلِمَةِ...", options: ["قَتَلَ", "مَنَعَ", "هَاجَرَ", "نَجَّى"], ans: 2 },
+            { bab: 1, type: "audio", audioText: "مُحَرَّم", q: "الشَّهْرُ الَّذِي تَسْمَعُهُ هُوَ الشَّهْرُ...", options: ["الْأَخِيْرُ", "الْأَوَّلُ", "الثَّانِي", "الثَّالِثُ"], ans: 1 },
+            { bab: 1, type: "match", q: "اِرْبِطْ بَيْنَ الْكَلِمَةِ وَمَعْنَاهَا! (Cocokkan)", pairs: [{ar: "حَفِظَ", id: "Menjaga"}, {ar: "تَرَكَ", id: "Meninggalkan"}, {ar: "وَصَلَ", id: "Sampai"}] },
+
+            // BAB 2 (Maulid Nabi)
+            { bab: 2, type: "img", icon: "fa-baby", q: "الْكَلِمَةُ الْمُنَاسِبَةُ هِيَ...", options: ["الْمَوْلِدُ", "الْوَفَاةُ", "الزَّوَاجُ", "الْهِجْرَةُ"], ans: 0 },
+            { bab: 2, type: "audio", audioText: "رَبِيْعُ الْأَوَّلِ", q: "فِي أَيِّ شَهْرٍ وُلِدَ الرَّسُوْلُ؟", options: ["مُحَرَّم", "رَمَضَان", "رَبِيْعُ الْأَوَّلِ", "شَوَّال"], ans: 2 },
+            { bab: 2, type: "img", icon: "fa-bullhorn", q: "الشَّخْصُ الَّذِي يُلْقِي...", options: ["الْكُرْسِيَّ", "الْمُحَاضَرَةَ", "الْبَابَ", "الْمَاءَ"], ans: 1 },
+            { bab: 2, type: "audio", audioText: "اِحْتَفَلَ", q: "مَا مَعْنَى الْكَلِمَةِ الَّتِي تَسْمَعُهَا؟", options: ["Menangis", "Merayakan", "Berjalan", "Tidur"], ans: 1 },
+            { bab: 2, type: "match", q: "اِرْبِطْ بَيْنَ الْكَلِمَةِ وَمَعْنَاهَا!", pairs: [{ar: "زَيَّنَ", id: "Menghias"}, {ar: "وَزَّعَ", id: "Membagikan"}, {ar: "صَدَقَ", id: "Jujur"}] },
+
+            // BAB 3 (Nuzulul Quran & Idain)
+            { bab: 3, type: "img", icon: "fa-book-open", q: "مَاذَا نَزَلَ فِي رَمَضَانَ؟", options: ["الْحَدِيْثُ", "الْقُرْآنُ", "التَّوْرَاةُ", "الْإِنْجِيْلُ"], ans: 1 },
+            { bab: 3, type: "audio", audioText: "ذَبَحَ", q: "مَا مَعْنَى مَا تَسْمَعُ؟", options: ["Menyembelih", "Memakan", "Meminum", "Membeli"], ans: 0 },
+            { bab: 3, type: "img", icon: "fa-handshake", q: "فِي الْعِيْدِ نَحْنُ نَزُوْرُ...", options: ["الْجِيْرَانَ", "السُّوْقَ", "الْمَلْعَبَ", "الْمَطْعَمَ"], ans: 0 },
+            { bab: 3, type: "audio", audioText: "عِيْدُ الْفِطْرِ", q: "هَذَا الْعِيْدُ فِي شَهْرِ...", options: ["رَمَضَان", "ذِي الْحِجَّةِ", "شَوَّال", "رَجَب"], ans: 2 },
+            { bab: 3, type: "match", q: "اِرْبِطْ الْمُفْرَدَاتِ!", pairs: [{ar: "أُضْحِيَةٌ", id: "Kurban"}, {ar: "يَخْلُو", id: "Menyepi"}, {ar: "غَارُ حِرَاءٍ", id: "Gua Hira"}] },
+
+            // BAB 4 (Keindahan Alam)
+            { bab: 4, type: "img", icon: "fa-mountain", q: "مَا هَذَا بِالْعَرَبِيَّةِ؟", options: ["بَحْرٌ", "جَبَلٌ", "نَهْرٌ", "غَابَةٌ"], ans: 1 },
+            { bab: 4, type: "audio", audioText: "مَزْرَعَةٌ", q: "اخْتَرْ الصُّوْرَةَ لِمَا تَسْمَعُ!", options: ["<i class='fas fa-tree'></i> Hutan", "<i class='fas fa-seedling'></i> Sawah", "<i class='fas fa-water'></i> Laut", "<i class='fas fa-city'></i> Kota"], ans: 1 },
+            { bab: 4, type: "img", icon: "fa-tree", q: "الْأَشْجَارُ فِي...", options: ["الْغَابَةِ", "الْبَحْرِ", "السَّمَاءِ", "الْفَصْلِ"], ans: 0 },
+            { bab: 4, type: "audio", audioText: "جَمِيْلَةٌ", q: "مَا مَعْنَى الْكَلِمَةِ؟", options: ["Buruk", "Tinggi", "Indah", "Luas"], ans: 2 },
+            { bab: 4, type: "match", q: "اِرْبِطْ الْكَلِمَاتِ!", pairs: [{ar: "مَنَاظِرُ", id: "Pemandangan"}, {ar: "بُحَيْرَةٌ", id: "Danau"}, {ar: "شَاطِئٌ", id: "Pantai"}] },
+
+            // BAB 5 (Penciptaan Alam Semesta)
+            { bab: 5, type: "img", icon: "fa-sun", q: "مَا هَذَا؟", options: ["قَمَرٌ", "نَجْمٌ", "شَمْسٌ", "أَرْضٌ"], ans: 2 },
+            { bab: 5, type: "audio", audioText: "خَلَقَ اللهُ السَّمَاءَ", q: "مَاذَا خَلَقَ اللهُ حَسَبَ الصَّوْتِ؟", options: ["Bumi", "Langit", "Lautan", "Manusia"], ans: 1 },
+            { bab: 5, type: "img", icon: "fa-moon", q: "الْقَمَرُ يَظْهَرُ فِي...", options: ["اللَّيْلِ", "النَّهَارِ", "الصَّبَاحِ", "الظُّهْرِ"], ans: 0 },
+            { bab: 5, type: "audio", audioText: "الْأَرْضُ", q: "مَا مَعْنَى الْكَلِمَةِ؟", options: ["Langit", "Planet", "Bintang", "Bumi"], ans: 3 },
+            { bab: 5, type: "match", q: "صِلْ بَيْنَ الْكَلِمَتَيْنِ!", pairs: [{ar: "نُجُوْمٌ", id: "Bintang-bintang"}, {ar: "مَطَرٌ", id: "Hujan"}, {ar: "كَوَاكِبُ", id: "Planet"}] },
+
+            // BAB 6 (Menjaga Lingkungan)
+            { bab: 6, type: "img", icon: "fa-trash-alt", q: "لَا تَرْمِ ... فِي النَّهْرِ!", options: ["الْأَزْهَارَ", "النِّفَايَاتِ", "الْمَاءَ", "الْأَشْجَارَ"], ans: 1 },
+            { bab: 6, type: "audio", audioText: "يَكْنُسُ الْفَصْلَ", q: "مَاذَا يَفْعَلُ؟", options: ["Menyapu kelas", "Membaca buku", "Tidur di kelas", "Membuang sampah"], ans: 0 },
+            { bab: 6, type: "img", icon: "fa-broom", q: "نَحْنُ نُنَظِّفُ بِـ...", options: ["الْقَلَمِ", "الْكِتَابِ", "الْمِكْنَسَةِ", "الْكُرْسِيِّ"], ans: 2 },
+            { bab: 6, type: "audio", audioText: "نَظِيْفٌ", q: "مُضَادُّ (Lawan kata) مَا تَسْمَعُ هُوَ...", options: ["جَمِيْلٌ", "مُتَّسِخٌ (Kotor)", "كَبِيْرٌ", "وَاسِعٌ"], ans: 1 },
+            { bab: 6, type: "match", q: "اِرْبِطْ!", pairs: [{ar: "بِيْئَةٌ", id: "Lingkungan"}, {ar: "يَزْرَعُ", id: "Menanam"}, {ar: "يَرْمِي", id: "Membuang"}] }
+        ];
+
+        // --- GAME VARIABLES ---
+        let currentQ = 0;
+        let score = 0;
+        let audioObj = null;
+
+        // Variables for Match Game
+        let matchSelectedAr = null;
+        let matchSelectedId = null;
+        let matchesFound = 0;
+
+        // DOM Elements
+        const elStartScreen = document.getElementById('start-screen');
+        const elQContainer = document.getElementById('question-container');
+        const elEndScreen = document.getElementById('end-screen');
+        const elHud = document.getElementById('game-hud');
+        const elProgressCont = document.getElementById('progress-container');
+        const elProgressBar = document.getElementById('progress-bar');
+        
+        // --- GAME FUNCTIONS ---
+        function startGame() {
+            elStartScreen.style.display = 'none';
+            elHud.style.display = 'flex';
+            elProgressCont.style.display = 'block';
+            elQContainer.style.display = 'block';
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if(currentQ >= gameData.length) {
+                endGame();
+                return;
+            }
+
+            const qData = gameData[currentQ];
+            
+            // Update HUD
+            document.getElementById('hud-bab').innerText = qData.bab;
+            document.getElementById('hud-qnum').innerText = currentQ + 1;
+            document.getElementById('hud-score').innerText = score;
+            elProgressBar.style.width = `${((currentQ) / gameData.length) * 100}%`;
+
+            // Reset UI
+            document.getElementById('q-bab-badge').innerText = `Misi Bab ${qData.bab}`;
+            document.getElementById('q-text').innerHTML = qData.q;
+            const mediaCont = document.getElementById('q-media');
+            const optionsCont = document.getElementById('q-options');
+            mediaCont.innerHTML = '';
+            optionsCont.innerHTML = '';
+
+            // Stop audio TTS if playing
+            if(audioObj) { audioObj.pause(); audioObj = null; }
+
+            // Render Media based on Type
+            if(qData.type === 'img') {
+                mediaCont.innerHTML = `<i class="fas ${qData.icon} big-icon"></i>`;
+                renderMCQ(qData, optionsCont);
+            } else if (qData.type === 'audio') {
+                mediaCont.innerHTML = `<button class="btn-play-audio" onclick="playGameAudio('${qData.audioText}', this)"><i class="fas fa-play"></i></button>`;
+                renderMCQ(qData, optionsCont);
+            } else if (qData.type === 'match') {
+                mediaCont.innerHTML = `<div style="text-align:center; font-size:4rem; color:var(--warning); margin-bottom:20px;"><i class="fas fa-link"></i></div>`;
+                renderMatch(qData, optionsCont);
+            }
+        }
+
+        function renderMCQ(qData, container) {
+            let html = '<div class="options-grid">';
+            qData.options.forEach((opt, index) => {
+                html += `<div class="option-btn ar" onclick="checkMCQ(${index}, ${qData.ans}, this)">${opt}</div>`;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function renderMatch(qData, container) {
+            matchesFound = 0;
+            matchSelectedAr = null;
+            matchSelectedId = null;
+
+            // Shuffle Arrays
+            let arArr = [...qData.pairs].sort(() => Math.random() - 0.5);
+            let idArr = [...qData.pairs].sort(() => Math.random() - 0.5);
+
+            let html = '<div class="match-container">';
+            
+            // Kolom Arab (Kanan)
+            html += '<div class="match-column">';
+            arArr.forEach((p, index) => {
+                html += `<div class="match-btn ar" id="ar-${index}" data-val="${p.ar}" onclick="selectMatch('ar', this)">${p.ar}</div>`;
+            });
+            html += '</div>';
+
+            // Kolom Indo (Kiri)
+            html += '<div class="match-column">';
+            idArr.forEach((p, index) => {
+                html += `<div class="match-btn" id="id-${index}" data-val="${p.id}" onclick="selectMatch('id', this)">${p.id}</div>`;
+            });
+            html += '</div>';
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // --- LOGIC: AUDIO ---
+        function playGameAudio(text, btn) {
+            if(audioObj) { audioObj.pause(); }
+            btn.classList.add('playing');
+            btn.innerHTML = '<i class="fas fa-volume-up"></i>';
+            
+            let url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=ar&client=tw-ob&q=${encodeURIComponent(text)}`;
+            audioObj = new Audio(url);
+            audioObj.play();
+
+            audioObj.onended = () => { 
+                btn.classList.remove('playing'); 
+                btn.innerHTML = '<i class="fas fa-play"></i>';
+            };
+            audioObj.onerror = () => {
+                alert("Gagal memuat audio. Cek internet.");
+                btn.classList.remove('playing');
+                btn.innerHTML = '<i class="fas fa-play"></i>';
+            };
+        }
+
+        // --- LOGIC: MCQ ---
+        function checkMCQ(selectedIndex, correctIndex, btnElement) {
+            // Disable all buttons
+            const btns = document.querySelectorAll('.option-btn');
+            btns.forEach(b => b.style.pointerEvents = 'none');
+
+            if(selectedIndex === correctIndex) {
+                btnElement.classList.add('correct');
+                score += 100;
+                showFeedback(true);
+            } else {
+                btnElement.classList.add('wrong');
+                btns[correctIndex].classList.add('correct'); // Highlight right answer
+                showFeedback(false);
+            }
+
+            setTimeout(() => {
+                currentQ++;
+                loadQuestion();
+            }, 1500);
+        }
+
+        // --- LOGIC: MATCHING ---
+        function selectMatch(col, btnElement) {
+            if(btnElement.classList.contains('matched')) return;
+
+            // Visual Selection
+            const colBtns = btnElement.parentElement.querySelectorAll('.match-btn');
+            colBtns.forEach(b => { if(!b.classList.contains('matched')) b.classList.remove('selected') });
+            btnElement.classList.add('selected');
+
+            // Logic
+            if(col === 'ar') matchSelectedAr = btnElement;
+            if(col === 'id') matchSelectedId = btnElement;
+
+            // Jika dua kolom sudah terpilih
+            if(matchSelectedAr && matchSelectedId) {
+                const arVal = matchSelectedAr.getAttribute('data-val');
+                const idVal = matchSelectedId.getAttribute('data-val');
+
+                // Cari apakah mereka pasangan di gameData
+                const qData = gameData[currentQ];
+                const isPair = qData.pairs.find(p => p.ar === arVal && p.id === idVal);
+
+                if(isPair) {
+                    matchSelectedAr.classList.replace('selected', 'matched');
+                    matchSelectedId.classList.replace('selected', 'matched');
+                    matchSelectedAr.innerHTML += ' <i class="fas fa-check"></i>';
+                    matchSelectedId.innerHTML += ' <i class="fas fa-check"></i>';
+                    score += 40;
+                    document.getElementById('hud-score').innerText = score;
+                    matchesFound++;
+
+                    if(matchesFound === 3) {
+                        showFeedback(true);
+                        setTimeout(() => {
+                            currentQ++;
+                            loadQuestion();
+                        }, 1500);
+                    }
+                } else {
+                    matchSelectedAr.classList.replace('selected', 'wrong-match');
+                    matchSelectedId.classList.replace('selected', 'wrong-match');
+                    
+                    setTimeout(() => {
+                        matchSelectedAr.classList.remove('wrong-match');
+                        matchSelectedId.classList.remove('wrong-match');
+                        matchSelectedAr = null;
+                        matchSelectedId = null;
+                    }, 500);
+                }
+                
+                // Reset Selection variables if matched or wrong
+                if(isPair){
+                    matchSelectedAr = null;
+                    matchSelectedId = null;
+                }
+            }
+        }
+
+        // --- FEEDBACK ---
+        function showFeedback(isCorrect) {
+            const overlay = document.getElementById('feedback-overlay');
+            if(isCorrect) {
+                overlay.className = 'feedback-overlay show-correct';
+                overlay.innerHTML = '<i class="fas fa-check-circle"></i>';
+            } else {
+                overlay.className = 'feedback-overlay show-wrong';
+                overlay.innerHTML = '<i class="fas fa-times-circle"></i>';
+            }
+
+            setTimeout(() => {
+                overlay.className = 'feedback-overlay';
+            }, 1000);
+        }
+
+        // --- END GAME ---
+        function endGame() {
+            elQContainer.style.display = 'none';
+            elHud.style.display = 'none';
+            elProgressCont.style.display = 'none';
+            elEndScreen.style.display = 'block';
+            document.getElementById('final-score').innerText = score;
+            
+            if(score >= 2500) {
+                document.querySelector('#end-screen p').innerText = "LUAR BIASA! Kamu Master Bahasa Arab! 🏆";
+            } else if (score >= 1500) {
+                document.querySelector('#end-screen p').innerText = "Kerja bagus! Sedikit lagi jadi juara! ⭐";
+            } else {
+                document.querySelector('#end-screen p').innerText = "Tetap semangat belajar ya! 💪";
+            }
+        }
+    </script>
+</body>
+</html>

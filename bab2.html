@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bab 2: Maulid Nabi | Arabic9 Fun</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Nunito:wght@400;600;700;800&family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- COPY STYLE DARI BAB 1 & INDEX (Konsistensi Desain) --- */
+        :root {
+            --primary: #48CAE4;
+            --primary-dark: #0096C7;
+            --accent: #FFB703;
+            --accent-hover: #FB8500;
+            --text-dark: #2b2d42;
+            --bg-light: #edf2f4;
+            --white: #ffffff;
+            --radius: 20px;
+            --success: #27ae60;
+            --error: #e74c3c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Nunito', sans-serif; background-color: var(--bg-light); color: var(--text-dark); }
+        
+        /* Typography Khusus Arab */
+        .ar { font-family: 'Amiri', serif; direction: rtl; }
+        .ar-xl { font-size: 1.8rem; line-height: 2; }
+        .ar-lg { font-size: 1.4rem; line-height: 1.8; }
+        
+        /* --- LAYOUT UTAMA --- */
+        .header-lesson {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            padding: 30px 5% 80px; 
+            color: white;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            position: relative;
+        }
+
+        .back-btn {
+            color: white; font-size: 1.2rem; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px; font-weight: 700;
+        }
+        .back-btn:hover { color: var(--accent); }
+
+        .lesson-title h1 { font-family: 'Tajawal', sans-serif; font-size: 2.2rem; margin-bottom: 5px; }
+        .lesson-subtitle { font-size: 1.1rem; opacity: 0.9; }
+
+        /* --- NAVIGATION TABS (STICKY) --- */
+        .lesson-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: -40px; 
+            padding: 0 20px;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .nav-item {
+            background: var(--white);
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 700;
+            color: var(--text-dark);
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: 0.3s;
+            border: 2px solid transparent;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: var(--accent);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        /* --- CONTENT CONTAINERS --- */
+        .content-area { max-width: 900px; margin: 40px auto; padding: 0 20px; min-height: 60vh; }
+        
+        .section-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            scroll-margin-top: 100px; 
+            display: none; /* Sistem Tab */
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section-card.active-section {
+            display: block; 
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--bg-light);
+            padding-bottom: 15px;
+        }
+
+        .section-icon {
+            width: 50px; height: 50px; background: #e0fbfc; color: var(--primary-dark);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+        }
+
+        .section-title h2 { font-size: 1.5rem; color: var(--primary-dark); }
+        .section-title span { font-size: 0.9rem; color: #888; display: block; }
+
+        /* --- 1. MUFRODAT (Grid Style) --- */
+        .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
+        
+        .vocab-card {
+            background: #f8f9fa; border: 1px solid #eee; border-radius: 15px; padding: 20px;
+            text-align: center; transition: 0.3s; cursor: pointer; position: relative; overflow: hidden;
+        }
+        .vocab-card:hover { border-color: var(--primary); transform: translateY(-5px); background: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        
+        /* Efek saat audio diputar */
+        .vocab-card.playing { border-color: var(--accent); background-color: #fff8e1; transform: scale(0.98); }
+        .audio-icon { position: absolute; top: 10px; right: 10px; color: #ddd; font-size: 0.8rem; transition: 0.3s; }
+        .vocab-card:hover .audio-icon { color: var(--primary); }
+        .vocab-card.playing .audio-icon { color: var(--accent); }
+
+        .vocab-ar { color: var(--primary-dark); font-weight: 700; margin-bottom: 5px; }
+        .vocab-id { color: #666; font-size: 0.9rem; }
+        .vocab-img { font-size: 2.5rem; margin-bottom: 10px; display: block; }
+
+        /* --- EXERCISE BOX --- */
+        .exercise-container { background: #f0faff; border: 2px dashed var(--primary); border-radius: 15px; padding: 25px; margin-top: 30px; }
+        .exercise-title { text-align: center; margin-bottom: 20px; }
+        .exercise-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .question-item { display: flex; align-items: center; background: white; padding: 10px; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 10px; }
+        .q-number { width: 30px; height: 30px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 10px; }
+        .q-text { flex: 1; text-align: right; padding-right: 10px; font-size: 1.3rem; color: var(--primary-dark); font-weight: bold; }
+        .q-input { flex: 2; padding: 8px 12px; border: 1px solid #ccc; border-radius: 8px; outline: none; transition: 0.3s; }
+        .q-input:focus { border-color: var(--primary); }
+        .q-input.correct { border-color: var(--success); background: #e8f8f5; color: var(--success); font-weight: bold; }
+        .q-input.wrong { border-color: var(--error); background: #fdedec; }
+        .btn-check { display: block; width: 100%; margin-top: 20px; padding: 12px; background: var(--primary-dark); color: white; border: none; border-radius: 50px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-check:hover { background: var(--primary); }
+
+        /* --- 2. HIWAR (Chat Style) --- */
+        .chat-box { background: #e5e5e5; padding: 20px; border-radius: 15px; max-height: 500px; overflow-y: auto; background-image: url('https://i.pinimg.com/originals/97/c0/07/97c00726d1d93130c25d804f323e5959.png'); }
+        .message { display: flex; margin-bottom: 15px; align-items: flex-end; }
+        .message.student-a { flex-direction: row-reverse; } 
+        .bubble { max-width: 80%; padding: 12px 18px; border-radius: 15px; position: relative; font-size: 1.1rem; }
+        .student-a .bubble { background: #dcf8c6; color: #000; border-bottom-right-radius: 0; text-align: right; }
+        .student-b .bubble { background: #fff; color: #000; border-bottom-left-radius: 0; text-align: right; }
+        .speaker-name { font-size: 0.75rem; color: #555; margin-bottom: 3px; display: block; font-weight: bold; }
+
+        .chat-audio-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 25px; height: 25px; border-radius: 50%;
+            background: rgba(0,0,0,0.1); color: #555;
+            font-size: 0.7rem; cursor: pointer; margin-right: 5px; border: none;
+            position: absolute; bottom: 5px; left: 5px;
+        }
+        .chat-audio-btn:hover { background: var(--primary); color: white; }
+        .chat-audio-btn.playing { background: var(--accent); color: white; animation: pulse 1s infinite; }
+
+        /* --- 3. QIRA'AH (Text) --- */
+        .reading-text { text-align: justify; background: #fff8e1; padding: 25px; border-radius: 15px; border-right: 5px solid var(--accent); }
+        .toggle-trans { margin-top: 15px; background: transparent; border: 2px solid var(--accent); color: var(--accent); padding: 8px 20px; border-radius: 50px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.3s; }
+        .toggle-trans:hover { background: var(--accent); color: white; }
+        .translation-box { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc; color: #555; }
+
+        /* --- 4. TARKIB (Grammar Table) --- */
+        .grammar-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .grammar-table th { background: var(--primary); color: white; padding: 12px; text-align: center; }
+        .grammar-table td { border: 1px solid #ddd; padding: 10px; text-align: center; font-size: 1.2rem; }
+        .grammar-note { background: #e0fbfc; padding: 15px; border-radius: 10px; margin-top: 20px; font-size: 0.9rem; }
+
+        /* --- 5. QUIZ STYLING --- */
+        .quiz-container { background: #fff; padding: 30px; border-radius: 20px; border: 2px solid var(--primary-dark); }
+        .quiz-item { margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .quiz-question { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; color: var(--text-dark); display: flex; gap: 10px; }
+        .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .quiz-option { 
+            background: #f8f9fa; border: 1px solid #ddd; padding: 12px; border-radius: 10px; 
+            cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 10px;
+        }
+        .quiz-option:hover { background: #e0fbfc; border-color: var(--primary); }
+        .quiz-option input { display: none; }
+        
+        /* State Benar/Salah untuk Quiz */
+        .quiz-option.correct-answer { background: #d4edda; border-color: #28a745; color: #155724; }
+        .quiz-option.wrong-answer { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+        /* Responsive */
+        @media (max-width: 768px) { .exercise-grid, .quiz-options { grid-template-columns: 1fr; } }
+        @media (max-width: 600px) { .lesson-nav { gap: 10px; white-space: nowrap; overflow-x: auto; justify-content: flex-start; padding-bottom: 10px; } }
+    </style>
+</head>
+<body>
+
+    <header class="header-lesson">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Kembali ke Menu</a>
+            <div class="lesson-title">
+                <h1 class="ar">الْحَفْلُ بِمَوْلِدِ الرَّسُوْلِ</h1>
+                <p class="lesson-subtitle">Bab 2 - Perayaan Maulid Nabi SAW</p>
+            </div>
+        </div>
+    </header>
+
+    <nav class="lesson-nav">
+        <a onclick="openTab('mufradat', this)" class="nav-item active">Mufradat</a>
+        <a onclick="openTab('hiwar', this)" class="nav-item">Istima' dan Kalam</a>
+        <a onclick="openTab('qiraah', this)" class="nav-item">Qira'ah</a>
+        <a onclick="openTab('tarkib', this)" class="nav-item">Kitabah dan Tarkib</a>
+        <a onclick="openTab('quiz', this)" class="nav-item" style="background: #e74c3c; color: white;">Kuis Bab 2</a>
+    </nav>
+
+    <div class="content-area">
+
+        <section id="mufradat" class="section-card active-section">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-spell-check"></i></div>
+                <div class="section-title">
+                    <h2>Al-Mufradat</h2>
+                    <span>Kosakata Baru</span>
+                </div>
+            </div>
+            
+            <p style="margin-bottom: 20px; text-align: center; color: #666; font-size: 0.9rem;">
+                <i class="fas fa-info-circle"></i> Klik kartu untuk mendengarkan audio (🔊)
+            </p>
+            
+            <div class="vocab-grid">
+                <div class="vocab-card" onClick="playAudio(this)"><i class="fas fa-volume-up audio-icon"></i><span class="vocab-img">📢</span><div class="ar ar-lg vocab-ar">بَلَغَ</div><div class="vocab-id">Menyampaikan / Sampai</div></div>
+                <div class="vocab-card" onClick="playAudio(this)"><i class="fas fa-volume-up audio-icon"></i><span class="vocab-img">📨</span><div class="ar ar-lg vocab-ar">بَعَثَ</div><div class="vocab-id">Mengutus</div></div>
+                <div class="vocab-card" onClick="playAudio(this)"><i class="fas fa-volume-up audio-icon"></i><span class="vocab-img">✅</span><div class="ar ar-lg vocab-ar">صَدَقَ</div><div class="vocab-id">Benar / Jujur</div></div>
+                <div class="vocab-card" onClick="playAudio(this)"><i class="fas fa-volume-up audio-icon"></i><span class="vocab-img">🤲</span><div class="ar ar-lg vocab-ar">دَعَى</div><div class="vocab-id">Mengajak / Menyeru</div></div>
+                <div class="vocab-card" onClick="playAudio(this)"><i class="fas fa-volume-up audio-icon"></i><span class="vocab-img">🌙</span><div class="ar ar-lg vocab-ar">أَسْرَى</div><div class="vocab-id">Memperjalankan (Malam)</div></div>
+                <div class="vocab-card" onClick="playAudio(this)"><i class="fas fa-volume-up audio-icon"></i><span class="vocab-img">🎉</span><div class="ar ar-lg vocab-ar">اِحْتَفَلَ</div><div class="vocab-id">Merayakan</div></div>
+                <div class="vocab-card" onClick="playAudio(this)"><i class="fas fa-volume-up audio-icon"></i><span class="vocab-img">🎁</span><div class="ar ar-lg vocab-ar">وَزَّعَ</div><div class="vocab-id">Membagikan</div></div>
+                <div class="vocab-card" onClick="playAudio(this)"><i class="fas fa-volume-up audio-icon"></i><span class="vocab-img">👥</span><div class="ar ar-lg vocab-ar">أَعْضَاءُ اللَّجْنَةِ</div><div class="vocab-id">Anggota Panitia</div></div>
+                <div class="vocab-card" onClick="playAudio(this)"><i class="fas fa-volume-up audio-icon"></i><span class="vocab-img">👋</span><div class="ar ar-lg vocab-ar">اِسْتَقْبَلَ</div><div class="vocab-id">Menyambut</div></div>
+                <div class="vocab-card" onClick="playAudio(this)"><i class="fas fa-volume-up audio-icon"></i><span class="vocab-img">🎀</span><div class="ar ar-lg vocab-ar">زَيَّنَ</div><div class="vocab-id">Menghias</div></div>
+            </div>
+
+            <div class="exercise-container">
+                <div class="exercise-title">
+                    <h3 class="ar">التَّدْرِيْبُ - ١</h3>
+                    <p class="ar" style="font-size: 1.2rem; margin-top: 5px;">مَا مَعْنَى هَذِهِ الْمُفْرَدَاتِ فِي اللُّغَةِ الْإِنْدُوْنِيْسِيَّةِ؟</p>
+                </div>
+                <div class="exercise-grid">
+                    <div class="col-group">
+                        <div class="question-item"><span class="q-number">1</span><div class="ar q-text">صَدَقَ</div><input type="text" class="q-input" data-key="benar,jujur" placeholder="Jawab..."></div>
+                        <div class="question-item"><span class="q-number">2</span><div class="ar q-text">حَمَى</div><input type="text" class="q-input" data-key="melindungi,menjaga" placeholder="Jawab..."></div>
+                        <div class="question-item"><span class="q-number">3</span><div class="ar q-text">وُلِدَ</div><input type="text" class="q-input" data-key="dilahirkan,lahir" placeholder="Jawab..."></div>
+                        <div class="question-item"><span class="q-number">4</span><div class="ar q-text">أَسْرَى</div><input type="text" class="q-input" data-key="memperjalankan,isra" placeholder="Jawab..."></div>
+                        <div class="question-item"><span class="q-number">5</span><div class="ar q-text">دَعَى</div><input type="text" class="q-input" data-key="mengajak,menyeru" placeholder="Jawab..."></div>
+                    </div>
+                    <div class="col-group">
+                        <div class="question-item"><span class="q-number">6</span><div class="ar q-text">بَلَغَ</div><input type="text" class="q-input" data-key="menyampaikan,sampai" placeholder="Jawab..."></div>
+                        <div class="question-item"><span class="q-number">7</span><div class="ar q-text">بَعَثَ</div><input type="text" class="q-input" data-key="mengutus" placeholder="Jawab..."></div>
+                        <div class="question-item"><span class="q-number">8</span><div class="ar q-text">تُوُفِّيَ</div><input type="text" class="q-input" data-key="wafat,meninggal" placeholder="Jawab..."></div>
+                        <div class="question-item"><span class="q-number">9</span><div class="ar q-text">التِّجَارَةِ</div><input type="text" class="q-input" data-key="perdagangan,dagang" placeholder="Jawab..."></div>
+                        <div class="question-item"><span class="q-number">10</span><div class="ar q-text">تَزَوَّجَ</div><input type="text" class="q-input" data-key="menikah,kawin" placeholder="Jawab..."></div>
+                    </div>
+                </div>
+                <button class="btn-check" onClick="checkAnswers()">Cek Jawaban Anda</button>
+            </div>
+        </section>
+
+        <section id="hiwar" class="section-card">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-comments"></i></div>
+                <div class="section-title">
+                    <h2>Al-Hiwar</h2>
+                    <span>Percakapan: Persiapan Acara</span>
+                </div>
+            </div>
+
+            <div class="chat-box">
+                <div class="message student-a">
+                    <div class="bubble"><span class="speaker-name">Al-Ustadz (الأستاذ)</span><p class="ar">نَحْنُ نَحْتَفِلُ بِذِكْرَى مَوْلِدِ النَّبِيِّ ﷺ هَذَا الْيَوْمَ؟</p><button class="chat-audio-btn" onClick="playText(this, 'نَحْنُ نَحْتَفِلُ بِذِكْرَى مَوْلِدِ النَّبِيِّ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ هَذَا الْيَوْمَ؟')"><i class="fas fa-play"></i></button></div>
+                </div>
+                <div class="message student-b">
+                    <div class="bubble"><span class="speaker-name">Husain (حسين)</span><p class="ar">نَعَمْ، نَحْتَفِلُ بِهِ هَذَا الْيَوْمَ</p><button class="chat-audio-btn" onClick="playText(this, 'نَعَمْ، نَحْتَفِلُ بِهِ هَذَا الْيَوْمَ')"><i class="fas fa-play"></i></button></div>
+                </div>
+                <div class="message student-a">
+                    <div class="bubble"><span class="speaker-name">Al-Ustadz (الأستاذ)</span><p class="ar">مَاذَا عَمِلْتُمْ قَبْلَ هَذَا الْحَفْلِ؟</p><button class="chat-audio-btn" onClick="playText(this, 'مَاذَا عَمِلْتُمْ قَبْلَ هَذَا الْحَفْلِ؟')"><i class="fas fa-play"></i></button></div>
+                </div>
+                <div class="message student-b">
+                    <div class="bubble"><span class="speaker-name">Husain (حسين)</span><p class="ar">اِجْتَمَعْنَا لِنُوَزِّعَ الأَعْمَالَ عَلَى أَعْضَاءِ اللَّجْنَةِ<br>كُنْتُ رَئِيْسَ اللَّجْنَةِ<br>وَكَانَ حَسَنٌ سِكْرِتِيْرَ اللَّجْنَةِ<br>وَكَانَتْ عَائِشَةُ أَمِيْنَةَ الصُّنْدُوْقِ<br>وَكَانَ بَعْضُ الأَصْدِقَاءِ أَعْضَاءً فِي اللَّجْنَةِ</p><button class="chat-audio-btn" onClick="playText(this, 'اِجْتَمَعْنَا لِنُوَزِّعَ الأَعْمَالَ عَلَى أَعْضَاءِ اللَّجْنَةِ. كُنْتُ رَئِيْسَ اللَّجْنَةِ. وَكَانَ حَسَنٌ سِكْرِتِيْرَ اللَّجْنَةِ. وَكَانَتْ عَائِشَةُ أَمِيْنَةَ الصُّنْدُوْقِ. وَكَانَ بَعْضُ الأَصْدِقَاءِ أَعْضَاءً فِي اللَّجْنَةِ')"><i class="fas fa-play"></i></button></div>
+                </div>
+                <div class="message student-a">
+                    <div class="bubble"><span class="speaker-name">Al-Ustadz (الأستاذ)</span><p class="ar">وَمَاذَا عَمِلْتِ يَا فَرِيْدَةُ قَبْلَ هَذَا الْحَفْلِ؟</p><button class="chat-audio-btn" onClick="playText(this, 'وَمَاذَا عَمِلْتِ يَا فَرِيْدَةُ قَبْلَ هَذَا الْحَفْلِ؟')"><i class="fas fa-play"></i></button></div>
+                </div>
+                <div class="message student-b">
+                    <div class="bubble"><span class="speaker-name">Faridah (فريدة)</span><p class="ar">أَنَا وَزَيْنَبُ وَآمِنَةُ أَرْسَلْنَا بِطَاقَاتِ الدَّعْوَةِ إِلَى الْمَدْعُوِّيْنَ وَالْمَدْعُوَّاتِ</p><button class="chat-audio-btn" onClick="playText(this, 'أَنَا وَزَيْنَبُ وَآمِنَةُ أَرْسَلْنَا بِطَاقَاتِ الدَّعْوَةِ إِلَى الْمَدْعُوِّيْنَ وَالْمَدْعُوَّاتِ')"><i class="fas fa-play"></i></button></div>
+                </div>
+                <div class="message student-a">
+                    <div class="bubble"><span class="speaker-name">Al-Ustadz (الأستاذ)</span><p class="ar">مَنِ الَّذِي نَظَّمَ الْكَرَاسِيَّ فِي مَكَانِ الْحَفْلِ؟</p><button class="chat-audio-btn" onClick="playText(this, 'مَنِ الَّذِي نَظَّمَ الْكَرَاسِيَّ فِي مَكَانِ الْحَفْلِ؟')"><i class="fas fa-play"></i></button></div>
+                </div>
+                <div class="message student-b">
+                    <div class="bubble"><span class="speaker-name">Hamid (حامد)</span><p class="ar">يُوْسُفُ وَرِضْوَانُ نَظَّمَا الْكَرَاسِيَّ فِي قَاعَةِ الْمَدْرَسَةِ</p><button class="chat-audio-btn" onClick="playText(this, 'يُوْسُفُ وَرِضْوَانُ نَظَّمَا الْكَرَاسِيَّ فِي قَاعَةِ الْمَدْرَسَةِ')"><i class="fas fa-play"></i></button></div>
+                </div>
+                <div class="message student-b">
+                    <div class="bubble"><span class="speaker-name">Amin (أمين)</span><p class="ar">وَكَانُوْا مُجِدِّيْنَ فِي تَزْيِيْنِ مَكَانِ الْحَفْلِ بِالأَزْهَارِ الْجَمِيْلَةِ</p><button class="chat-audio-btn" onClick="playText(this, 'وَكَانُوْا مُجِدِّيْنَ فِي تَزْيِيْنِ مَكَانِ الْحَفْلِ بِالأَزْهَارِ الْجَمِيْلَةِ')"><i class="fas fa-play"></i></button></div>
+                </div>
+                <div class="message student-a">
+                    <div class="bubble"><span class="speaker-name">Al-Ustadz (الأستاذ)</span><p class="ar">مَنْ سَيُلْقِي الْمُحَاضَرَةَ الدِّيْنِيَّةَ فِي ذَلِكَ الْحَفْلِ؟</p><button class="chat-audio-btn" onClick="playText(this, 'مَنْ سَيُلْقِي الْمُحَاضَرَةَ الدِّيْنِيَّةَ فِي ذَلِكَ الْحَفْلِ؟')"><i class="fas fa-play"></i></button></div>
+                </div>
+                <div class="message student-b">
+                    <div class="bubble"><span class="speaker-name">Hamid (حامد)</span><p class="ar">سَيُلْقِيْهَا الأُسْتَاذُ عَبْدُ الرَّحْمَنِ مِنْ سُوْرَابَايَا</p><button class="chat-audio-btn" onClick="playText(this, 'سَيُلْقِيْهَا الأُسْتَاذُ عَبْدُ الرَّحْمَنِ مِنْ سُوْرَابَايَا')"><i class="fas fa-play"></i></button></div>
+                </div>
+                <div class="message student-a">
+                    <div class="bubble"><span class="speaker-name">Al-Ustadz (الأستاذ)</span><p class="ar">مَا مَوْضُوْعُ الْمُحَاضَرَةِ؟</p><button class="chat-audio-btn" onClick="playText(this, 'مَا مَوْضُوْعُ الْمُحَاضَرَةِ؟')"><i class="fas fa-play"></i></button></div>
+                </div>
+                <div class="message student-b">
+                    <div class="bubble"><span class="speaker-name">Amin (أمين)</span><p class="ar">"الْحِكَمُ الْمَأْخُوْذَةُ مِنْ ذِكْرَى مَوْلِدِ النَّبِيِّ ﷺ"</p><button class="chat-audio-btn" onClick="playText(this, 'الْحِكَمُ الْمَأْخُوْذَةُ مِنْ ذِكْرَى مَوْلِدِ النَّبِيِّ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ')"><i class="fas fa-play"></i></button></div>
+                </div>
+                <div class="message student-b">
+                    <div class="bubble"><span class="speaker-name">Hamid (حامد)</span><p class="ar">سَوْفَ يَسْتَمِعُ التَّلَامِيْذُ إِلَى الْمُحَاضَرَةِ بِاهْتِمَامٍ كَبِيْرٍ</p><button class="chat-audio-btn" onClick="playText(this, 'سَوْفَ يَسْتَمِعُ التَّلَامِيْذُ إِلَى الْمُحَاضَرَةِ بِاهْتِمَامٍ كَبِيْرٍ')"><i class="fas fa-play"></i></button></div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px; text-align: center;">
+                <button class="toggle-trans" onClick="toggleTranslation('hiwar-trans')">Terjemahkan Percakapan</button>
+                <div id="hiwar-trans" class="translation-box">
+                    <strong>Ustadz:</strong> Kita merayakan Maulid Nabi hari ini?<br>
+                    <strong>Husain:</strong> Ya, kita merayakannya hari ini.<br>
+                    <strong>Ustadz:</strong> Apa yang kalian kerjakan sebelum perayaan ini?<br>
+                    <strong>Husain:</strong> Kami berkumpul untuk membagi tugas kepada anggota panitia... (Klik tombol untuk lanjut baca)<br>
+                    <strong>Ustadz:</strong> Dan apa yang kamu lakukan wahai Faridah sebelum perayaan ini?<br>
+                    <strong>Faridah:</strong> Saya, Zainab, dan Aminah mengirim kartu undangan kepada tamu undangan.<br>
+                    <strong>Ustadz:</strong> Siapa yang mengatur kursi di tempat perayaan?<br>
+                    <strong>Hamid:</strong> Yusuf dan Ridwan yang mengatur kursi di aula sekolah.<br>
+                    <strong>Amin:</strong> Dan mereka rajin dalam menghias tempat perayaan dengan bunga-bunga yang indah.<br>
+                    <strong>Ustadz:</strong> Siapa yang akan menyampaikan ceramah agama pada perayaan itu?<br>
+                    <strong>Hamid:</strong> Ustadz Abdurrahman dari Surabaya yang akan menyampaikannya.<br>
+                    <strong>Ustadz:</strong> Apa tema ceramahnya?<br>
+                    <strong>Amin:</strong> "Hikmah yang diambil dari peringatan Maulid Nabi SAW"<br>
+                    <strong>Hamid:</strong> Para siswa akan mendengarkan ceramah dengan perhatian yang besar.
+                </div>
+            </div>
+
+            <div class="exercise-container" style="background: #fff0f0; border-color: #ff9999;">
+                <div class="exercise-title">
+                    <h3 class="ar">التَّدْرِيْبُ - ٢ (الْحِوَار)</h3>
+                    <p class="ar" style="font-size: 1.1rem; margin-top: 5px;">أَجِبْ عَنِ الْأَسْئِلَةِ الْآتِيَةِ بِنَاءً عَلَى الْحِوَارِ!</p>
+                </div>
+                <div class="exercise-grid" style="grid-template-columns: 1fr;">
+                    <div class="question-item">
+                        <span class="q-number">1</span>
+                        <div class="ar q-text">مَنْ كَانَ رَئِيْسَ اللَّجْنَةِ؟</div>
+                        <input type="text" class="q-input" data-key="حسين,husain" placeholder="Jawab (Arab/Indo)...">
+                    </div>
+                    <div class="question-item">
+                        <span class="q-number">2</span>
+                        <div class="ar q-text">مَنْ سَيُلْقِي الْمُحَاضَرَةَ الدِّيْنِيَّةَ؟</div>
+                        <input type="text" class="q-input" data-key="الأستاذ عبد الرحمن,ustadz abdurrahman" placeholder="Jawab (Arab/Indo)...">
+                    </div>
+                    <div class="question-item">
+                        <span class="q-number">3</span>
+                        <div class="ar q-text">مَنْ أَرْسَلَ بِطَاقَاتِ الدَّعْوَةِ؟</div>
+                        <input type="text" class="q-input" data-key="فريدة وزينب وآمنة,faridah,zainab,aminah" placeholder="Sebutkan satu nama...">
+                    </div>
+                </div>
+                <button class="btn-check" style="background: #e74c3c;" onClick="checkAnswers()">Cek Jawaban Hiwar</button>
+            </div>
+        </section>
+
+        <section id="qiraah" class="section-card">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-book-open"></i></div>
+                <div class="section-title">
+                    <h2>Al-Qira'ah</h2>
+                    <span>سِيْرَةُ النَّبِي ص. م</span>
+                </div>
+            </div>
+
+            <div class="reading-text">
+                <h3 class="ar" style="text-align: center; margin-bottom: 20px; font-size: 2rem; color: var(--primary-dark);">سِيْرَةُ النَّبِي ص. م</h3>
+                
+                <p class="ar ar-xl">
+                    فِي الأُسْبُوعِ الْمَاضِي، اِحْتَفَلَ التَّلَامِيْذُ بِذِكْرَى مَوْلِدِ الرَّسُوْلِ. هُمْ يَسْتَمِعُوْنَ إِلَى مُحَاضَرَةٍ دِيْنِيَّةٍ أَلْقَاهَا الأُسْتَاذُ مُحَمَّد إِدْرِيس. وَتَحَدَّثَ الأُسْتَاذُ فِي مُحَاضَرَتهِ عَنْ " سِيْرَةِ النَّبِي ص. م ".
+                </p>
+                <br>
+                <p class="ar ar-xl">
+                    قَدْ وُلِدَ فِي يَوْمِ الاِثْنَيْنِ، فِي عَامِ الْفِيلِ، الثَّانِي عَشَرَ مِنْ شَهْرِ رَبِيعٍ الأَوَّل. اسْمُ أَبِيهِ عَبْدُ اللهِ بْنُ عَبْدِ الْمُطَّلِبِ، وَأُمُّهُ آمِنَةُ بِنْتُ وَهْبٍ. وُلِدَ الرَّسُولُ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ يَتِيمًا، فَقَدْ تُوُفِّيَ أَبُوهُ وَهُوَ فِي بَطْنِ أُمِّهِ، ثُمَّ تُوُفِّيَتْ أُمُّهُ وَكَانَ عُمْرُهُ سِتَّ سِنِينَ، فَرَبَّاهُ جَدُّهُ عَبْدُ الْمُطَّلِبِ. وَلَمَّا تُوُفِّيَ جَدُّهُ عَبْدُ الْمُطَّلِبِ، رَبَّاهُ عَمُّهُ أَبُو طَالِبٍ. وَكَانَ عُمْرُهُ ثَمَانِ سِنِينَ.
+                </p>
+                <br>
+                <p class="ar ar-xl">
+                    فِي الصِّغَرِ، عَمِلَ مُحَمَّدٌ فِي رِعَايَةِ الْغَنَمِ، ثُمَّ ذَهَبَ إِلَى الشَّامِ مَعَ عَمِّهِ أَبِي طَالِبٍ لِلتِّجَارَةِ. ثُمَّ تَزَوَّجَ خَدِيجَةَ بَعْدَ ذَلِكَ، وَكَانَ عُمْرُهُ خَمْسًا وَعِشْرِينَ سَنَةً، وَعُمْرُهَا أَرْبَعِينَ سَنَةً. وَلَمَّا بَلَغَ عُمْرُهُ أَرْبَعِينَ سَنَةً، بَعَثَ اللهُ مُحَمَّدًا صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ نَبِيًّا وَرَسُولًا ، ثُمَّ تُوُفِّيَ عَمُّهُ أَبُو طَالِبٍ الَّذِي كَانَ يَحْمِيهِ مِنْ أَذَى قُرَيْشٍ وَكَانَ عُمْرُهُ خَمْسِينَ سَنَةً، ثُمَّ تُوُفِّيَتْ مِنْ بَعْدِهِ زَوْجَتُهُ خَدِيجَةُ، وَهِيَ أَوَّلُ مَنْ آمَنَ بِاللهِ وَرَسُولِهِ وَأَوَّلُ اِمْرَأَةٍ صَدَّقَتْ نُبُوَّتَهُ.
+                </p>
+                <br>
+                <p class="ar ar-xl">
+                    وَبَعْدَ ذَلِكَ خَرَجَ الرَّسُولُ مَعَ أَصْحَابِهِ إِلَى الطَّائِفِ يَدْعُو أَهْلَهَا إِلَى الإِسْلَامِ فَلَمْ يُسْلِمُوا. ثُمَّ أَسْرَى اللهُ بِرَسُولِهِ لَيْلًا مِنَ الْمَسْجِدِ الْحَرَامِ إِلَى الْمَسْجِدِ الأَقْصَى، وَإِلَى السَّمَوَاتِ فِي الْمِعْرَاجِ. ثُمَّ هَاجَرَ الرَّسُولُ وَأَصْحَابُهُ مِنْ مَكَّةَ إِلَى الْمَدِينَةِ وَكَانَتْ هِجْرَتُهُ فِي السَّنَةِ الثَّالِثَةِ وَالْخَمْسِينَ مِنْ عُمْرِهِ. وَ وَفَاتُهُ فِي الثَّانِي عَشَرَ مِنْ شَهْرِ رَبِيعٍ الأَوَّل مِنَ السَّنَةِ الْحَادِيَةَ عَشْرَةَ لِلْهِجْرَةِ وَكَانَ عُمْرُهُ ثَلَاثً وَسِتُّونَ سَنَةً.
+                </p>
+            </div>
+
+            <button class="toggle-trans" onClick="toggleTranslation('qiraah-trans')">Lihat Terjemahan</button>
+            <div id="qiraah-trans" class="translation-box">
+                <p><strong>Sirah (Sejarah Hidup) Nabi SAW</strong></p>
+                <p>Pada minggu lalu, para siswa merayakan peringatan Maulid Rasul. Mereka mendengarkan ceramah agama yang disampaikan oleh Ustadz Muhammad Idris. Ustadz berbicara dalam ceramahnya tentang "Sirah Nabi SAW".</p>
+                <p>Beliau dilahirkan pada hari Senin, di Tahun Gajah, tanggal 12 Rabiul Awal. Nama ayahnya adalah Abdullah bin Abdul Muthalib, dan ibunya Aminah binti Wahb. Rasulullah SAW lahir dalam keadaan yatim, ayahnya wafat saat beliau masih dalam kandungan ibunya. Kemudian ibunya wafat saat beliau berusia 6 tahun, lalu kakeknya Abdul Muthalib mengasuhnya. Ketika kakeknya Abdul Muthalib wafat, pamannya Abu Thalib mengasuhnya. Saat itu usianya 8 tahun.</p>
+                <p>Di masa kecil, Muhammad bekerja menggembala kambing, kemudian pergi ke Syam bersama pamannya Abu Thalib untuk berdagang. Kemudian beliau menikahi Khadijah setelah itu, saat itu usianya 25 tahun, dan usia Khadijah 40 tahun. Ketika usianya mencapai 40 tahun, Allah mengutus Muhammad SAW sebagai Nabi dan Rasul. Kemudian pamannya Abu Thalib yang melindunginya dari gangguan Quraisy wafat saat usianya 50 tahun. Kemudian istrinya Khadijah wafat setelahnya, dia adalah orang pertama yang beriman kepada Allah dan Rasul-Nya dan wanita pertama yang membenarkan kenabiannya.</p>
+                <p>Setelah itu Rasul keluar bersama para sahabatnya ke Thaif menyeru penduduknya kepada Islam namun mereka tidak masuk Islam. Kemudian Allah memperjalankan Rasul-Nya pada malam hari (Isra) dari Masjidil Haram ke Masjidil Aqsa, dan ke langit dalam Mi'raj. Kemudian Rasul dan para sahabatnya berhijrah dari Mekkah ke Madinah, dan hijrahnya terjadi pada tahun ke-53 dari usianya. Dan wafatnya pada tanggal 12 Rabiul Awal tahun ke-11 Hijriyah, dan usianya 63 tahun.</p>
+            </div>
+
+            <div class="exercise-container" style="background: #e8f8f5; border-color: #27ae60;">
+                <div class="exercise-title">
+                    <h3 class="ar">التَّدْرِيْبُ - ٣ (الْقِرَاءَة)</h3>
+                    <p class="ar" style="font-size: 1.1rem; margin-top: 5px;">ضَعْ عَلَامَة (ص) إِذَا كَانَتِ الْجُمْلَةُ صَحِيْحَةً وَعَلَامَة (خ) إِذَا كَانَتْ خَاطِئَةً!</p>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div class="question-item">
+                        <span class="q-number">1</span>
+                        <div class="ar q-text">وُلِدَ الرَّسُوْلُ فِي يَوْمِ الْإِثْنَيْنِ</div>
+                        <input type="text" class="q-input" data-key="ص" placeholder="ص / خ">
+                    </div>
+                    <div class="question-item">
+                        <span class="q-number">2</span>
+                        <div class="ar q-text">تُوُفِّيَ أَبُوْهُ وَكَانَ عُمْرُهُ سِتَّ سِنِيْنَ</div>
+                        <input type="text" class="q-input" data-key="خ" placeholder="ص / خ">
+                    </div>
+                    <div class="question-item">
+                        <span class="q-number">3</span>
+                        <div class="ar q-text">تَزَوَّجَ الرَّسُوْلُ خَدِيْجَةَ وَعُمْرُهُ ٢٥ سَنَةً</div>
+                        <input type="text" class="q-input" data-key="ص" placeholder="ص / خ">
+                    </div>
+                </div>
+                <button class="btn-check" style="background: #27ae60;" onClick="checkAnswers()">Cek Jawaban Qira'ah</button>
+            </div>
+        </section>
+
+        <section id="tarkib" class="section-card">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-tools"></i></div>
+                <div class="section-title">
+                    <h2>At-Tarkib</h2>
+                    <span>Tata Bahasa: Kata "Kana" (كَانَ)</span>
+                </div>
+            </div>
+
+            <div class="grammar-note">
+                <strong>📝 Mengenal "Kana" (كَانَ)</strong><br>
+                Kata <strong>كَانَ</strong> digunakan untuk menceritakan keadaan di masa lampau (Dahulu/Tadi).<br><br>
+                Rumus: <strong>كَانَ + Isim (Rafa') + Khabar (Nashab)</strong>
+            </div>
+
+            <h3 style="margin-top: 20px; color: var(--primary-dark);">Perbandingan Kalimat</h3>
+            <div style="overflow-x: auto;">
+                <table class="grammar-table">
+                    <thead>
+                        <tr>
+                            <th style="background: #999;">Kalimat Biasa (Sekarang)</th>
+                            <th style="background: var(--primary);">Masuk "Kana" (Masa Lampau)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="ar ar-lg">
+                        <tr>
+                            <td>الْحَفْلُ كَبِيْرٌ<br><span style="font-size: 0.8rem; color: #666;">(Perayaan itu besar)</span></td>
+                            <td><strong>كَانَ</strong> الْحَفْلُ <strong>كَبِيْرًا</strong><br><span style="font-size: 0.8rem; color: #666;">(Dahulu perayaan itu besar)</span></td>
+                        </tr>
+                        <tr>
+                            <td>الْمُسْلِمُوْنَ مُجْتَمِعُوْنَ<br><span style="font-size: 0.8rem; color: #666;">(Orang muslim berkumpul)</span></td>
+                            <td><strong>كَانَ</strong> الْمُسْلِمُوْنَ <strong>مُجْتَمِعِيْنَ</strong><br><span style="font-size: 0.8rem; color: #666;">(Tadi orang muslim berkumpul)</span></td>
+                        </tr>
+                        <tr>
+                            <td>الْقَاعَةُ مُزَيَّنَةٌ<br><span style="font-size: 0.8rem; color: #666;">(Aula itu dihias - Pr)</span></td>
+                            <td><strong>كَانَتِ</strong> الْقَاعَةُ <strong>مُزَيَّنَةً</strong><br><span style="font-size: 0.8rem; color: #666;">(Dahulu aula itu dihias)</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div style="background: #fff3cd; padding: 15px; border-radius: 10px; margin-top: 20px; font-size: 0.9rem; border: 1px solid #ffeeba;">
+                <i class="fas fa-exclamation-circle"></i> <strong>Perhatikan:</strong><br>
+                Kata setelah "Kana" harakatnya dhommah (u), sedangkan kata berikutnya berubah menjadi Fathah (an) atau Ya' (ina).
+            </div>
+
+            <hr style="border: 0; border-top: 2px dashed #ccc; margin: 40px 0;">
+
+            <div class="activity-box">
+                <h3 class="ar" style="text-align: center; color: var(--primary-dark); font-size: 1.8rem;">النَّشَاطُ الثَّانِي: اِقْرَأْ وَلَاحِظْ!</h3>
+                <p style="text-align: center; margin-bottom: 20px;">(Aktivitas 2: Baca dan Perhatikan!)</p>
+
+                <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+                    
+                    <div style="flex: 1; min-width: 300px; border: 2px solid #FB8500; border-radius: 15px; overflow: hidden;">
+                        <div style="background: #FB8500; color: white; padding: 10px; text-align: center; font-weight: bold;">...الآن، الْيَوْم (Sekarang/Hari Ini)</div>
+                        <div style="padding: 20px; background: #fffbf0;" class="ar ar-lg">
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-bottom: 15px;">🚩 أَبِي <span style="color: red;">رَئِيْسٌ</span> لِلَجْنَةِ الْحَفْلِ بِذِكْرَى مَوْلِدِ الرَّسُوْلِ</li>
+                                <li style="margin-bottom: 15px;">🚩 أَنَا <span style="color: red;">جَالِسٌ</span> أَمَامَ الْمِنْبَرِ</li>
+                                <li style="margin-bottom: 15px;">🚩 الْحَاضِرُوْنَ <span style="color: red;">قَادِمُوْنَ</span> إِلَى مَكَانِ الْحَفْلِ</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div style="flex: 1; min-width: 300px; border: 2px solid #48CAE4; border-radius: 15px; overflow: hidden;">
+                        <div style="background: #48CAE4; color: white; padding: 10px; text-align: center; font-weight: bold;">...فِي الزَّمَانِ الْمَاضِي (Di Masa Lampau)</div>
+                        <div style="padding: 20px; background: #f0faff;" class="ar ar-lg">
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-bottom: 15px;">🔹 كَانَ أَبِي <span style="color: red;">رَئِيْسًا</span> لِلَجْنَةِ الْحَفْلِ بِذِكْرَى مَوْلِدِ الرَّسُوْلِ</li>
+                                <li style="margin-bottom: 15px;">🔹 <span style="color: #000;">كُنْتُ</span> <span style="color: red;">جَالِسًا</span> أَمَامَ الْمِنْبَرِ</li>
+                                <li style="margin-bottom: 15px;">🔹 كَانَ الْحَاضِرُوْنَ <span style="color: red;">قَادِمِيْنَ</span> إِلَى مَكَانِ الْحَفْلِ</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grammar-note" style="margin-top: 30px;">
+                    <strong>Keterangan:</strong><br>
+                    Perhatikan perubahan kalimat pada kedua kolom di atas.<br>
+                    1. Setelah kalimat pada kolom dimasuki (كَانَ), maka kalimat tersebut berubah menunjukkan masa yang lampau.<br>
+                    2. Setelah kalimat pada kolom dimasuki (كَانَ), maka terjadi perubahan bunyi akhir pada khabarnya (Predikat). 
+                    <ul>
+                        <li>Ditandai dengan harokat <strong>Fathah (ــًـ)</strong> bila Mufrod (Tunggal).</li>
+                        <li>Ditandai dengan <strong>(ـيْنَ)</strong> bila berupa Jamak Mudzakkar Salim.</li>
+                    </ul>
+                </div>
+
+                <div style="margin-top: 30px; text-align: center;">
+                     <span style="background: pink; padding: 5px 15px; border-radius: 5px; font-weight: bold; border: 1px solid #ffccd5; display: inline-block; margin-bottom: 10px; font-size: 1.2rem;" class="ar">لَاحِظْ !</span>
+                     
+                     <table class="grammar-table" style="max-width: 400px; margin: 0 auto;">
+                        <tr class="ar">
+                            <td style="background: #ddd;">كُنْتَ</td>
+                            <td style="background: #ddd;">كَانَتْ</td>
+                            <td style="background: #e0fbfc;">كَانَ</td>
+                        </tr>
+                        <tr class="ar">
+                            <td style="background: #ddd;">كُنْتُمَا</td>
+                            <td style="background: #ddd;">كَانَتَا</td>
+                            <td style="background: #e0fbfc;">كَانَا</td>
+                        </tr>
+                         <tr class="ar">
+                            <td style="background: #ddd;">...</td>
+                            <td style="background: #ddd;">كُنَّ</td>
+                            <td style="background: #e0fbfc;">كَانُوْا</td>
+                        </tr>
+                     </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="quiz" class="section-card">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-tasks"></i></div>
+                <div class="section-title">
+                    <h2>Kuis Bab 2</h2>
+                    <span>Evaluasi Pemahaman</span>
+                </div>
+            </div>
+
+            <div class="quiz-container">
+                <div class="quiz-item" data-correct="A">
+                    <div class="quiz-question"><span class="q-num">1.</span> <span class="ar">مَا مَعْنَى كَلِمَةُ "وُلِدَ" ؟</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q1" value="A"> A. Dilahirkan</label>
+                        <label class="quiz-option"><input type="radio" name="q1" value="B"> B. Wafat</label>
+                        <label class="quiz-option"><input type="radio" name="q1" value="C"> C. Menikah</label>
+                        <label class="quiz-option"><input type="radio" name="q1" value="D"> D. Hijrah</label>
+                    </div>
+                </div>
+
+                <div class="quiz-item" data-correct="C">
+                    <div class="quiz-question"><span class="q-num">2.</span> <span class="ar">مَا مَعْنَى كَلِمَةُ "زَيَّنَ" ؟</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q2" value="A"> A. Mengundang</label>
+                        <label class="quiz-option"><input type="radio" name="q2" value="B"> B. Membagikan</label>
+                        <label class="quiz-option"><input type="radio" name="q2" value="C"> C. Menghias</label>
+                        <label class="quiz-option"><input type="radio" name="q2" value="D"> D. Berkumpul</label>
+                    </div>
+                </div>
+
+                <div class="quiz-item" data-correct="B">
+                    <div class="quiz-question"><span class="q-num">3.</span> <span class="ar">مَنْ كَانَ سِكْرِتِيْرَ اللَّجْنَةِ فِي الْحِوَارِ؟</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q3" value="A"> A. Husain</label>
+                        <label class="quiz-option"><input type="radio" name="q3" value="B"> B. Hasan</label>
+                        <label class="quiz-option"><input type="radio" name="q3" value="C"> C. Hamid</label>
+                        <label class="quiz-option"><input type="radio" name="q3" value="D"> D. Yusuf</label>
+                    </div>
+                </div>
+
+                <div class="quiz-item" data-correct="D">
+                    <div class="quiz-question"><span class="q-num">4.</span> <span class="ar">مَا مَوْضُوْعُ الْمُحَاضَرَةِ الدِّيْنِيَّةِ؟</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q4" value="A"> A. Sejarah Perang Badar</label>
+                        <label class="quiz-option"><input type="radio" name="q4" value="B"> B. Hukum Puasa</label>
+                        <label class="quiz-option"><input type="radio" name="q4" value="C"> C. Keutamaan Sholat</label>
+                        <label class="quiz-option"><input type="radio" name="q4" value="D"> D. Hikmah Maulid Nabi</label>
+                    </div>
+                </div>
+
+                <div class="quiz-item" data-correct="A">
+                    <div class="quiz-question"><span class="q-num">5.</span> <span class="ar">مَتَى وُلِدَ الرَّسُوْلُ ﷺ؟</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q5" value="A"> A. 12 Rabiul Awal</label>
+                        <label class="quiz-option"><input type="radio" name="q5" value="B"> B. 17 Ramadhan</label>
+                        <label class="quiz-option"><input type="radio" name="q5" value="C"> C. 1 Syawal</label>
+                        <label class="quiz-option"><input type="radio" name="q5" value="D"> D. 10 Dzulhijjah</label>
+                    </div>
+                </div>
+
+                <div class="quiz-item" data-correct="C">
+                    <div class="quiz-question"><span class="q-num">6.</span> <span class="ar">مَنْ كَفَلَ (Mengasuh) النَّبِيَّ بَعْدَ وَفَاةِ أُمِّهِ؟</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q6" value="A"> A. Abu Thalib</label>
+                        <label class="quiz-option"><input type="radio" name="q6" value="B"> B. Abu Bakar</label>
+                        <label class="quiz-option"><input type="radio" name="q6" value="C"> C. Abdul Muthalib</label>
+                        <label class="quiz-option"><input type="radio" name="q6" value="D"> D. Hamzah</label>
+                    </div>
+                </div>
+
+                <div class="quiz-item" data-correct="B">
+                    <div class="quiz-question"><span class="q-num">7.</span> <span class="ar">كَمْ كَانَ عُمْرُ النَّبِيِّ عِنْدَمَا تَزَوَّجَ خَدِيْجَةَ؟</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q7" value="A"> A. 20 Tahun</label>
+                        <label class="quiz-option"><input type="radio" name="q7" value="B"> B. 25 Tahun</label>
+                        <label class="quiz-option"><input type="radio" name="q7" value="C"> C. 40 Tahun</label>
+                        <label class="quiz-option"><input type="radio" name="q7" value="D"> D. 63 Tahun</label>
+                    </div>
+                </div>
+
+                <div class="quiz-item" data-correct="A">
+                    <div class="quiz-question"><span class="q-num">8.</span> <span class="ar">كَانَ الْمُسْلِمُوْنَ ......... فِي الْمَسْجِدِ.</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q8" value="A"> A. <span class="ar">مُجْتَمِعِيْنَ</span> (Mujtami'ina)</label>
+                        <label class="quiz-option"><input type="radio" name="q8" value="B"> B. <span class="ar">مُجْتَمِعُوْنَ</span> (Mujtami'una)</label>
+                        <label class="quiz-option"><input type="radio" name="q8" value="C"> C. <span class="ar">مُجْتَمِعٌ</span> (Mujtami'un)</label>
+                        <label class="quiz-option"><input type="radio" name="q8" value="D"> D. <span class="ar">مُجْتَمِعَاتٌ</span> (Mujtami'at)</label>
+                    </div>
+                </div>
+
+                <div class="quiz-item" data-correct="C">
+                    <div class="quiz-question"><span class="q-num">9.</span> <span class="ar">......... الْقَاعَةُ مُزَيَّنَةً.</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q9" value="A"> A. <span class="ar">كَانَ</span> (Kana)</label>
+                        <label class="quiz-option"><input type="radio" name="q9" value="B"> B. <span class="ar">كُنْتُ</span> (Kuntu)</label>
+                        <label class="quiz-option"><input type="radio" name="q9" value="C"> C. <span class="ar">كَانَتِ</span> (Kanat)</label>
+                        <label class="quiz-option"><input type="radio" name="q9" value="D"> D. <span class="ar">كُنَّ</span> (Kunna)</label>
+                    </div>
+                </div>
+
+                <div class="quiz-item" data-correct="B">
+                    <div class="quiz-question"><span class="q-num">10.</span> <span class="ar">كُنْتُ ......... أَمَامَ الْمِنْبَرِ.</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q10" value="A"> A. <span class="ar">جَالِسٌ</span> (Jalisun)</label>
+                        <label class="quiz-option"><input type="radio" name="q10" value="B"> B. <span class="ar">جَالِسًا</span> (Jalisan)</label>
+                        <label class="quiz-option"><input type="radio" name="q10" value="C"> C. <span class="ar">جَالِسٍ</span> (Jalisin)</label>
+                        <label class="quiz-option"><input type="radio" name="q10" value="D"> D. <span class="ar">جُلُوْسٌ</span> (Julus)</label>
+                    </div>
+                </div>
+                
+                <button class="btn-check" onClick="checkQuiz()">Cek Skor Kuis</button>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // --- 1. Fungsi Audio Mufradat (Google TTS) ---
+        function playAudio(element) {
+            let arabicText = element.querySelector('.vocab-ar').innerText;
+            if(arabicText.includes('-')){
+                 arabicText = arabicText.split('-')[0].trim();
+            }
+            
+            document.querySelectorAll('.vocab-card').forEach(card => card.classList.remove('playing'));
+            element.classList.add('playing');
+
+            let audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=ar&client=tw-ob&q=${encodeURIComponent(arabicText)}`;
+            let audio = new Audio(audioUrl);
+            audio.play();
+
+            audio.onended = function() { element.classList.remove('playing'); };
+
+            audio.onerror = function() { alert("Gagal memuat audio. Pastikan koneksi internet lancar."); element.classList.remove('playing'); };
+        }
+
+        // --- 2. Fungsi Audio Chat (Hiwar) ---
+        function playText(btn, text) {
+            document.querySelectorAll('.chat-audio-btn').forEach(b => b.classList.remove('playing'));
+            btn.classList.add('playing');
+
+            let audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=ar&client=tw-ob&q=${encodeURIComponent(text)}`;
+            let audio = new Audio(audioUrl);
+            audio.play();
+
+            audio.onended = function() { btn.classList.remove('playing'); };
+            audio.onerror = function() { alert("Gagal memuat audio."); btn.classList.remove('playing'); };
+        }
+
+        // --- 3. Fungsi Cek Jawaban (Latihan Isian) ---
+        function checkAnswers() {
+            // Mengambil semua input yang ada di bagian yang sedang aktif
+            const activeSection = document.querySelector('.section-card.active-section');
+            if(!activeSection) return;
+
+            const inputs = activeSection.querySelectorAll('.q-input');
+            let totalInPage = 0;
+            let correctCount = 0;
+
+            inputs.forEach(input => {
+                const userAnswer = input.value.toLowerCase().trim();
+                const validAnswers = input.getAttribute('data-key').split(',');
+                
+                if(userAnswer === "") return; // Skip yang kosong
+
+                totalInPage++;
+                input.classList.remove('correct', 'wrong');
+
+                if (validAnswers.includes(userAnswer)) {
+                    input.classList.add('correct');
+                    correctCount++;
+                } else {
+                    input.classList.add('wrong');
+                }
+            });
+
+            if(totalInPage === 0) {
+                alert("Silakan isi jawaban terlebih dahulu!");
+                return;
+            }
+
+            alert(`Anda menjawab ${correctCount} benar dari ${totalInPage} soal yang diisi.`);
+        }
+
+        // --- 4. Fungsi Cek Kuis Pilihan Ganda ---
+        function checkQuiz() {
+            const quizItems = document.querySelectorAll('.quiz-item');
+            let score = 0;
+            let answered = 0;
+
+            quizItems.forEach(item => {
+                const correctAnswer = item.getAttribute('data-correct');
+                const selected = item.querySelector('input[type="radio"]:checked');
+                
+                // Reset style
+                item.querySelectorAll('.quiz-option').forEach(opt => {
+                    opt.classList.remove('correct-answer', 'wrong-answer');
+                });
+
+                if (selected) {
+                    answered++;
+                    if (selected.value === correctAnswer) {
+                        score++;
+                        selected.parentElement.classList.add('correct-answer');
+                    } else {
+                        selected.parentElement.classList.add('wrong-answer');
+                        // Tunjukkan jawaban yang benar
+                        const correctOption = item.querySelector(`input[value="${correctAnswer}"]`);
+                        if(correctOption) correctOption.parentElement.classList.add('correct-answer');
+                    }
+                }
+            });
+
+            if (answered < quizItems.length) {
+                alert("Anda belum menjawab semua soal. Silakan lengkapi kuis.");
+                return;
+            }
+
+            let message = "";
+            if(score === 10) message = "Luar Biasa! Nilai Sempurna! 🌟";
+            else if(score >= 7) message = "Bagus sekali! Pertahankan! 👍";
+            else message = "Tetap semangat belajar! 💪";
+
+            alert(`Skor Anda: ${score} / 10\n${message}`);
+        }
+
+        // --- SCRIPT UNTUK TAB SWITCHER ---
+        function openTab(tabName, elmnt) {
+            // Sembunyikan semua section
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("section-card");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active-section");
+            }
+            
+            // Hapus warna background dari semua tombol nav
+            tablinks = document.getElementsByClassName("nav-item");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            
+            // Tampilkan section yang dipilih
+            document.getElementById(tabName).classList.add("active-section");
+            
+            // Beri warna pada tombol yang di-klik
+            if(elmnt) elmnt.classList.add("active");
+        }
+
+        // Toggle Translation
+        function toggleTranslation(id) {
+            var x = document.getElementById(id);
+            if (x.style.display === "none" || x.style.display === "") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

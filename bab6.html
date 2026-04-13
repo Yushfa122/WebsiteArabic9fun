@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bab 6: Menjaga Lingkungan | Arabic9 Fun</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Nunito:wght@400;600;700;800&family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- STYLE DASAR --- */
+        :root {
+            --primary: #48CAE4;
+            --primary-dark: #0096C7;
+            --accent: #FFB703;
+            --accent-hover: #FB8500;
+            --text-dark: #2b2d42;
+            --bg-light: #edf2f4;
+            --white: #ffffff;
+            --radius: 20px;
+            --correct: #2a9d8f;
+            --wrong: #e76f51;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Nunito', sans-serif; background-color: var(--bg-light); color: var(--text-dark); }
+        
+        /* Typography Khusus Arab */
+        .ar { font-family: 'Amiri', serif; direction: rtl; }
+        .ar-xl { font-size: 1.8rem; line-height: 2; }
+        .ar-lg { font-size: 1.4rem; line-height: 1.8; }
+        
+        /* --- LAYOUT UTAMA --- */
+        .header-lesson {
+            background: linear-gradient(135deg, #2a9d8f, #264653); /* Nuansa Hijau Lingkungan */
+            padding: 30px 5% 80px; 
+            color: white;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            position: relative;
+        }
+
+        .back-btn {
+            color: white; font-size: 1.2rem; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px; font-weight: 700;
+        }
+        .back-btn:hover { color: var(--accent); }
+
+        .lesson-title h1 { font-family: 'Tajawal', sans-serif; font-size: 2.2rem; margin-bottom: 5px; }
+        .lesson-subtitle { font-size: 1.1rem; opacity: 0.9; }
+
+        /* --- NAVIGATION TABS (STICKY) --- */
+        .lesson-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: -40px; 
+            padding: 0 20px;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .nav-item {
+            background: var(--white);
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 700;
+            color: var(--text-dark);
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: 0.3s;
+            border: 2px solid transparent;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: var(--accent);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        /* --- CONTENT CONTAINERS --- */
+        .content-area { max-width: 900px; margin: 40px auto; padding: 0 20px; min-height: 60vh; }
+        
+        .section-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            scroll-margin-top: 100px; 
+            display: none; /* Disembunyikan secara default untuk sistem Tab */
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section-card.active-section {
+            display: block; /* Hanya tampilkan yang aktif */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--bg-light);
+            padding-bottom: 15px;
+        }
+
+        .section-icon {
+            width: 50px; height: 50px; background: #e6fffa; color: #2a9d8f;
+            border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+        }
+
+        .section-title h2 { font-size: 1.5rem; color: #264653; }
+        .section-title span { font-size: 0.9rem; color: #888; display: block; }
+
+        /* --- 1. MUFRODAT (Grid Style) --- */
+        .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
+        
+        .vocab-card {
+            background: #f8f9fa; border: 1px solid #eee; border-radius: 15px; padding: 20px;
+            text-align: center; transition: 0.3s; cursor: pointer;
+        }
+        .vocab-card:hover { border-color: #2a9d8f; transform: translateY(-5px); background: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .vocab-ar { color: #264653; font-weight: 700; margin-bottom: 5px; }
+        .vocab-id { color: #666; font-size: 0.9rem; }
+        .vocab-img { font-size: 2.5rem; margin-bottom: 10px; display: block; }
+
+        /* Tombol Audio Kecil */
+        .btn-audio {
+            background: var(--accent); color: white; border: none; 
+            width: 30px; height: 30px; border-radius: 50%; 
+            font-size: 0.8rem; cursor: pointer; transition: 0.2s;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .btn-audio:hover { background: var(--accent-hover); transform: scale(1.1); }
+        
+        /* Tombol Audio di Chat */
+        .chat-audio {
+            background: rgba(0,0,0,0.1); color: #555; border: none;
+            width: 25px; height: 25px; border-radius: 50%;
+            font-size: 0.7rem; cursor: pointer; margin-right: 5px;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .chat-audio:hover { background: #2a9d8f; color: white; }
+
+        /* --- 2. KALAM DAN ISTIMA' (Chat Style) --- */
+        .chat-box { background: #e5e5e5; padding: 20px; border-radius: 15px; max-height: 500px; overflow-y: auto; background-image: url('https://i.pinimg.com/originals/97/c0/07/97c00726d1d93130c25d804f323e5959.png'); }
+        
+        .message { display: flex; margin-bottom: 15px; align-items: flex-end; }
+        .message.student-a { flex-direction: row-reverse; } 
+        
+        .bubble {
+            max-width: 80%; padding: 12px 18px; border-radius: 15px; position: relative; font-size: 1.1rem;
+        }
+        
+        .student-a .bubble { background: #dcf8c6; color: #000; border-bottom-right-radius: 0; text-align: right; }
+        .student-b .bubble { background: #fff; color: #000; border-bottom-left-radius: 0; text-align: right; }
+
+        .speaker-name { font-size: 0.75rem; color: #555; margin-bottom: 3px; display: block; font-weight: bold; }
+
+        /* --- 3. QIRA'AH (Text) --- */
+        .reading-text {
+            text-align: justify;
+            background: #e6fffa; /* Hijau sangat muda */
+            padding: 25px;
+            border-radius: 15px;
+            border-right: 5px solid #2a9d8f;
+        }
+        .toggle-trans {
+            margin-top: 15px; background: transparent; border: 2px solid var(--accent); color: var(--accent);
+            padding: 8px 20px; border-radius: 50px; font-weight: 700; cursor: pointer; width: 100%;
+            transition: 0.3s;
+        }
+        .toggle-trans:hover { background: var(--accent); color: white; }
+        .translation-box { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc; color: #555; }
+
+        /* --- 4. TARKIB (Grammar Table) --- */
+        .grammar-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .grammar-table th { background: #2a9d8f; color: white; padding: 12px; text-align: center; }
+        .grammar-table td { border: 1px solid #ddd; padding: 10px; text-align: center; font-size: 1.2rem; }
+        .grammar-note { background: #e6fffa; padding: 15px; border-radius: 10px; margin-top: 20px; font-size: 0.9rem; border-left: 4px solid #2a9d8f;}
+
+        /* --- ESSAY & QUIZ STYLES --- */
+        .essay-container { margin-top: 30px; background: #fff9db; padding: 25px; border-radius: 15px; border: 2px solid #ffe066; }
+        .essay-item { margin-bottom: 20px; }
+        .essay-q { font-weight: bold; color: var(--text-dark); display: block; margin-bottom: 8px; }
+        .essay-a { 
+            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; 
+            font-family: 'Nunito', sans-serif; transition: 0.3s;
+        }
+        .essay-a:focus { border-color: var(--primary); outline: none; background: #fff; }
+
+        .quiz-container { margin-top: 30px; border-top: 2px dashed #eee; padding-top: 20px; }
+        .quiz-item { margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 15px; border: 1px solid #eee; }
+        .quiz-question { font-weight: bold; margin-bottom: 10px; display: block; color: var(--text-dark); }
+        .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+        .quiz-option { 
+            background: #f8f9fa; border: 1px solid #ddd; padding: 10px 15px; border-radius: 10px; cursor: pointer; transition: 0.2s;
+            font-family: 'Amiri', serif; font-size: 1.1rem;
+        }
+        .quiz-option:hover { background: #e6fffa; border-color: #2a9d8f; }
+        .quiz-option.selected { background: #d4edda; border-color: #28a745; color: #155724; }
+        .quiz-option.wrong { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+        .score-box { text-align: center; font-size: 1.2rem; font-weight: bold; color: #2a9d8f; margin-top: 20px; padding: 15px; background: #e6fffa; border-radius: 15px; display: none; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .lesson-nav { gap: 10px; white-space: nowrap; overflow-x: auto; justify-content: flex-start; padding-bottom: 10px; }
+            .lesson-title h1 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-lesson">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Kembali ke Menu</a>
+            <div class="lesson-title">
+                <h1 class="ar">الْحِفَاظُ عَلَى الْبِيْئَةِ</h1>
+                <p class="lesson-subtitle">Bab 6 - Menjaga Lingkungan</p>
+            </div>
+        </div>
+    </header>
+
+    <nav class="lesson-nav">
+        <a onclick="openTab('mufradat', this)" class="nav-item active">1. Mufradat</a>
+        <a onclick="openTab('kalam', this)" class="nav-item">2. Kalam dan Istima'</a>
+        <a onclick="openTab('qiraah', this)" class="nav-item">3. Qira'ah</a>
+        <a onclick="openTab('tarkib', this)" class="nav-item">4. Tarkib dan Kitabah</a>
+    </nav>
+
+    <div class="content-area">
+
+        <section id="mufradat" class="section-card active-section">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-tree"></i></div>
+                <div class="section-title">
+                    <h2>Al-Mufradat</h2>
+                    <span>Kosakata Menjaga Lingkungan</span>
+                </div>
+            </div>
+            
+            <div class="vocab-grid">
+                <div class="vocab-card">
+                    <span class="vocab-img">🏞️</span>
+                    <div class="ar ar-lg vocab-ar">بِيْئَةٌ</div>
+                    <div class="vocab-id">Lingkungan</div>
+                    <button class="btn-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=بيئة&tl=ar')"><i class="fas fa-volume-up"></i></button>
+                </div>
+                <div class="vocab-card">
+                    <span class="vocab-img">🗑️</span>
+                    <div class="ar ar-lg vocab-ar">نِفَايَاتٌ</div>
+                    <div class="vocab-id">Sampah</div>
+                    <button class="btn-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=نفايات&tl=ar')"><i class="fas fa-volume-up"></i></button>
+                </div>
+                <div class="vocab-card">
+                    <span class="vocab-img">🧹</span>
+                    <div class="ar ar-lg vocab-ar">مِكْنَسَةٌ</div>
+                    <div class="vocab-id">Sapu</div>
+                    <button class="btn-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=مكنسة&tl=ar')"><i class="fas fa-volume-up"></i></button>
+                </div>
+                <div class="vocab-card">
+                    <span class="vocab-img">✨</span>
+                    <div class="ar ar-lg vocab-ar">نَظِيْفٌ</div>
+                    <div class="vocab-id">Bersih</div>
+                    <button class="btn-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=نظيف&tl=ar')"><i class="fas fa-volume-up"></i></button>
+                </div>
+                <div class="vocab-card">
+                    <span class="vocab-img">🍂</span>
+                    <div class="ar ar-lg vocab-ar">مُتَّسِخٌ</div>
+                    <div class="vocab-id">Kotor</div>
+                    <button class="btn-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=متسخ&tl=ar')"><i class="fas fa-volume-up"></i></button>
+                </div>
+                <div class="vocab-card">
+                    <span class="vocab-img">🚮</span>
+                    <div class="ar ar-lg vocab-ar">يَرْمِي</div>
+                    <div class="vocab-id">Membuang</div>
+                    <button class="btn-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=يرمي&tl=ar')"><i class="fas fa-volume-up"></i></button>
+                </div>
+                <div class="vocab-card">
+                    <span class="vocab-img">💨</span>
+                    <div class="ar ar-lg vocab-ar">يَكْنُسُ</div>
+                    <div class="vocab-id">Menyapu</div>
+                    <button class="btn-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=يكنس&tl=ar')"><i class="fas fa-volume-up"></i></button>
+                </div>
+                <div class="vocab-card">
+                    <span class="vocab-img">🌱</span>
+                    <div class="ar ar-lg vocab-ar">يَزْرَعُ</div>
+                    <div class="vocab-id">Menanam</div>
+                    <button class="btn-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=يزرع&tl=ar')"><i class="fas fa-volume-up"></i></button>
+                </div>
+                <div class="vocab-card">
+                    <span class="vocab-img">🚰</span>
+                    <div class="ar ar-lg vocab-ar">مَاءٌ</div>
+                    <div class="vocab-id">Air</div>
+                    <button class="btn-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=ماء&tl=ar')"><i class="fas fa-volume-up"></i></button>
+                </div>
+            </div>
+
+            <div class="essay-container">
+                <h3 style="text-align: center; color: var(--accent-hover); margin-bottom: 20px;">
+                    <i class="fas fa-pencil-alt"></i> Latihan Menghafal Arti
+                </h3>
+                <p style="text-align: center; margin-bottom: 20px;">Terjemahkan kata-kata berikut ke dalam Bahasa Indonesia!</p>
+
+                <div class="essay-item">
+                    <label class="essay-q">1. Apa arti dari <span class="ar">بِيْئَةٌ</span> (Bi'atun)?</label>
+                    <input type="text" class="essay-a" placeholder="Jawab disini...">
+                </div>
+                <div class="essay-item">
+                    <label class="essay-q">2. Apa arti dari <span class="ar">نِفَايَاتٌ</span> (Nifayatun)?</label>
+                    <input type="text" class="essay-a" placeholder="Jawab disini...">
+                </div>
+                <div class="essay-item">
+                    <label class="essay-q">3. Apa arti dari <span class="ar">نَظِيْفٌ</span> (Nadhifun)?</label>
+                    <input type="text" class="essay-a" placeholder="Jawab disini...">
+                </div>
+                <div class="essay-item">
+                    <label class="essay-q">4. Apa arti dari <span class="ar">يَرْمِي</span> (Yarmi)?</label>
+                    <input type="text" class="essay-a" placeholder="Jawab disini...">
+                </div>
+                <div class="essay-item">
+                    <label class="essay-q">5. Apa arti dari <span class="ar">مِكْنَسَةٌ</span> (Miknasatun)?</label>
+                    <input type="text" class="essay-a" placeholder="Jawab disini...">
+                </div>
+
+                <button class="toggle-trans" onClick="toggleTranslation('essay-key')" style="margin-top: 10px; background: transparent; color: #555; border: 1px solid #aaa;">Lihat Kunci Jawaban</button>
+                <div id="essay-key" class="translation-box" style="background: #fff; padding: 15px; border-radius: 10px;">
+                    <strong>Kunci Jawaban:</strong>
+                    <ol style="margin-left: 20px; margin-top: 10px;">
+                        <li>Lingkungan</li>
+                        <li>Sampah</li>
+                        <li>Bersih</li>
+                        <li>Membuang</li>
+                        <li>Sapu</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <section id="kalam" class="section-card">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-comments"></i></div>
+                <div class="section-title">
+                    <h2>Al-Kalam wal Istima'</h2>
+                    <span>Berbicara & Mendengar: Kafil & Kamil</span>
+                </div>
+            </div>
+
+            <div class="chat-box">
+                <div class="message student-a">
+                    <div class="bubble">
+                        <span class="speaker-name">Kafil (كافِل)</span>
+                        <p class="ar">
+                            <button class="chat-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=يا%20كامل،%20انظر%20إلى%20هذا%20الفصل،%20إنه%20متسخ%20جدا&tl=ar')"><i class="fas fa-play"></i></button>
+                            يَا كَامِلُ، اُنْظُرْ إِلَى هَذَا الْفَصْلِ، إِنَّهُ مُتَّسِخٌ جِدًّا.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="message student-b">
+                    <div class="bubble">
+                        <span class="speaker-name">Kamil (كامِل)</span>
+                        <p class="ar">
+                            <button class="chat-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=نعم،%20هناك%20نفايات%20كثيرة%20على%20الأرض&tl=ar')"><i class="fas fa-play"></i></button>
+                            نَعَمْ، هُنَاكَ نِفَايَاتٌ كَثِيْرَةٌ عَلَى الْأَرْضِ.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="message student-a">
+                    <div class="bubble">
+                        <span class="speaker-name">Kafil (كافِل)</span>
+                        <p class="ar">
+                            <button class="chat-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=هيا%20بنا%20ننظف%20هذا%20الفصل%20معا&tl=ar')"><i class="fas fa-play"></i></button>
+                            هَيَّا بِنَا نُنَظِّفُ هَذَا الْفَصْلَ مَعًا.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="message student-b">
+                    <div class="bubble">
+                        <span class="speaker-name">Kamil (كامِل)</span>
+                        <p class="ar">
+                            <button class="chat-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=أنا%20سأكنس%20الأرض%20بالمكنسة&tl=ar')"><i class="fas fa-play"></i></button>
+                            أَنَا سَأَكْنُسُ الْأَرْضَ بِالْمِكْنَسَةِ.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="message student-a">
+                    <div class="bubble">
+                        <span class="speaker-name">Kafil (كافِل)</span>
+                        <p class="ar">
+                            <button class="chat-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=وأنا%20سأرمي%20النفايات%20في%20سلة%20المهملات&tl=ar')"><i class="fas fa-play"></i></button>
+                            وَأَنَا سَأَرْمِي النِّفَايَاتِ فِي سَلَّةِ الْمُهْمَلَاتِ.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="message student-b">
+                    <div class="bubble">
+                        <span class="speaker-name">Kamil (كامِل)</span>
+                        <p class="ar">
+                            <button class="chat-audio" onClick="playAudio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=النظافة%20من%20الإيمان،%20يجب%20علينا%20أن%20نحافظ%20على%20البيئة&tl=ar')"><i class="fas fa-play"></i></button>
+                            النَّظَافَةُ مِنَ الْإِيْمَانِ، يَجِبُ عَلَيْنَا أَنْ نُحَافِظَ عَلَى الْبِيْئَةِ.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px; text-align: center;">
+                <button class="toggle-trans" onClick="toggleTranslation('hiwar-trans')">Terjemahkan Percakapan</button>
+                <div id="hiwar-trans" class="translation-box">
+                    <strong>Kafil:</strong> Wahai Kamil, lihat kelas ini, sangat kotor.<br>
+                    <strong>Kamil:</strong> Iya, ada banyak sampah di lantai.<br>
+                    <strong>Kafil:</strong> Ayo kita bersihkan kelas ini bersama.<br>
+                    <strong>Kamil:</strong> Aku akan menyapu lantai dengan sapu.<br>
+                    <strong>Kafil:</strong> Dan aku akan membuang sampah ke tempat sampah.<br>
+                    <strong>Kamil:</strong> Kebersihan sebagian dari iman, kita wajib menjaga lingkungan.
+                </div>
+            </div>
+
+            <div class="quiz-container">
+                <h3 style="text-align: center; margin-bottom: 20px; color: var(--primary-dark);">التَّمْرِيْنَاتُ عَلَى الْكَلَامِ وَالْاِسْتِمَاعِ (Latihan Kalam & Istima')</h3>
+                
+                <div class="quiz-item" id="q-kalam-1">
+                    <span class="quiz-question ar ar-lg">١. كَيْفَ حَالَةُ الْفَصْلِ كَمَا فِي الْحِوَارِ؟</span>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 1, false)">أ. نَظِيْفٌ جِدًّا</div>
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 1, true)">ب. مُتَّسِخٌ جِدًّا</div>
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 1, false)">ج. جَمِيْلٌ جِدًّا</div>
+                    </div>
+                </div>
+
+                <div class="quiz-item" id="q-kalam-2">
+                    <span class="quiz-question ar ar-lg">٢. مَاذَا يُوْجَدُ عَلَى الْأَرْضِ؟</span>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 2, true)">أ. نِفَايَاتٌ كَثِيْرَةٌ</div>
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 2, false)">ب. مَاءٌ كَثِيْرٌ</div>
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 2, false)">ج. كُتُبٌ كَثِيْرَةٌ</div>
+                    </div>
+                </div>
+
+                <div class="quiz-item" id="q-kalam-3">
+                    <span class="quiz-question ar ar-lg">٣. بِمَاذَا يَكْنُسُ كَامِلٌ الْأَرْضَ؟</span>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 3, false)">أ. بِالْمَاءِ</div>
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 3, true)">ب. بِالْمِكْنَسَةِ</div>
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 3, false)">ج. بِالْقَلَمِ</div>
+                    </div>
+                </div>
+
+                <div class="quiz-item" id="q-kalam-4">
+                    <span class="quiz-question ar ar-lg">٤. أَيْنَ يَرْمِي كَافِلٌ النِّفَايَاتِ؟</span>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 4, true)">أ. فِي سَلَّةِ الْمُهْمَلَاتِ</div>
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 4, false)">ب. فِي النَّهْرِ</div>
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 4, false)">ج. فِي الشَّارِعِ</div>
+                    </div>
+                </div>
+
+                <div class="quiz-item" id="q-kalam-5">
+                    <span class="quiz-question ar ar-lg">٥. "النَّظَافَةُ مِنَ الْإِيْمَانِ" تَعْنِي...</span>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 5, false)">أ. Kebersihan adalah kesehatan</div>
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 5, false)">ب. Kebersihan membawa penyakit</div>
+                        <div class="quiz-option" onClick="checkQuiz('kalam', 5, true)">ج. Kebersihan sebagian dari iman</div>
+                    </div>
+                </div>
+
+                <div id="score-kalam" class="score-box"></div>
+            </div>
+        </section>
+
+        <section id="qiraah" class="section-card">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-book-open"></i></div>
+                <div class="section-title">
+                    <h2>Al-Qira'ah</h2>
+                    <span>Teks: Menjaga Lingkungan</span>
+                </div>
+            </div>
+
+            <div class="reading-text">
+                <h3 class="ar" style="text-align: center; margin-bottom: 20px; font-size: 1.8rem; color: #2a9d8f;">اَلْحِفَاظُ عَلَى الْبِيْئَةِ</h3>
+                
+                <p class="ar ar-xl">
+                    الإِسْلَامُ دِيْنٌ يُحِبُّ النَّظَافَةَ وَالْجَمَالَ.
+                    يَجِبُ عَلَى كُلِّ مُسْلِمٍ أَنْ يُحَافِظَ عَلَى نَظَافَةِ الْبِيْئَةِ، مِثْلَ نَظَافَةِ الْبَيْتِ وَالْمَدْرَسَةِ وَالشَّارِعِ.
+                </p>
+                <br>
+                <p class="ar ar-xl">
+                    لَا تَرْمِ النِّفَايَاتِ فِي النَّهْرِ أَوْ فِي الشَّارِعِ، بَلِ ارْمِهَا فِي مَكَانِهَا. 
+                    لِأَنَّ رَمْيَ النِّفَايَاتِ فِي النَّهْرِ يُسَبِّبُ الْفَيَضَانَ وَالْأَمْرَاضَ.
+                </p>
+                <br>
+                <p class="ar ar-xl">
+                    وَلَا تَقْطَعِ الْأَشْجَارَ، بَلِ ازْرَعْهَا لِتَكُوْنَ الْبِيْئَةُ جَمِيْلَةً وَصِحِّيَّةً.
+                    مَنْ يُحَافِظْ عَلَى الْبِيْئَةِ يَعِشْ فِي صِحَّةٍ وَسَعَادَةٍ.
+                </p>
+            </div>
+
+            <button class="toggle-trans" onClick="toggleTranslation('qiraah-trans')">Lihat Terjemahan</button>
+            <div id="qiraah-trans" class="translation-box">
+                <p><strong>Menjaga Lingkungan</strong></p>
+                <p>Islam adalah agama yang mencintai kebersihan dan keindahan. Wajib bagi setiap muslim menjaga kebersihan lingkungan, seperti kebersihan rumah, sekolah, dan jalan.</p>
+                <p>Jangan membuang sampah di sungai atau di jalan, tapi buanglah pada tempatnya. Karena membuang sampah di sungai menyebabkan banjir dan penyakit.</p>
+                <p>Dan jangan menebang pohon-pohon, tapi tanamlah agar lingkungan menjadi indah dan sehat. Barangsiapa menjaga lingkungan akan hidup dalam kesehatan dan kebahagiaan.</p>
+            </div>
+
+            <div class="quiz-container">
+                <h3 style="text-align: center; margin-bottom: 20px; color: var(--primary-dark);">التَّمْرِيْنَاتُ عَلَى الْقِرَاءَةِ (Latihan Qira'ah)</h3>
+                
+                <div class="quiz-item" id="q-qiraah-1">
+                    <span class="quiz-question ar ar-lg">١. مَاذَا يُحِبُّ دِيْنُ الْإِسْلَامِ كَمَا فِي النَّصِّ؟</span>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 1, false)">أ. النَّوْمَ وَالْكَسَلَ</div>
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 1, true)">ب. النَّظَافَةَ وَالْجَمَالَ</div>
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 1, false)">ج. رَمْيَ النِّفَايَاتِ</div>
+                    </div>
+                </div>
+
+                <div class="quiz-item" id="q-qiraah-2">
+                    <span class="quiz-question ar ar-lg">٢. أَيْنَ يَجِبُ أَنْ نَرْمِيَ النِّفَايَاتِ؟</span>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 2, false)">أ. فِي النَّهْرِ</div>
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 2, true)">ب. فِي مَكَانِهَا (سَلَّةِ الْمُهْمَلَاتِ)</div>
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 2, false)">ج. فِي الشَّارِعِ</div>
+                    </div>
+                </div>
+
+                <div class="quiz-item" id="q-qiraah-3">
+                    <span class="quiz-question ar ar-lg">٣. مَاذَا يُسَبِّبُ رَمْيُ النِّفَايَاتِ فِي النَّهْرِ؟</span>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 3, true)">أ. الْفَيَضَانَ وَالْأَمْرَاضَ</div>
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 3, false)">ب. الصِّحَّةَ وَالسَّعَادَةَ</div>
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 3, false)">ج. الْجَمَالَ وَالنَّظَافَةَ</div>
+                    </div>
+                </div>
+
+                <div class="quiz-item" id="q-qiraah-4">
+                    <span class="quiz-question ar ar-lg">٤. لِمَاذَا نَزْرَعُ الْأَشْجَارَ؟</span>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 4, false)">أ. لِنَقْطَعَهَا</div>
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 4, true)">ب. لِتَكُوْنَ الْبِيْئَةُ جَمِيْلَةً وَصِحِّيَّةً</div>
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 4, false)">ج. لِتَكُوْنَ مُتَّسِخَةً</div>
+                    </div>
+                </div>
+
+                <div class="quiz-item" id="q-qiraah-5">
+                    <span class="quiz-question ar ar-lg">٥. كَيْفَ يَعِيْشُ مَنْ يُحَافِظُ عَلَى الْبِيْئَةِ؟</span>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 5, false)">أ. فِي مَرَضٍ وَحُزْنٍ</div>
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 5, true)">ب. فِي صِحَّةٍ وَسَعَادَةٍ</div>
+                        <div class="quiz-option" onClick="checkQuiz('qiraah', 5, false)">ج. فِي جُوْعٍ وَعَطَشٍ</div>
+                    </div>
+                </div>
+
+                <div id="score-qiraah" class="score-box"></div>
+            </div>
+        </section>
+
+        <section id="tarkib" class="section-card">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-pen-nib"></i></div>
+                <div class="section-title">
+                    <h2>At-Tarkib wal Kitabah</h2>
+                    <span>Grammar (Fi'il Nahi) & Menulis</span>
+                </div>
+            </div>
+
+            <div class="grammar-note">
+                <strong>📝 Fi'il Nahi (فِعْلُ النَّهْيِ)</strong><br>
+                Kata Kerja Larangan. Digunakan untuk melarang seseorang dengan menambahkan huruf <strong>(لَا)</strong> yang artinya <strong>"JANGAN"</strong>.<br>
+                Huruf terakhir dari kata kerjanya biasanya disukunkan (mati) atau dihilangkan huruf Nun-nya.
+            </div>
+
+            <h3 style="margin-top: 20px; color: var(--primary-dark);">Perubahan Bentuk Larangan (Jangan!)</h3>
+            <div style="overflow-x: auto;">
+                <table class="grammar-table">
+                    <thead>
+                        <tr>
+                            <th style="background: #999;">Untuk Siapa?</th>
+                            <th style="background: var(--accent);">Kata "Menulis"</th>
+                            <th style="background: #2a9d8f;">Kata "Membuang"</th>
+                        </tr>
+                    </thead>
+                    <tbody class="ar ar-lg">
+                        <tr>
+                            <td class="ar-reset" style="font-size: 1rem;">Kamu (Laki-laki)<br>أَنْتَ</td>
+                            <td>لَا تَكْتُبْ</td>
+                            <td>لَا تَرْمِ <br><span style="font-size:0.8rem; color:#666;">(hilang huruf Ya')</span></td>
+                        </tr>
+                        <tr>
+                            <td class="ar-reset" style="font-size: 1rem;">Kamu (Perempuan)<br>أَنْتِ</td>
+                            <td>لَا تَكْتُبِيْ <br><span style="font-size:0.8rem; color:#666;">(tambah Ya')</span></td>
+                            <td>لَا تَرْمِيْ</td>
+                        </tr>
+                        <tr>
+                            <td class="ar-reset" style="font-size: 1rem;">Kalian (Banyak)<br>أَنْتُمْ</td>
+                            <td>لَا تَكْتُبُوْا <br><span style="font-size:0.8rem; color:#666;">(tambah Wau)</span></td>
+                            <td>لَا تَرْمُوْا</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="essay-container" style="margin-top: 30px;">
+                <h3 style="text-align: center; color: var(--primary-dark); margin-bottom: 20px;">
+                    <i class="fas fa-edit"></i> تَمْرِيْنَاتُ الْكِتَابَةِ (Latihan Menulis & Tarkib)
+                </h3>
+                <p style="text-align: center; margin-bottom: 20px;">
+                    Susunlah kata-kata yang acak berikut ini menjadi kalimat larangan yang sempurna!
+                </p>
+
+                <div class="essay-item">
+                    <label class="essay-q ar ar-lg" style="text-align:center;">النِّفَايَاتِ - فِي - لَا - النَّهْرِ - تَرْمِ</label>
+                    <input type="text" class="essay-a ar" placeholder="اكتب الإجابة الصحيحة هنا..." dir="rtl">
+                </div>
+
+                <div class="essay-item">
+                    <label class="essay-q ar ar-lg" style="text-align:center;">الْجِدَارِ - تَكْتُبْ - عَلَى - لَا</label>
+                    <input type="text" class="essay-a ar" placeholder="اكتب الإجابة الصحيحة هنا..." dir="rtl">
+                </div>
+
+                <div class="essay-item">
+                    <label class="essay-q ar ar-lg" style="text-align:center;">تَقْطَعِ - يَا أَحْمَدُ - لَا - الْأَشْجَارَ</label>
+                    <input type="text" class="essay-a ar" placeholder="اكتب الإجابة الصحيحة هنا..." dir="rtl">
+                </div>
+
+                <div class="essay-item">
+                    <label class="essay-q ar ar-lg" style="text-align:center;">الْفَصْلِ - يَا فَاطِمَةُ - فِي - تَنَامِيْ - لَا</label>
+                    <input type="text" class="essay-a ar" placeholder="اكتب الإجابة الصحيحة هنا..." dir="rtl">
+                </div>
+
+                <button class="toggle-trans" onClick="toggleTranslation('tarkib-key')" style="margin-top: 10px; background: transparent; color: #555; border: 1px solid #aaa;">Lihat Kunci Jawaban</button>
+                <div id="tarkib-key" class="translation-box" style="background: #fff; padding: 15px; border-radius: 10px;">
+                    <strong>Kunci Jawaban:</strong>
+                    <ol class="ar ar-lg" style="margin-right: 30px; margin-top: 10px;" dir="rtl">
+                        <li>لَا تَرْمِ النِّفَايَاتِ فِي النَّهْرِ (Jangan buang sampah di sungai)</li>
+                        <li>لَا تَكْتُبْ عَلَى الْجِدَارِ (Jangan menulis di tembok)</li>
+                        <li>يَا أَحْمَدُ، لَا تَقْطَعِ الْأَشْجَارَ (Hai Ahmad, jangan menebang pohon)</li>
+                        <li>يَا فَاطِمَةُ، لَا تَنَامِيْ فِي الْفَصْلِ (Hai Fatimah, jangan tidur di kelas)</li>
+                    </ol>
+                </div>
+            </div>
+
+        </section>
+
+        <div style="text-align: center; margin-bottom: 50px;">
+            <p>Selesai Bab 6! Tetap jaga kebersihan ya.</p>
+            <a href="index.html" class="nav-item" style="background: var(--accent); color: white; display: inline-block; margin-top: 10px;">
+                Ke Menu Utama <i class="fas fa-home"></i>
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        // --- SCRIPT UNTUK TAB SWITCHER ---
+        function openTab(tabName, elmnt) {
+            // Sembunyikan semua section
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("section-card");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active-section");
+            }
+            
+            // Hapus warna background dari semua tombol nav
+            tablinks = document.getElementsByClassName("nav-item");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            
+            // Tampilkan section yang dipilih
+            document.getElementById(tabName).classList.add("active-section");
+            
+            // Beri warna pada tombol yang di-klik
+            elmnt.classList.add("active");
+        }
+
+        // Toggle Translation
+        function toggleTranslation(id) {
+            var x = document.getElementById(id);
+            if (x.style.display === "none" || x.style.display === "") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+
+        // Play Audio Function
+        function playAudio(url) {
+            new Audio(url).play();
+        }
+
+        // --- SISTEM QUIZ SEDERHANA ---
+        let kalamScore = 0;
+        let qiraahScore = 0;
+        let kalamCount = 0;
+        let qiraahCount = 0;
+
+        function checkQuiz(section, qIndex, isCorrect) {
+            const parent = document.getElementById('q-' + section + '-' + qIndex);
+            const options = parent.getElementsByClassName('quiz-option');
+            
+            // Disable clicks after answering
+            for (let i = 0; i < options.length; i++) {
+                options[i].style.pointerEvents = 'none';
+            }
+
+            // Mark correct/wrong
+            if (isCorrect) {
+                event.target.classList.add('selected');
+                event.target.innerHTML += ' <i class="fas fa-check"></i>';
+                if(section === 'kalam') kalamScore += 20; // 5 soal x 20 = 100
+                if(section === 'qiraah') qiraahScore += 20;
+            } else {
+                event.target.classList.add('wrong');
+                event.target.innerHTML += ' <i class="fas fa-times"></i>';
+                // Show correct answer
+                for (let i = 0; i < options.length; i++) {
+                    if (options[i].getAttribute('onclick').includes('true')) {
+                        options[i].classList.add('selected');
+                    }
+                }
+            }
+
+            // Update Counter & Show Score if finished
+            if(section === 'kalam') {
+                kalamCount++;
+                if(kalamCount === 5) {
+                    const scoreBox = document.getElementById('score-kalam');
+                    scoreBox.style.display = 'block';
+                    scoreBox.innerHTML = 'Nilai Kamu (النتيجة): ' + kalamScore + ' / 100';
+                }
+            } else {
+                qiraahCount++;
+                if(qiraahCount === 5) {
+                    const scoreBox = document.getElementById('score-qiraah');
+                    scoreBox.style.display = 'block';
+                    scoreBox.innerHTML = 'Nilai Kamu (النتيجة): ' + qiraahScore + ' / 100';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

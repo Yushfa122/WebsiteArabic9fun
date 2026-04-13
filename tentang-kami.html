@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami | Arabic9 Fun</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #2EC4B6;
+            --primary-dark: #239c91;
+            --accent: #FF9F1C;
+            --text-main: #011627;
+            --bg-body: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Nunito', sans-serif; background: var(--bg-body); color: var(--text-main); overflow-x: hidden; }
+
+        /* --- Navbar --- */
+        nav {
+            padding: 20px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.95); position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .logo { font-weight: 800; font-size: 1.4rem; display: flex; align-items: center; gap: 10px; }
+        .logo i { color: var(--accent); }
+        .btn-back { text-decoration: none; color: var(--text-main); font-weight: 700; transition: 0.3s; }
+        .btn-back:hover { color: var(--primary); transform: translateX(-5px); }
+
+        /* --- Hero Section --- */
+        header {
+            text-align: center; padding: 80px 20px 60px;
+            background: linear-gradient(135deg, #e0fbfc 0%, #ffffff 100%);
+            border-bottom-left-radius: 50px; border-bottom-right-radius: 50px;
+        }
+        header h1 { font-family: 'Tajawal', sans-serif; font-size: 3rem; color: var(--text-main); margin-bottom: 15px; font-weight: 800; }
+        header span { color: var(--primary); }
+        header p { max-width: 700px; margin: 0 auto; color: #555; font-size: 1.2rem; line-height: 1.6; }
+
+        /* --- Story Section --- */
+        .container { max-width: 1000px; margin: 0 auto; padding: 60px 20px; }
+        
+        .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; margin-bottom: 80px; }
+        .story-img img { width: 100%; border-radius: 20px; box-shadow: var(--shadow); transform: rotate(-3deg); border: 5px solid white; }
+        
+        .story-text h2 { font-size: 2rem; margin-bottom: 20px; color: var(--primary-dark); }
+        .story-text p { margin-bottom: 15px; line-height: 1.8; color: #444; font-size: 1.05rem; text-align: justify; }
+
+        /* --- Vision Cards --- */
+        .vision-section { text-align: center; margin-bottom: 80px; }
+        .vision-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 40px; }
+        
+        .vision-card {
+            background: var(--white); padding: 30px; border-radius: 20px;
+            box-shadow: var(--shadow); transition: 0.3s; border-top: 5px solid var(--primary);
+        }
+        .vision-card:hover { transform: translateY(-10px); }
+        .vision-icon { font-size: 2.5rem; color: var(--accent); margin-bottom: 20px; }
+        .vision-card h3 { margin-bottom: 15px; font-size: 1.2rem; }
+        .vision-card p { font-size: 0.95rem; color: #666; line-height: 1.6; }
+
+        /* --- Developer Profile --- */
+        .profile-box {
+            background: linear-gradient(135deg, var(--text-main), #1a2e40);
+            color: white; padding: 50px; border-radius: 30px;
+            display: flex; align-items: center; gap: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            position: relative; overflow: hidden;
+        }
+        .profile-box::before {
+            content: ''; position: absolute; top: -50px; right: -50px;
+            width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%;
+        }
+
+        .profile-img { 
+            width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+        }
+        .profile-img img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .profile-info h2 { font-size: 2rem; margin-bottom: 5px; color: var(--primary); }
+        .profile-info h4 { color: #aebecd; margin-bottom: 20px; font-weight: 600; letter-spacing: 1px; font-size: 0.85rem; }
+        .profile-info p { opacity: 0.9; line-height: 1.7; max-width: 600px; font-style: italic; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.2rem; }
+            .story-grid { grid-template-columns: 1fr; }
+            .story-img { max-width: 80%; margin: 0 auto; }
+            .profile-box { flex-direction: column; text-align: center; padding: 30px; }
+        }
+    .profile-img1 {            width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+}
+    .profile-img2 {            width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+}
+.profile-img11 {width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+}
+    .profile-img111 {width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+}
+.profile-img21 {width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+}
+    .profile-img22 {width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+}
+    .profile-img23 {width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+}
+.profile-img221 {width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+}
+    .profile-img24 {width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+}
+.profile-img2211 {width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+}
+.profile-img231 {width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+}
+    .profile-img25 {width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+}
+.profile-img22111 {width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+}
+.profile-img2311 {width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+}
+.profile-img241 {width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+}
+    .profile-img26 {width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+}
+.profile-img221111 {width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+}
+.profile-img23111 {width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+}
+.profile-img2411 {width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+}
+.profile-img251 {width: 150px; height: 150px; flex-shrink: 0; 
+            border-radius: 50%; border: 5px solid var(--accent); 
+            overflow: hidden; background: #fff;
+}
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <i class="fas fa-shapes"></i> Arabic9 Fun
+        </div>
+        <a href="index.html" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Kembali ke Menu
+        </a>
+    </nav>
+
+    <header data-aos="fade-down">
+        <h1>Di Balik Layar <span>Arabic9 Fun</span></h1>
+        <p>Inovasi media pembelajaran Bahasa Arab berbasis web yang modern dan interaktif untuk siswa Sekolah Menengah Pertama.</p>
+    </header>
+
+    <div class="container">
+        
+      <div class="story-grid">
+            <div class="story-text" data-aos="fade-right">
+                <h2>Latar Belakang Pengembangan</h2>
+                <p>
+                    Website pembelajaran <strong>Arabic9 Fun</strong> ini dikembangkan sebagai bagian dari penyusunan tugas akhir skripsi oleh mahasiswa S1 Pendidikan Bahasa Arab, Universitas Negeri Malang. 
+                    Dalam proses pengembangannya, penelitian ini dibimbing langsung oleh dua dosen pembimbing ahli, yaitu <strong>Prof. Dr. Imam Asrori, M.Pd.</strong> dan <strong>Moh. Fauzan, S.Pd., M.Pd.I.</strong>
+                </p>
+                <p>
+                    Untuk memastikan kualitas kelayakan media secara akademis, platform ini telah melalui proses validasi yang ketat. Validasi dilakukan oleh ahli media, yaitu <strong>Moh. Fery Fauzi, S.Pd., M.Pd.I.</strong>, serta ahli materi, <strong>Dra. Hj. Nur Anisah Ridwan, M.Pd.</strong>
+                </p>
+                <p>
+                    Pengembangan ini diujicobakan secara langsung pada siswa kelas 9 di <strong>SMP Nurul Huda Malang</strong>, dengan harapan dapat memberikan kontribusi nyata dalam ekosistem pendidikan bahasa.
+                </p>
+            </div>
+          <div class="story-img" data-aos="fade-left"><img src="WhatsApp Image 2026-04-13 at 13.45.42.jpeg" width="600" height="400"></div>
+        </div>
+
+        <div class="vision-section">
+            <h2 data-aos="fade-up">Tujuan Pengembangan Media</h2>
+            <div class="vision-grid">
+                <div class="vision-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="vision-icon"><i class="fas fa-laptop-code"></i></div>
+                    <h3>Referensi Modern</h3>
+                    <p>Memberikan referensi bagi para guru Bahasa Arab untuk mampu menghadirkan media pembelajaran berbasis website yang modern dan interaktif.</p>
+                </div>
+                <div class="vision-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="vision-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>Peningkatan Minat</h3>
+                    <p>Menciptakan pengalaman belajar yang menyenangkan sehingga diharapkan mampu secara signifikan meningkatkan minat belajar siswa.</p>
+                </div>
+                <div class="vision-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="vision-icon"><i class="fas fa-brain"></i></div>
+                    <h3>Optimalisasi Pemahaman</h3>
+                    <p>Membantu mempermudah proses penyampaian materi, sehingga pemahaman berbahasa Arab siswa kelas 9 dapat meningkat dengan maksimal.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-box" data-aos="zoom-in">
+          <div class="profile-img2"><span class="profile-img26"><span class="profile-img251"><span class="profile-img2411"><span class="profile-img23111"><span class="profile-img221111"><img src="WhatsApp Image 2026-04-13 at 13.36.35.jpeg" width="130" height="100"></span></span></span></span></span></div>
+          <div class="profile-info">
+                <h2>Muhammad Yushfa Dzihni</h2>
+                <h4>PENGEMBANG MEDIA | S1 PENDIDIKAN BAHASA ARAB UM</h4>
+                <p>
+                    "Pengembangan media Arabic9 Fun ini adalah dedikasi saya untuk dunia pendidikan. Harapan saya, website ini tidak hanya menjadi syarat kelulusan akademis, tetapi benar-benar membawa manfaat nyata bagi guru dalam mengajar, serta menjadi ruang belajar yang menyenangkan bagi adik-adik di SMP Nurul Huda Malang."
+                </p>
+          </div>
+      </div>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, once: true });
+    </script>
+
+</body>
+</html>
